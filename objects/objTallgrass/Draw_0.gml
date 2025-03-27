@@ -1,0 +1,1 @@
+vertex_submit(v,pr_trianglelist,sprite_get_texture(object_sprite,0));

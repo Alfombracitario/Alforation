@@ -1,0 +1,25 @@
+{
+  "$GMSound":"",
+  "%Name":"musDungeonA",
+  "audioGroupId":{
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
+  },
+  "bitDepth":1,
+  "bitRate":64,
+  "compression":3,
+  "conversionMode":0,
+  "duration":285.44,
+  "name":"musDungeonA",
+  "parent":{
+    "name":"Music",
+    "path":"folders/Music.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":22050,
+  "soundFile":"musDungeonA.mp3",
+  "type":1,
+  "volume":1.0,
+}

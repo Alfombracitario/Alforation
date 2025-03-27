@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"init_3d_image_tile",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"init_3d_image_tile",
+  "parent":{
+    "name":"especific",
+    "path":"folders/Scripts/3D/especific.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

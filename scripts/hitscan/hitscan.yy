@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"hitscan",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"hitscan",
+  "parent":{
+    "name":"3D",
+    "path":"folders/Scripts/3D.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

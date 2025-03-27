@@ -1,0 +1,1 @@
+display_info = !display_info;

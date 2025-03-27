@@ -1,0 +1,1 @@
+ExtTemperature = other.temperature;

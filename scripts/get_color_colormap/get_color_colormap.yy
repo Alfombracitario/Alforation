@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"get_color_colormap",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"get_color_colormap",
+  "parent":{
+    "name":"color",
+    "path":"folders/Scripts/color.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

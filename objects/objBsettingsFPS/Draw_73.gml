@@ -1,0 +1,1 @@
+draw_text(x,y,"FPS: "+string(60/global.fpsmode));

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"get_texture_coords",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"get_texture_coords",
+  "parent":{
+    "name":"3D",
+    "path":"folders/Scripts/3D.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

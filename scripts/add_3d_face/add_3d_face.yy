@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"add_3d_face",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"add_3d_face",
+  "parent":{
+    "name":"3D",
+    "path":"folders/Scripts/3D.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

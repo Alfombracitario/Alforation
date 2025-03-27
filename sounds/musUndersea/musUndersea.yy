@@ -1,0 +1,25 @@
+{
+  "$GMSound":"",
+  "%Name":"musUndersea",
+  "audioGroupId":{
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
+  },
+  "bitDepth":1,
+  "bitRate":128,
+  "compression":3,
+  "conversionMode":0,
+  "duration":150.43918,
+  "name":"musUndersea",
+  "parent":{
+    "name":"Music",
+    "path":"folders/Music.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":22050,
+  "soundFile":"musUndersea.mp3",
+  "type":0,
+  "volume":1.0,
+}

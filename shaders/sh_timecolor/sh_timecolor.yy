@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"sh_timecolor",
+  "name":"sh_timecolor",
+  "parent":{
+    "name":"Shaders",
+    "path":"folders/Shaders.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}

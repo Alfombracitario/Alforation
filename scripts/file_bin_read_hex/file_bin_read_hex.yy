@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"file_bin_read_hex",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"file_bin_read_hex",
+  "parent":{
+    "name":"files",
+    "path":"folders/Scripts/files.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"init_3d_model",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"init_3d_model",
+  "parent":{
+    "name":"3D",
+    "path":"folders/Scripts/3D.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
