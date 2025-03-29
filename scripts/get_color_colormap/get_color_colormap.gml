@@ -1,7 +1,7 @@
 function get_color_colormap(_x, _y) {
     
     var color11 = [75, 229, 52];
-    var color01 = [2, 37, 121];
+    var color01 = [50, 27, 101]; //corrupción
     var color10 = [200, 186, 65];
     var color00 = [128, 199, 173];
 

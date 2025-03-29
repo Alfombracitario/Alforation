@@ -9,4 +9,8 @@ file_delete(working_directory+global.worldname+"data.ini");
 ini_open(working_directory+global.worldname+"data.ini");
 randomize();
 ini_write_real("world","seed",global.seed);
+instance_destroy(objBloadworld);
+instance_destroy(objBdeleteworld);
+instance_destroy(objTitlescreen);
+instance_destroy(objBcreateworld);
 room_goto(game);

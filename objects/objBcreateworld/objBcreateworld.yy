@@ -10,7 +10,9 @@
   ],
   "managed":true,
   "name":"objBcreateworld",
-  "overriddenProperties":[],
+  "overriddenProperties":[
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"objBplay","path":"objects/objBplay/objBplay.yy",},"propertyId":{"name":"Bid","path":"objects/objBplay/objBplay.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"1",},
+  ],
   "parent":{
     "name":"title",
     "path":"folders/Objects/title.yy",

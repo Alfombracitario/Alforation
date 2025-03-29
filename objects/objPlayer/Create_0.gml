@@ -45,7 +45,7 @@ if(os_type == os_android || os_type == os_macosx)
 view_camera[0] = camera_create();
 camera_set_proj_mat(view_camera[0],matrix_build_projection_perspective_fov(60,w_width/w_height,1,16000));
 
-gamepad_set_axis_deadzone(0,0.2);
+gamepad_set_axis_deadzone(0,0.01);
 
 invmousex = w_width>>1;
 invmousey = w_height>>1;
@@ -88,6 +88,8 @@ sway_y = 0;
 
 sway_amount = 0;
 
+hitanim_tic = 60;
+cooldown = 0;
 
 weapon_swaying = true;
 weapon_y = 0;
@@ -174,8 +176,8 @@ for (var i = 0; i < invsize; i++) {
 instance_create_layer(x,y,"instances",objVisioncol);
 
 	//obtener texcoords
-	var tx = 16;
-	var ty = 16;
+	var tx = sprite_get_width(sprBtiles)>>4;
+	var ty = sprite_get_height(sprBtiles)>>4;
 	var td = 16;
 	tc[0] = get_texture_coords(0,0,1,1,1); //tree
 	tc[1] = get_texture_coords(0,0,tx,ty,td);//grass
@@ -184,7 +186,21 @@ instance_create_layer(x,y,"instances",objVisioncol);
 	tc[4] = get_texture_coords(0,1,tx,ty,td);//mushroom1
 	tc[5] = get_texture_coords(1,1,tx,ty,td);//mushroom2
 	tc[6] = get_texture_coords(3,4,tx,ty,td);//wild wheat
+	tc[7] = get_texture_coords(2,0,tx,ty,td);//dead bush
+	tc[8] = get_texture_coords(3,0,tx,ty,td);//cactus
+	tc[9] = get_texture_coords(0,1,tx,ty,td);//mushroom3 (corrupción)
+	tc[10] = get_texture_coords(1,1,tx,ty,td);//mushroom4 (corrupción)
+	tc[11] = get_texture_coords(1,2,tx,ty,td);//stone coal
+	tc[12] = get_texture_coords(2,2,tx,ty,td);//stone tin
+	tc[13] = get_texture_coords(3,2,tx,ty,td);//stone copper
+	tc[14] = get_texture_coords(4,2,tx,ty,td);//stone uhh
+	tc[15] = get_texture_coords(5,2,tx,ty,td);//stone iron
+	tc[16] = get_texture_coords(6,2,tx,ty,td);//stone tungsten
+	tc[17] = get_texture_coords(7,2,tx,ty,td);//stone ruby
+	tc[18] = get_texture_coords(8,2,tx,ty,td);//stone diamond
+	
 	//color0,1,2,3,4,5,6,7,8,9	
-	tuc = [0,1,0,1,0,0,1];
+	tuc = [0,1,0,1,0,0,1,0,0,1
+		  ,1,0,0,0,0,0,0,0,0];
 	
 	

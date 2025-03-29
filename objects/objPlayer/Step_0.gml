@@ -114,6 +114,7 @@ if(os_type == os_windows || os_type == os_macosx || os_type == os_win8native || 
 	
 	cam_yaw -= turn_speed;
 	
+	if device_mouse_check_button_pressed(0,mb_left) event_user(15);//left click
 }
 #endregion
 #region gamepad input
@@ -142,6 +143,7 @@ if(gamepad_is_connected(0))
 	if gamepad_button_check_pressed(0, gp_select) display_info = !display_info;
 	if gamepad_button_check_pressed(0, gp_face3) invopen = true; invmousex = gw>>1; invmousey = gh>>1;
 	if gamepad_button_check_pressed(0, gp_face4) time = 1000;
+	if gamepad_button_check_pressed(0, gp_shoulderrb) event_user(15);
 }
 #endregion
 #region phones input
@@ -179,7 +181,13 @@ if(os_type == os_android || os_type == os_ios)
 				    }
 				}
 				else
-				{
+				{	
+					if(device_mouse_check_button_pressed(i,mb_left))
+					{
+						prevmousex[i] = mousex[i];
+						prevmousey[i] = mousey[i];
+					}
+					//camera
 					cam_yaw += mousex[i]-prevmousex[i];
 					camz = clamp(camz + (clamp((mousey[i]-prevmousey[i]) *0.01, -0.15, 0.15) * (abs(camz) + 1)), -4, 4);
 			

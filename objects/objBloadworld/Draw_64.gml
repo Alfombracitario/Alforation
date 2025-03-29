@@ -1,6 +1,2 @@
-draw_set_font(global.font2);
-draw_text_shadow(x,y-4,"Load world");
-draw_set_halign(fa_left);
-draw_text(0,8,"-empty- 0 MB");
-draw_text(0,16,"-empty- 0 MB");
-draw_text(0,24,"-empty- 0 MB");
+var text = "Load world";
+draw_text_shadow(x+(sprite_width-string_width(text))*0.5,y+sprite_height*0.5-4,text);

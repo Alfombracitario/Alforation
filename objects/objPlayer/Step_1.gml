@@ -82,6 +82,12 @@ else if(time > 200 && time < 340)//noche
 {
 	fog_color = $0F0000;
 	timecolor = make_color_rgb(108,100,128);
+	if(irandom(500) == 500)
+	{
+		var _x = x + ((16 + irandom(16))<<4);
+		var _y = y + ((16 + irandom(16))<<4);
+		instance_create_layer(_x,_y,"instances",objEslime);
+	}
 }
 else if(time > 340)//mañana
 {
@@ -93,3 +99,4 @@ else if(time > 340)//mañana
 	var color3 = [255,255,255];
 	timecolor = get_color_gradient(time-340,color2,color3,20);
 }
+if cooldown > 0 cooldown--;

@@ -1,8 +1,5 @@
 gpu_set_fog(false,0,0,0);
 
-gw = display_get_gui_width();
-gh = display_get_gui_height();
-
 if(notday) //día y noche
 {
 	var lay_id = layer_get_id("Background");
@@ -19,22 +16,24 @@ draw_sprite_ext(
     sprItems,
 	inventory[selecteditem][0],
     (gw * 0.75) + (sin(sway_x *0.1) * sway_amount * 8 * weapon_swaying),
-    gh-120+(sin(sway_y *0.1) + 1) * sway_amount * 2 * weapon_swaying + weapon_y,
+    gh-120+(sin(sway_y *0.1) + 1) * sway_amount * 2 * weapon_swaying + weapon_y+(cooldown<<2),
     8,
     8,
     12,
     c_white,
     1
 );
-
-draw_set_alpha(min(hurt_tic,0.8));
-draw_set_color(c_red);
-draw_rectangle(0,0,gw,gh,false);
-draw_set_color(c_white);
-draw_set_alpha(1);
+if(hurt_tic > 0)
+{
+	draw_set_alpha(min(hurt_tic,0.8));
+	draw_set_color(c_red);
+	draw_rectangle(0,0,gw,gh,false);
+	draw_set_color(c_white);
+	draw_set_alpha(1);
+}
 
 //barras
-draw_sprite_ext(sprBar,1,0,10,8.2,1,0,c_white,1);//fondo
+draw_sprite_ext(sprBar,1,0,10,8.2,1,0,c_orange,1);//fondo
 draw_sprite_ext(sprBar,0,0,10,_hunger*0.082,1,0,c_orange,1);//contenido
 
 draw_sprite_ext(sprBar,1,0,0,8.2,1,0,c_red,1);
@@ -124,9 +123,5 @@ if(display_info == true)
 {
 	draw_text(0,0,"X: "+string(x)+"\nY: "+string(y)+"\nCx: "+string(pcx)+"\nCy: "+string(pcy)+"\nFPS "+string(fps)+"\nFPSr "+string(fps_real));
 	draw_text(0,64,instance_count);
-	draw_text(0,128,"t: "+string(_temperature)+"e: "+string(ExtTemperature));
-	with(objChunk)
-	{
-		draw_sprite_ext(sprPixel,0,global.render_distance+cx,global.render_distance+cy,1,1,0,image_blend,1);
-	}
+	draw_text(0,128,"t: "+string(_temperature)+"e: \n"+string(ExtTemperature)+"\nH: "+string(humidity));
 }

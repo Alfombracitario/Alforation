@@ -1,0 +1,1 @@
+draw_text(4,y+4,_text);

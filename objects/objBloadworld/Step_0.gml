@@ -14,3 +14,4 @@ if(gamepad_is_connected(0))
 	if image_index == 1 && gamepad_button_check_pressed(0,gp_face1) event_user(0);
 }
 y = room_height-sprite_height
+image_xscale = (room_width*0.05)-1.6;
