@@ -6,8 +6,15 @@ gh = display_get_gui_height();
 mousex[0] = device_mouse_x_to_gui(0);
 mousey[0] = device_mouse_y_to_gui(0);
 
+mousex_r[0] = device_mouse_raw_x(0);
+mousey_r[0] = device_mouse_raw_y(0);
+
 if(os_type == os_android || os_type == os_ios)
 {
+	mousex_r[1] = device_mouse_x(1);
+	mousey_r[1] = device_mouse_y(1);
+	mousex_r[2] = device_mouse_x(2);
+	mousey_r[2] = device_mouse_y(2);
 	mousex[1] = device_mouse_x_to_gui(1);
 	mousey[1] = device_mouse_y_to_gui(1);
 	mousex[2] = device_mouse_x_to_gui(2);

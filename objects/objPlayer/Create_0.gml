@@ -58,11 +58,14 @@ invmove = false;
 
 prevmousex[0] = 0;
 prevmousey[0] = 0;
-
+prevmousex_r[0] = 0;
+prevmousey_r[0] = 0;
 
 
 mousex[0] = 0;
 mousey[0] = 0;
+mousex_r[0] = 0;
+mousey_r[0] = 0;
 
 offset = 0;
 display_info = false;
@@ -188,7 +191,7 @@ instance_create_layer(x,y,"instances",objVisioncol);
 	tc[6] = get_texture_coords(3,4,tx,ty,td);//wild wheat
 	tc[7] = get_texture_coords(2,0,tx,ty,td);//dead bush
 	tc[8] = get_texture_coords(3,0,tx,ty,td);//cactus
-	tc[9] = get_texture_coords(0,1,tx,ty,td);//mushroom3 (corrupción)
+	tc[9] = get_texture_coords(2,1,tx,ty,td);//mushroom3 (corrupción)
 	tc[10] = get_texture_coords(1,1,tx,ty,td);//mushroom4 (corrupción)
 	tc[11] = get_texture_coords(1,2,tx,ty,td);//stone coal
 	tc[12] = get_texture_coords(2,2,tx,ty,td);//stone tin
@@ -200,7 +203,7 @@ instance_create_layer(x,y,"instances",objVisioncol);
 	tc[18] = get_texture_coords(8,2,tx,ty,td);//stone diamond
 	
 	//color0,1,2,3,4,5,6,7,8,9	
-	tuc = [0,1,0,1,0,0,1,0,0,1
+	tuc = [0,1,0,1,0,0,1,0,0,0
 		  ,1,0,0,0,0,0,0,0,0];
 	
 	

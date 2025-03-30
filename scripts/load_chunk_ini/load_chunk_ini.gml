@@ -27,7 +27,7 @@ function load_chunk_ini(cx, cy) {
 				
 				objectcount = 0;
 				
-				if(temperature > 230 && humidity < 20)//Desierto
+				if(temperature > 220 && humidity < 20)//Desierto
 				{
 					var times = irandom(11);
 					add_obj(times,7,1);//arbusto muerto
@@ -48,7 +48,7 @@ function load_chunk_ini(cx, cy) {
 					tree = sprite_get_texture(sprPinetree,1);
 					sprite_index = sprSnow;
 				}
-				else if(temperature > 230 && humidity > 230)//Jungla
+				else if(temperature > 220 && humidity > 230)//Jungla
 				{
 
 					var times = irandom(15);
@@ -110,7 +110,6 @@ function load_chunk_ini(cx, cy) {
 				}
 				else
 				{	//regla de generación general
-					
 					tree = sprite_get_texture(sprPinetree,0);
 					image_blend = get_color_colormap(temperature,humidity)
 					
@@ -147,6 +146,11 @@ function load_chunk_ini(cx, cy) {
 					{
 						add_obj(1,13,1);//copper
 					}
+				}
+				if(temperature > 150 && temperature < 220)
+				{
+					th = -64
+					tree = sprite_get_texture(sprOaktree,0);
 				}
 				image_xscale = 16;
 				image_yscale = 16;
@@ -195,7 +199,7 @@ function load_chunk_ini(cx, cy) {
 						objects[i][0] = valuetoread; //objeto
 						objects[i][1] =  x+(hex_to_dec_one(hex_digit[0])<<4); //X pos
 						objects[i][2] =  y+(hex_to_dec_one(hex_digit[1])<<4); //Y pos
-						objects[i][3] = 1;//POR FAVOR CAMBIA ESTO TE LO PIDO POR FAVOR
+						objects[i][3] = 1;//POR FAVOR CAMBIA ESTO TE LO PIDO POR FAVOR!!!!!!
 					}
 				}
 				

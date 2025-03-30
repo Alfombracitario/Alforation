@@ -1,5 +1,5 @@
 audio_play_sound(musTitle,0,1);
-
+randomize();
 global.worldname = "save/";
 
 global.chunk_size = 256;

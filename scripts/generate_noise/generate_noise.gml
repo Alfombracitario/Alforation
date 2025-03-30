@@ -1,7 +1,7 @@
 function generate_noise(_cx, _cy, _seed) {
 	
-	_cx = _cx << 6;
-	_cy = _cy << 6;
+	_cx = _cx << 5;
+	_cy = _cy << 5;
 var temp = dsin((_cx + _seed * 3.14) * 0.1) * 50 + 
            dcos((_cy - _seed * 1.73) * 0.1) * 50 + 
            dsin((_cx * 0.05 + _cy * 0.07 + _seed * 2.17)) * 30 + 

@@ -150,7 +150,7 @@ if(gamepad_is_connected(0))
 if(os_type == os_android || os_type == os_ios)
 {
 	
-	for(var i = 0; i < 3; i++)
+	for(var i = 0; i < 2; i++)
 	{
 			if(device_mouse_check_button(i,mb_left))
 			{
@@ -184,14 +184,16 @@ if(os_type == os_android || os_type == os_ios)
 				{	
 					if(device_mouse_check_button_pressed(i,mb_left))
 					{
-						prevmousex[i] = mousex[i];
-						prevmousey[i] = mousey[i];
+						prevmousex_r[i] = mousex_r[i];
+						prevmousey_r[i] = mousey_r[i];
 					}
 					//camera
-					cam_yaw += mousex[i]-prevmousex[i];
-					camz = clamp(camz + (clamp((mousey[i]-prevmousey[i]) *0.01, -0.15, 0.15) * (abs(camz) + 1)), -4, 4);
+					cam_yaw += (mousex_r[i]-prevmousex_r[i])*0.25;
+					camz = clamp(camz + (clamp((mousey_r[i]-prevmousey_r[i]) *0.0025, -0.15, 0.15) * (abs(camz) + 1)), -4, 4);
 			
 				}
+				show_debug_message("MouseX: " + string(mousex_r[i]) + " PrevX: " + string(prevmousex_r[i]));
+				show_debug_message("MouseY: " + string(mousey_r[i]) + " PrevY: " + string(prevmousey_r[i]));
 		}
 	}
 }
