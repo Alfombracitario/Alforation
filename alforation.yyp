@@ -53,6 +53,7 @@
     {"id":{"name":"objSolid","path":"objects/objSolid/objSolid.yy",},},
     {"id":{"name":"objTitlescreen","path":"objects/objTitlescreen/objTitlescreen.yy",},},
     {"id":{"name":"objVisioncol","path":"objects/objVisioncol/objVisioncol.yy",},},
+    {"id":{"name":"objWall","path":"objects/objWall/objWall.yy",},},
     {"id":{"name":"game","path":"rooms/game/game.yy",},},
     {"id":{"name":"TitleScreen","path":"rooms/TitleScreen/TitleScreen.yy",},},
     {"id":{"name":"add_3d_face","path":"scripts/add_3d_face/add_3d_face.yy",},},
