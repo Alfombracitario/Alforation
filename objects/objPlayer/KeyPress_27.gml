@@ -1,1 +1,1 @@
-instance_create_layer(x,y,"instances",objPause);
+instance_create_layer(0,0,"instances",objPause);

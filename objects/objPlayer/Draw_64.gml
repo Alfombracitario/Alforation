@@ -1,5 +1,6 @@
 gpu_set_fog(false,0,0,0);
-
+draw_set_valign(fa_top)
+draw_set_halign(fa_left)
 if(notday) //día y noche
 {
 	var lay_id = layer_get_id("Background");
@@ -69,7 +70,7 @@ if(invopen)
 			var _sx = invx+(j<<4);
 			var _sy = invy+(i<<4);
 			draw_sprite(sprItems,inventory[_slot][0],_sx,_sy);
-			if (inventory[_slot][1] != 0)
+			if (inventory[_slot][1] != 0 && inventory[_slot][1] != 1)
 			{
 				draw_set_halign(fa_right);
 				draw_text(_sx+16,_sy+8,inventory[_slot][1]);

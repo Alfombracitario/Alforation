@@ -1,4 +1,3 @@
-audio_play_sound(musTitle,0,1);
 randomize();
 global.worldname = "save/";
 
@@ -16,6 +15,10 @@ global.uisize = ini_read_real("options","uisize",3);
 global.update3Dtime = ini_read_real("options","update3Dtime",1);
 global.screendiv = ini_read_real("options","screendiv",0);
 global.fog = ini_read_real("options","fog",1);
+global.musvol = ini_read_real("options","musvol",0.125);
+global.sndvol = ini_read_real("options","sndvol",1);
+
+audio_play_sound(musTitle,0,0,global.musvol);
 
 /*
 ini_write_string("options","render_distance",global.render_distance);
@@ -37,7 +40,3 @@ switch(os_browser)
 	global.fog = false;
 	break;
 }
-
-selected = 0;
-screen = 0;
-

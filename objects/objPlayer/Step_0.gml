@@ -4,10 +4,11 @@ if(invopen == true)
 {
 	if(gamepad_is_connected(0))
 	{
-		if gamepad_button_check_pressed(0,gp_shoulderr) && selecteditem < invsize selecteditem++;
+		if gamepad_button_check_pressed(0,gp_shoulderr) && selecteditem < invsize { selecteditem++; audio_play_sound(sndSelect,0,0,global.sndvol); }
 		selecteditem = selecteditem mod invsize
 		if(gamepad_button_check_pressed(0,gp_shoulderl))
 		{
+			audio_play_sound(sndSelect,0,0,global.sndvol);
 			if(selecteditem > 0)
 			{
 				selecteditem--;
@@ -18,11 +19,11 @@ if(invopen == true)
 			}
 		}
 		
-		if gamepad_button_check_pressed(0,gp_padu) && selecteditem >= 10 selecteditem -= 10;
-		if gamepad_button_check_pressed(0,gp_padd) && selecteditem < invsize-10 selecteditem += 10;
-		if gamepad_button_check_pressed(0,gp_padr) && selecteditem < invsize-1 selecteditem++;
-		if gamepad_button_check_pressed(0,gp_padl) && selecteditem > 0 selecteditem--;
-		if gamepad_button_check_pressed(0, gp_face3) || gamepad_button_check_pressed(0, gp_face2) invopen = false;
+		if gamepad_button_check_pressed(0,gp_padu) && selecteditem >= 10 { selecteditem -= 10; audio_play_sound(sndSelect,0,0,global.sndvol);}
+		if gamepad_button_check_pressed(0,gp_padd) && selecteditem < invsize-10 { selecteditem += 10; audio_play_sound(sndSelect,0,0,global.sndvol);}
+		if gamepad_button_check_pressed(0,gp_padr) && selecteditem < invsize-1 { selecteditem++; audio_play_sound(sndSelect,0,0,global.sndvol);}
+		if gamepad_button_check_pressed(0,gp_padl) && selecteditem > 0 { selecteditem--; audio_play_sound(sndSelect,0,0,global.sndvol); }
+		if gamepad_button_check_pressed(0, gp_face3) || gamepad_button_check_pressed(0, gp_face2) { invopen = false; audio_play_sound(sndCancel,0,0,global.sndvol); }
 		
 		invmousex += gamepad_axis_value(0, gp_axislh)*global.settings.sensibility*global.fpsmode;
 		invmousey += gamepad_axis_value(0, gp_axislv)*global.settings.sensibility*global.fpsmode;
@@ -31,11 +32,12 @@ if(invopen == true)
 	{
 		if(os_type == os_windows || os_type == os_macosx || os_type == os_win8native || os_type == os_operagx)
 		{
-			if keyboard_check_pressed(ord("E")) invopen = false; window_mouse_set_locked(true);
-			if mouse_wheel_down() && selecteditem < invsize selecteditem++;
+			if keyboard_check_pressed(ord("E")) { invopen = false;  window_mouse_set_locked(true); audio_play_sound(sndCancel,0,0,global.sndvol); }
+			if mouse_wheel_down() && selecteditem < invsize { selecteditem++; audio_play_sound(sndSelect,0,0,global.sndvol);}
 			selecteditem = selecteditem mod invsize
 			if(mouse_wheel_up())
 			{
+				audio_play_sound(sndSelect,0,0,global.sndvol);
 				if(selecteditem > 0)
 				{
 					selecteditem--;
@@ -45,10 +47,10 @@ if(invopen == true)
 					selecteditem = invsize-1;
 				}
 			}
-			if keyboard_check_pressed(ord("W")) && selecteditem >= 10 selecteditem -= 10;
-			if keyboard_check_pressed(ord("S")) && selecteditem < invsize-10 selecteditem += 10;
-			if keyboard_check_pressed(ord("D")) && selecteditem < invsize-1 selecteditem++;
-			if keyboard_check_pressed(ord("A")) && selecteditem > 0 selecteditem--;
+			if keyboard_check_pressed(ord("W")) && selecteditem >= 10 { selecteditem -= 10; audio_play_sound(sndSelect,0,0,global.sndvol); }
+			if keyboard_check_pressed(ord("S")) && selecteditem < invsize-10 { selecteditem += 10; audio_play_sound(sndSelect,0,0,global.sndvol); }
+			if keyboard_check_pressed(ord("D")) && selecteditem < invsize-1 { selecteditem++; audio_play_sound(sndSelect,0,0,global.sndvol); }
+			if keyboard_check_pressed(ord("A")) && selecteditem > 0  { selecteditem--; audio_play_sound(sndSelect,0,0,global.sndvol); }
 			if(prevmousex != device_mouse_x_to_gui(0) && prevmousex != device_mouse_y_to_gui(0))
 			{
 				invmousex = device_mouse_x_to_gui(0);
@@ -60,9 +62,11 @@ if(invopen == true)
 	//global
 	if (device_mouse_check_button_pressed(0,mb_left) || gamepad_button_check_pressed(0,gp_face1))
 	{
+		
 		if(invmousex > invx-4 && invmousex < invx+164 && invmousey > invy-16 && invmousey < invy)
 		{
 			invmove = true;
+			audio_play_sound(sndAccept,0,0,global.sndvol);
 		}
 		
 		if(invmousex > invx && invmousex < invx+160 && invmousey > invy && invmousey < invy+64)
@@ -70,6 +74,7 @@ if(invopen == true)
 			var _sx = (invmousex-invx)>>4
 			var _sy = (invmousey-invy)>>4
 			selecteditem = _sx+(10*_sy);
+			audio_play_sound(sndAccept,0,0,global.sndvol);
 		}
 	}
 	if (device_mouse_check_button_released(0,mb_left) || gamepad_button_check_released(0,gp_face1))
@@ -91,7 +96,7 @@ if(os_type == os_windows || os_type == os_macosx || os_type == os_win8native || 
 {
 	_move = keyboard_check(ord("W")) - keyboard_check(ord("S"));
 	_smove = keyboard_check(ord("A")) - keyboard_check(ord("D"));
-	if keyboard_check_pressed(ord("E")) invopen = true; invmousex = gw>>1; invmousey = gh>>1;
+	if keyboard_check_pressed(ord("E")) { invopen = true; invmousex = gw>>1; invmousey = gh>>1; audio_play_sound(sndAccept,0,0,global.sndvol); }
 	
 	if mouse_wheel_down() && selecteditem < invsize selecteditem++;
 	selecteditem = selecteditem mod invsize

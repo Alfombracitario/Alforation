@@ -1,0 +1,16 @@
+display_set_gui_size(w,h)
+shader_set(sGrayscale);
+draw_sprite_ext(surf,0,0,0,1,1,0,c_gray,1);
+shader_reset();
+display_set_gui_size(gw,gh)
+
+draw_set_font(global.font2);
+draw_set_halign(fa_middle);
+draw_set_valign(fa_center);
+draw_text_shadow(gw>>1,16,"Game paused")
+
+for (var i = 0; i < bc; i++)
+{
+	draw_sprite_ext(sprButton,0,button[i][3],button[i][4],button[i][1],button[i][2],0,c_white,1);
+	draw_text_shadow(button[i][3],button[i][4],button[i][5]);
+}

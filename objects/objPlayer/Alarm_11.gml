@@ -1,23 +1,31 @@
 //Music
 
-var music = irandom(3)
+var music = irandom(5)
 
 switch(music)
 {
 	case 0:
-		audio_play_sound(musNight,0,0);
+		audio_play_sound(musNight,0,0,global.musvol);
 	break;
 	
 	case 1:
-		audio_play_sound(musNight2,0,0);
+		audio_play_sound(musNight2,0,0,global.musvol);
 	break;
 	
 	case 2:
-		audio_play_sound(musUndersea,0,0);
+		audio_play_sound(musUndersea,0,0,global.musvol);
 		break;
 		
 	case 3:
-		audio_play_sound(musDungeonA,0,0);
+		audio_play_sound(musDungeonA,0,0,global.musvol);
+	break;
+	
+	case 4:
+		audio_play_sound(musRain,0,0,global.musvol);
+	break;
+	
+	case 5:
+		audio_play_sound(musTitle,0,0,global.musvol);
 	break;
 }
 

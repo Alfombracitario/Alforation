@@ -55,10 +55,13 @@ function load_chunk_ini(cx, cy) {
 					add_obj(times,0,10);//arbol
 					
 					times = irandom(12);
-					add_obj(times,1,1);//pasto
+					add_obj(times,T_GRASS,1);
 					
 					times = irandom(6);
-					add_obj(times,3,1);//fern
+					add_obj(times,T_FERN,1);
+					
+					times = irandom(3);
+					add_obj(times,T_WATERMELON,1);
 					
 					tree = sprite_get_texture(sprBamboo,0);
 					th = -52;

@@ -170,10 +170,13 @@ invsize = 40;
 var invdata = 3;
 for (var i = 0; i < invsize; i++) {
     for (var j = 0; j < invdata; j++) {
-        inventory[i][j] = 0; //item vacío
+        inventory[i][j] = ini_read_real("i"+string(j),i,0);
     }
 }
-
+/*
+	j[0] = id
+	j[1] = cantidad
+*/
 
 //más optimizaciones:
 instance_create_layer(x,y,"instances",objVisioncol);
@@ -182,28 +185,56 @@ instance_create_layer(x,y,"instances",objVisioncol);
 	var tx = sprite_get_width(sprBtiles)>>4;
 	var ty = sprite_get_height(sprBtiles)>>4;
 	var td = 16;
-	tc[0] = get_texture_coords(0,0,1,1,1); //tree
-	tc[1] = get_texture_coords(0,0,tx,ty,td);//grass
-	tc[2] = get_texture_coords(0,2,tx,ty,td);//stone
-	tc[3] = get_texture_coords(1,0,tx,ty,td);//fern
-	tc[4] = get_texture_coords(0,1,tx,ty,td);//mushroom1
-	tc[5] = get_texture_coords(1,1,tx,ty,td);//mushroom2
-	tc[6] = get_texture_coords(3,4,tx,ty,td);//wild wheat
-	tc[7] = get_texture_coords(2,0,tx,ty,td);//dead bush
-	tc[8] = get_texture_coords(3,0,tx,ty,td);//cactus
-	tc[9] = get_texture_coords(2,1,tx,ty,td);//mushroom3 (corrupción)
-	tc[10] = get_texture_coords(1,1,tx,ty,td);//mushroom4 (corrupción)
-	tc[11] = get_texture_coords(1,2,tx,ty,td);//stone coal
-	tc[12] = get_texture_coords(2,2,tx,ty,td);//stone tin
-	tc[13] = get_texture_coords(3,2,tx,ty,td);//stone copper
-	tc[14] = get_texture_coords(4,2,tx,ty,td);//stone uhh
-	tc[15] = get_texture_coords(5,2,tx,ty,td);//stone iron
-	tc[16] = get_texture_coords(6,2,tx,ty,td);//stone tungsten
-	tc[17] = get_texture_coords(7,2,tx,ty,td);//stone ruby
-	tc[18] = get_texture_coords(8,2,tx,ty,td);//stone diamond
+	//     Tile name		Id
+	#macro T_TREE			0
+	#macro T_GRASS			1
+	#macro T_STONE			2
+	#macro T_FERN			3
+	#macro T_MUSHROOM1		4
+	#macro T_MUSHROOM2		5
+	#macro T_WILD_WHEAT		6
+	#macro T_DEAD_BUSH		7
+	#macro T_CACTUS			8
+	#macro T_MUSHROOM3		9
+	#macro T_GRASS2			10
+	#macro T_STONE_COAL		11
+	#macro T_STONE_TIN		12
+	#macro T_STONE_COPPER	13
+	#macro T_STONE_IRON		14
+	#macro T_STONE_TUNGSTEN 15
+	#macro T_STONE_RUBY		16
+	#macro T_STONE_DIAMOND	17
+	#macro T_STONE_AMETHYST	18
+	#macro T_STONE_JUNGLE	19
+	#macro T_STONE_GOLD		20
+	#macro T_WATERMELON		21
+	
+	tc[T_TREE] =			get_texture_coords(0,0,1,1,1);
+	tc[T_GRASS] =			get_texture_coords(0,0,tx,ty,td);
+	tc[T_STONE] =			get_texture_coords(0,2,tx,ty,td);
+	tc[T_FERN] =			get_texture_coords(1,0,tx,ty,td);
+	tc[T_MUSHROOM1] =		get_texture_coords(0,1,tx,ty,td);
+	tc[T_MUSHROOM2] =		get_texture_coords(1,1,tx,ty,td);
+	tc[T_WILD_WHEAT] =		get_texture_coords(3,4,tx,ty,td);
+	tc[T_DEAD_BUSH] =		get_texture_coords(2,0,tx,ty,td);
+	tc[T_CACTUS] =			get_texture_coords(3,0,tx,ty,td);
+	tc[T_MUSHROOM3] =		get_texture_coords(2,1,tx,ty,td);
+	tc[T_GRASS2] =			get_texture_coords(4,0,tx,ty,td);
+	tc[T_STONE_COAL] =		get_texture_coords(1,2,tx,ty,td);
+	tc[T_STONE_TIN] =		get_texture_coords(2,2,tx,ty,td);
+	tc[T_STONE_COPPER] =	get_texture_coords(3,2,tx,ty,td);
+	tc[T_STONE_IRON] =		get_texture_coords(4,2,tx,ty,td);
+	tc[T_STONE_TUNGSTEN] =	get_texture_coords(5,2,tx,ty,td);
+	tc[T_STONE_RUBY] =		get_texture_coords(6,2,tx,ty,td);
+	tc[T_STONE_DIAMOND] =	get_texture_coords(7,2,tx,ty,td);
+	tc[T_STONE_AMETHYST] =	get_texture_coords(0,3,tx,ty,td);
+	tc[T_STONE_JUNGLE] =	get_texture_coords(1,3,tx,ty,td);
+	tc[T_STONE_GOLD] =		get_texture_coords(2,3,tx,ty,td);
+	tc[T_WATERMELON] =		get_texture_coords(12,4,tx,ty,td);
 	
 	//color0,1,2,3,4,5,6,7,8,9	
 	tuc = [0,1,0,1,0,0,1,0,0,0
-		  ,1,0,0,0,0,0,0,0,0];
+		  ,1,0,0,0,0,0,0,0,0,0
+		  ,0,0];
 	
 	

@@ -32,8 +32,8 @@ for (var i = 0; i < 3; i++)
     }
 }
 
-var sx = x+0.001+sprite_width; //cuanto mide en X
-var sy = y+0.001+sprite_height; //cuanto mide en Y
+var sx = x+16; //cuanto mide en X
+var sy = y+16; //cuanto mide en Y
 vertex_begin(v,f);
 var _c;
 _c[0] = $ffffff;
