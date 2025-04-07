@@ -3,7 +3,7 @@ image_yscale = 3;
 selectedworld = 0;
 locked = 0;
 
-var base_path = working_directory + "game/";
+var base_path = working_directory + "data/";
 var dir = file_find_first(base_path + "*", fa_directory);
 var folder_names = [];
 var folder_sizes = [];

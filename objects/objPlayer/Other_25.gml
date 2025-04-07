@@ -1,68 +1,34 @@
 //click izquierdo
-var item = inventory[selecteditem][0];
+var item = inventory[hotbar[hotbarsel]][0];
 hitanim_tic = 60;
 
-
-type = -1;
-if(item <= 100)//arma/armadura
+//datos defaults
+var _pic = 1;
+var _axe = 1;
+var _damage = 1;
+cooldownmax = 3
+if(item <= 100)//armas/armadura
 {
     var type = item mod 10;
-    if(type < 6)//arma
+    if(type <= 4)//arma
     {
-		var damadd = (floor((item-type-10)*0.1)-(cooldown*0.1))<<2;
-		if damadd < 1 damadd = 1;
+		cooldownmax = w_coold[type];
+		_damage = w_damage[type]+(w_damincrmt[type]*((item*0.1)-type));
+		if type == 2 _pic = _damage;
+		if type == 4 _axe = _damage;
 	}
 }
-    with(objHit)
-    {
-        direction = -objPlayer.cam_yaw;
-		speed = 16;
-		x = objPlayer.x
-		y = objPlayer.y
-		activated = true;
-		alarm_set(0,4);
-        switch(type)
-        {
-			default://default
-				damage = 1;
-				axe = 0;
-				pic = 0;
-			break;
-			
-            case 0: //lanza
-                damage = (damadd<<1)+8;
-                objPlayer.cooldown = 4;
-				axe = 0;
-				pic = 0;
-            break;
-        
-            case 1://espada
-                damage = (damadd<<1)+12;
-                objPlayer.cooldown = 10;
-				axe = 0;
-				pic = 0;
-            break;
-            
-            case 2://pico
-                damage = (damadd<<1)+4;
-                objPlayer.cooldown = 4;
-				pic = 0;
-				axe = 0;
-            break;
-            
-            case 3://azada
-                damage = (damadd<<1)+2;
-                objPlayer.cooldown = 2;
-				pic = 0;
-				axe = 0;
-            break;
-            
-            case 4://hacha
-                damage = (damadd<<1)+15;
-                objPlayer.cooldown = 45;
-				pic = 0;
-				axe = 0;
-            break;
-            
-        }
-	}
+cooldown = cooldownmax;
+with(objHit)
+{
+	direction = -objPlayer.cam_yaw;
+	speed = 16;
+	x = objPlayer.x
+	y = objPlayer.y
+	activated = true;
+	alarm_set(0,4);
+	
+	damage = _damage;
+	pic = _pic;
+	axe = _axe;
+}

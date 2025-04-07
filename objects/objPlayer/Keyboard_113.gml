@@ -4,6 +4,6 @@ for (var i = 0; i < invsize; i++) {
         inventory[i][j] = 0; //item vacío
 		
 		//lol
-		inventory[i][0] = irandom(110);
+		inventory[i][0] = irandom(143);
     }
 }

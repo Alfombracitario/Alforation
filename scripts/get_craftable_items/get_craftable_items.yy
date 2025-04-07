@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"get_craftable_items",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"get_craftable_items",
+  "parent":{
+    "name":"inventory",
+    "path":"folders/Scripts/inventory.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

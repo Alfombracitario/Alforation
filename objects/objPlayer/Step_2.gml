@@ -41,14 +41,14 @@ if(wprev != w_width || hprev != w_height) {
 	var factor = round(w_height / 270);
 	if (global.uisize < factor)
 	{
-		display_set_gui_size(w_width div global.uisize, w_height div global.uisize);
-		uisize = global.uisize
+		uisize = global.uisize<<global.bigui;
 	}
 	else
 	{
-		display_set_gui_size(w_width div factor, w_height div factor);
-		uisize = factor;
+		uisize = factor<<global.bigui;
 	}
+	
+		display_set_gui_size(w_width div uisize, w_height div uisize);
 	}
 }
 camera_set_proj_mat(view_camera[0],matrix_build_projection_perspective_fov(60+fov_mod,w_width/w_height,1,fog_depth));

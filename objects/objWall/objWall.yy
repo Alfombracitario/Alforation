@@ -25,8 +25,8 @@
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"objSolid","path":"objects/objSolid/objSolid.yy",},"propertyId":{"name":"z","path":"objects/objSolid/objSolid.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0",},
   ],
   "parent":{
-    "name":"Objects",
-    "path":"folders/Objects.yy",
+    "name":"scene",
+    "path":"folders/Objects/scene.yy",
   },
   "parentObjectId":{
     "name":"objSolid",

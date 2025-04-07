@@ -10,8 +10,8 @@
   "name":"objSolid",
   "overriddenProperties":[],
   "parent":{
-    "name":"Objects",
-    "path":"folders/Objects.yy",
+    "name":"scene",
+    "path":"folders/Objects/scene.yy",
   },
   "parentObjectId":null,
   "persistent":false,

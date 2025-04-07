@@ -1,5 +1,5 @@
 //Music
-
+/*
 var music = irandom(5)
 
 switch(music)
@@ -29,6 +29,6 @@ switch(music)
 	break;
 }
 
-var atime = irandom_range(10000,20000);
+var atime = irandom_range(12000,20000);
 
 alarm_set(11,atime);

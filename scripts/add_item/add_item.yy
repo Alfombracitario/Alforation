@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"add_item",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"inventory",
+    "path":"folders/Scripts/inventory.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

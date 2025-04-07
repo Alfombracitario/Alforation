@@ -1,1 +1,0 @@
-draw_text_shadow(x,y-4,"Settings");

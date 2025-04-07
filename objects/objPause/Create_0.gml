@@ -7,7 +7,10 @@ instance_deactivate_all(true);
 window_mouse_set_locked(false);
 
 //botones
-hsel = 0;
-bc = 2;
+hsel = -1;
+presel = -1;
+
+bc = 2; //button count
+
 button[0] = [0,16,2,gw>>1,64,"Resume game"];
 button[1] = [1,16,2,gw>>1,96,"Exit and save"];

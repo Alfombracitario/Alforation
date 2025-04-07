@@ -14,10 +14,7 @@
     "name":"title",
     "path":"folders/Objects/title.yy",
   },
-  "parentObjectId":{
-    "name":"objBplay",
-    "path":"objects/objBplay/objBplay.yy",
-  },
+  "parentObjectId":null,
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,

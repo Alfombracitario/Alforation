@@ -1,13 +1,29 @@
 gpu_set_fog(false,0,0,0);
-draw_set_valign(fa_top)
-draw_set_halign(fa_left)
+draw_set_valign(fa_top);
+draw_set_halign(fa_left);
+if(added_tic > 0)
+{
+	var _y = 24
+	if(added_tic < _y)
+	{
+		_y = added_tic
+	}
+	draw_set_font(global.font2);
+	added_tic--;
+	draw_sprite_ext(sprTransparentuitriangleleft,0,gw,_y-24,3,1,0,$FFFFFF,1);
+	draw_sprite_ext(sprItems,added_item,gw-23,_y-23,1,1,0,c_black,0.5);
+	draw_sprite(sprItems,added_item,gw-24,_y-24);
+	draw_set_halign(fa_right);
+	draw_text_shadow(gw-26,_y-18,"+"+string(added_count),1);
+	draw_set_halign(fa_left);
+}
 if(notday) //día y noche
 {
 	var lay_id = layer_get_id("Background");
 	var back_id = layer_background_get_id(lay_id);
 	layer_background_blend(back_id, fog_color);
 	
-	display_set_gui_size(w_width,w_height);
+	display_set_gui_size(w_width<<global.screendiv,w_height<<global.screendiv);
 	draw_surface_ext(application_surface,0,0,1,1,0,timecolor,1);
 	display_set_gui_size(gw,gh);
 	shader_reset();
@@ -15,7 +31,7 @@ if(notday) //día y noche
 
 draw_sprite_ext(
     sprItems,
-	inventory[selecteditem][0],
+	inventory[hotbar[hotbarsel]][0],
     (gw * 0.75) + (sin(sway_x *0.1) * sway_amount * 8 * weapon_swaying),
     gh-120+(sin(sway_y *0.1) + 1) * sway_amount * 2 * weapon_swaying + weapon_y+(cooldown<<2),
     8,
@@ -40,18 +56,56 @@ draw_sprite_ext(sprBar,0,0,10,_hunger*0.082,1,0,c_orange,1);//contenido
 draw_sprite_ext(sprBar,1,0,0,8.2,1,0,c_red,1);
 draw_sprite_ext(sprBar,0,0,0,_health*0.082,1,0,c_red,1);
 
+//hotbar
+var _scl = (hotbarsize*0.8)+0.3;
+var _hbx = hotbarx+(gw>>1)-_scl*10
+draw_sprite_ext(sprHotbar,0,_hbx,gh-24,_scl,1.1,0,c_white,1);
+draw_sprite_ext(sprSlot,0,_hbx+3,gh-21,hotbarsize,1,0,c_white,1);
+draw_sprite(sprInvselected,0,_hbx+3+(hotbarsel<<4),gh-21);
+for(var i = 0; i<hotbarsize;i++)
+{
+	draw_sprite(sprItems,inventory[hotbar[i]][0],3+_hbx+(i<<4),gh-21);
+	if inventory[hotbar[i]][1] > 1 draw_text(3+_hbx+(i<<4),gh-21,inventory[hotbar[i]][1]);
+}
+
+
 #region inventory
 if(invopen)
-{
-	
-	draw_text(0,0,string(invmousex)+"\n"+string(invmousey));
+{	
 	draw_set_font(global.font2);
 	window_mouse_set_locked(false);
 	
+	//crafteo
+	draw_sprite_ext(sprContainer,0,craftx-5,crafty-16,11,9,0,c_white,1);
+	draw_sprite_ext(sprSlot,0,craftx,crafty,3,1,0,c_white,1);
+	for(var i = 0; i<3; i++)//dibujar los items
+	{
+		var _x = craftx+(i<<4);
+		draw_sprite(sprItems,crafting_grid[i][0],_x,crafty);
+		draw_text(_x,crafty,crafting_grid[i][1]);
+	}
+	
+	draw_sprite(sprArrowright,0,craftx+52,crafty);
+	draw_sprite(sprSlot,0,craftx+80,crafty);
+	
+	var _crftc = array_length(craftable)
+	for(var i = 0; i<_crftc; i++)
+	{
+		var _x = craftx+(i<<4);
+		var _y = crafty+24;
+		
+		draw_sprite(sprSlot,0,_x,_y);
+		draw_sprite(sprItems,craftable[i][0],_x,_y)
+		draw_text(_x,_y,craftable[i][1]);
+	}
+	draw_text_shadow(craftx,crafty-10,"Crafting");
+	
+	
+	
+	
+	//inventario
 	draw_sprite_ext(sprContainer,0,invx-5,invy-16,17,9,0,c_white,1); //contorno
-	
 	draw_sprite_ext(sprSlot,0,invx,invy,10,4,0,c_white,1);
-	
 	draw_text_shadow(invx,invy-10,"inventory");
 	
 	var rows = invsize*0.1;
@@ -62,7 +116,7 @@ if(invopen)
 	
 	
 	
-	
+	draw_set_halign(fa_right);
 	for (var i = 0; i < rows; i++) {
 		for (var j = 0; j < 10; j++) {
 			
@@ -70,19 +124,28 @@ if(invopen)
 			var _sx = invx+(j<<4);
 			var _sy = invy+(i<<4);
 			draw_sprite(sprItems,inventory[_slot][0],_sx,_sy);
-			if (inventory[_slot][1] != 0 && inventory[_slot][1] != 1)
+			if (inventory[_slot][1] > 1)
 			{
-				draw_set_halign(fa_right);
 				draw_text(_sx+16,_sy+8,inventory[_slot][1]);
-				draw_set_halign(fa_left);
 			}
 		}
-	}
+	}	
+	
+	draw_set_halign(fa_left);
 	if(gamepad_is_connected(0))
 	{
-		draw_sprite(sprMouse,0,invmousex,invmousey);
+		if(selector[0] == 0)
+		{
+			draw_sprite(sprMouse,0,invmousex,invmousey);
+		}
+		//draw_sprite(sprGamepadbuttons
 	}
-	draw_set_font(global.font);
+	if(selector[0] != 0)//dibujar el item que se está moviendo
+	{
+		draw_sprite(sprItems,selector[0],invmousex,invmousey);
+		if selector[1] > 1 draw_text(invmousex,invmousey,selector[1]);
+		
+	}
 }
 #endregion
 else
@@ -104,25 +167,37 @@ else
 			var dx = gw*invdpadx;
 			var dy = gh*invdpady;
 			var ds = round(gh*0.15);
-			draw_set_color(c_black);
-			draw_rectangle(dx,dy,dx+(ds*3),dy+(ds*3),true);//area
-			draw_set_alpha(0.5);
-			draw_rectangle(dx,dy,dx+(ds*3),dy+ds,false); //arriba
-			draw_rectangle(dx,dy,dx+ds,dy+(ds*3),false); //izquierda
-			draw_rectangle(dx+(ds<<1),dy,dx+(ds*3),dy+(ds*3),false); //derecha
-			draw_rectangle(dx,dy+(ds<<1),dx+(ds*3),dy+(ds*3),false); //abajo
+			var bs = ds*0.05;
+			var bax = gw*buttonax;
+			var bay = gw*buttonay;
+			var bbx = gw*buttonbx;
+			var bby = gw*buttonby;
+			var bix = gw*buttonix;
+			var biy = gw*buttoniy;
 			
-			draw_set_color(c_white);
-		
+			draw_sprite_ext(sprAndroidbuttons,0,dx,dy,bs,bs,0,c_white,1);
+			draw_sprite_ext(sprAndroidbuttons,1,dx+ds,dy,bs,bs,0,c_white,1);
+			draw_sprite_ext(sprAndroidbuttons,2,dx+(ds<<1),dy,bs,bs,0,c_white,1);
+			
+			draw_sprite_ext(sprAndroidbuttons,3,dx,dy+ds,bs,bs,0,c_white,1);
+			
+			draw_sprite_ext(sprAndroidbuttons,5,dx+(ds<<1),dy+ds,bs,bs,0,c_white,1);
+			
+			draw_sprite_ext(sprAndroidbuttons,6,dx,dy+(ds<<1),bs,bs,0,c_white,1);
+			draw_sprite_ext(sprAndroidbuttons,7,dx+ds,dy+(ds<<1),bs,bs,0,c_white,1);
+			draw_sprite_ext(sprAndroidbuttons,8,dx+(ds<<1),dy+(ds<<1),bs,bs,0,c_white,1);
+			
+			draw_sprite_ext(sprAndroidbuttons,9,bax,bay,bs,bs,0,c_white,1-cooldown/cooldownmax);
+			draw_sprite_ext(sprAndroidbuttons,10,bbx,bby,bs,bs,0,c_white,1);
+			draw_sprite_ext(sprAndroidbuttons,11,bix,biy,bs,bs,0,c_white,1);
 		}
 	}
-	
-	
+	//global, out the inventory
+	draw_sprite_ext(sprCrosshair,1,(gw>>1)+0.5,(gh>>1)+0.5,1,1,0,c_white,1-(cooldown/cooldownmax));
 }
 //debug
 if(display_info == true)
 {
 	draw_text(0,0,"X: "+string(x)+"\nY: "+string(y)+"\nCx: "+string(pcx)+"\nCy: "+string(pcy)+"\nFPS "+string(fps)+"\nFPSr "+string(fps_real));
 	draw_text(0,64,instance_count);
-	draw_text(0,128,"t: "+string(_temperature)+"e: \n"+string(ExtTemperature)+"\nH: "+string(humidity));
 }

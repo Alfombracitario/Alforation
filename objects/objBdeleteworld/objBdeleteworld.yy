@@ -9,17 +9,12 @@
   ],
   "managed":true,
   "name":"objBdeleteworld",
-  "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"objBplay","path":"objects/objBplay/objBplay.yy",},"propertyId":{"name":"Bid","path":"objects/objBplay/objBplay.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"2",},
-  ],
+  "overriddenProperties":[],
   "parent":{
     "name":"title",
     "path":"folders/Objects/title.yy",
   },
-  "parentObjectId":{
-    "name":"objBplay",
-    "path":"objects/objBplay/objBplay.yy",
-  },
+  "parentObjectId":null,
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,

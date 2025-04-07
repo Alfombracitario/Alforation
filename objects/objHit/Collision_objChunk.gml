@@ -15,37 +15,18 @@ if(activated == true)
 				
 				if(objects[_index][3] <= 0)
 				{
-					var _item = 0;
-					var _count = 1;
-					switch(objects[_index][0])//drop
-					{		
-						case T_TREE:
-							_item = 100;
-							_count = wood;
-							audio_play_sound(sndTreedestroy,0,0,global.sndvol);
-						break;
-						
-						case 2: //roca
-							_item = 101;
-						break;
-						
-						case 4://mushroom
-							_item = 113;
-						break;
-						
-						case 5:
-							_item = 114;
-						break;
-						
-						case 6:
-							_item = 110;
-							_count = irandom(8)>>3;
-						break;
-						
-						
-					}
+					var tile_index = objects[_index][0]
+					
 					with(objPlayer)
 					{
+						var _item = drops[tile_index][0];
+						var _count = drops[tile_index][1];
+						
+						if(_count < 1)
+						{
+							var probabilidad = _count; // Reemplázalo con el valor deseado entre 0 y 1
+							_count = (random(1) < probabilidad) ? 1 : 0;
+						}
 						add_item(_item,_count)
 					}
 					

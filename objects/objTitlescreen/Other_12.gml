@@ -1,0 +1,2 @@
+//objExit
+game_end();

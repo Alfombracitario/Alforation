@@ -1,4 +1,14 @@
-function add_item(_id, _cantidad = 1, _durabilidad = 1) {
+function add_item(_id, _cantidad = 1, _durabilidad = 1) {//este código se ejecuta en objPlayer
+	if (_cantidad != 0)
+	{
+		added_item = _id
+		added_count = _cantidad
+		added_tic = 100;
+	}
+	else
+	{
+		return false;
+	}
     if _id == 0 return false;
 
     var invs = invsize;

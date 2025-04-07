@@ -37,6 +37,44 @@ function load_chunk_ini(cx, cy) {
 					
 					sprite_index = sprSand;
 				}
+				else if(temperature > 160 && humidity < 80) //acacia
+				{
+					var times = irandom(2);
+					add_obj(times,T_DEAD_BUSH,1);
+					
+					var times = irandom(11);
+					add_obj(times,T_TREE,10);
+					
+					var times = irandom(32);
+					add_obj(times,T_GRASS,0);
+					
+					times = irandom(5);
+					add_obj(times,2,3);//roca
+
+					times = irandom(1);
+					add_obj(times,4,1);//champiñón
+				
+					times = irandom(1);
+					add_obj(times,5,1);//champiñón2
+					
+					times = irandom(1);
+					add_obj(times,11,1);//carbón
+					
+					if(irandom(5) == 0)
+					{
+						add_obj(1,12,1);//tin
+					}
+					
+					if(irandom(15) == 0)
+					{
+						add_obj(1,13,1);//copper
+					}
+					
+					th = -44;
+					tw = 20;
+					tree = sprite_get_texture(sprAcaciatree,0);
+					image_blend = get_color_colormap(temperature,humidity);
+				}
 				else if(temperature < 10 && humidity < 30)//Nieve
 				{
 					
@@ -87,6 +125,39 @@ function load_chunk_ini(cx, cy) {
 					tree = sprite_get_texture(sprPinetreebig,0);
 
 					image_blend = get_color_colormap(temperature,humidity);
+				}
+				else if(temperature < 150 && temperature > 100 && humidity < 190 && humidity > 130)//Abedul
+				{
+					tree = sprite_get_texture(sprBirchTree,0);
+					image_blend = get_color_colormap(temperature,humidity)
+					
+					var times = irandom(12);
+					add_obj(times,0,10);//arbol
+				
+					times = irandom(15);
+					add_obj(times,1,1);//pasto
+				
+					times = irandom(7);
+					add_obj(times,2,3);//roca
+
+					times = irandom(2);
+					add_obj(times,4,1);//champiñón
+				
+					times = irandom(4);
+					add_obj(times,5,1);//champiñón2
+					
+					times = irandom(1);
+					add_obj(times,11,1);//carbón
+					
+					if(irandom(5) == 0)
+					{
+						add_obj(1,12,1);//tin
+					}
+					
+					if(irandom(15) == 0)
+					{
+						add_obj(1,13,1);//copper
+					}
 				}
 				else if(temperature < 40 && humidity > 180)//corrupción
 				{
@@ -150,7 +221,7 @@ function load_chunk_ini(cx, cy) {
 						add_obj(1,13,1);//copper
 					}
 				}
-				if(temperature > 150 && temperature < 220)
+				if(temperature > 150 && temperature < 230 && humidity > 80)
 				{
 					th = -64
 					tree = sprite_get_texture(sprOaktree,0);

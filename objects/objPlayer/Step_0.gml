@@ -4,18 +4,19 @@ if(invopen == true)
 {
 	if(gamepad_is_connected(0))
 	{
-		if gamepad_button_check_pressed(0,gp_shoulderr) && selecteditem < invsize { selecteditem++; audio_play_sound(sndSelect,0,0,global.sndvol); }
-		selecteditem = selecteditem mod invsize
+		if gamepad_button_check_pressed(0,gp_shoulderr) && hotbarsel < hotbarsize { hotbarsel++; audio_play_sound(sndSelect,0,0,global.sndvol); }
+		hotbarsel = hotbarsel mod hotbarsize;
+		//selecteditem = selecteditem mod invsize;
 		if(gamepad_button_check_pressed(0,gp_shoulderl))
 		{
 			audio_play_sound(sndSelect,0,0,global.sndvol);
-			if(selecteditem > 0)
+			if(hotbarsel > 0)
 			{
-				selecteditem--;
+				hotbarsel--;
 			}
 			else
 			{
-				selecteditem = invsize-1;
+				hotbarsel = hotbarsize-1;
 			}
 		}
 		
@@ -24,7 +25,7 @@ if(invopen == true)
 		if gamepad_button_check_pressed(0,gp_padr) && selecteditem < invsize-1 { selecteditem++; audio_play_sound(sndSelect,0,0,global.sndvol);}
 		if gamepad_button_check_pressed(0,gp_padl) && selecteditem > 0 { selecteditem--; audio_play_sound(sndSelect,0,0,global.sndvol); }
 		if gamepad_button_check_pressed(0, gp_face3) || gamepad_button_check_pressed(0, gp_face2) { invopen = false; audio_play_sound(sndCancel,0,0,global.sndvol); }
-		
+		if gamepad_button_check_pressed(0, gp_face4) hotbar[hotbarsel] = selecteditem;
 		invmousex += gamepad_axis_value(0, gp_axislh)*global.settings.sensibility*global.fpsmode;
 		invmousey += gamepad_axis_value(0, gp_axislv)*global.settings.sensibility*global.fpsmode;
 	}
@@ -32,25 +33,37 @@ if(invopen == true)
 	{
 		if(os_type == os_windows || os_type == os_macosx || os_type == os_win8native || os_type == os_operagx)
 		{
-			if keyboard_check_pressed(ord("E")) { invopen = false;  window_mouse_set_locked(true); audio_play_sound(sndCancel,0,0,global.sndvol); }
-			if mouse_wheel_down() && selecteditem < invsize { selecteditem++; audio_play_sound(sndSelect,0,0,global.sndvol);}
+			if keyboard_check_pressed(ord("E"))
+			{ 
+				invopen = false;
+				window_mouse_set_locked(true);
+				audio_play_sound(sndCancel,0,0,global.sndvol); 
+				if selector[0] != 0 add_item(selector[0],selector[1],selector[2]);
+				selector = [0,0,0,0];
+			}
+			if mouse_wheel_down() && hotbarsel < invsize { hotbarsel++; audio_play_sound(sndSelect,0,0,global.sndvol);}
 			selecteditem = selecteditem mod invsize
+			hotbarsel = hotbarsel mod hotbarsize;
 			if(mouse_wheel_up())
 			{
 				audio_play_sound(sndSelect,0,0,global.sndvol);
-				if(selecteditem > 0)
+				if(hotbarsel > 0)
 				{
-					selecteditem--;
+					hotbarsel--;
 				}
 				else
 				{
-					selecteditem = invsize-1;
+					hotbarsel = hotbarsize-1;
 				}
 			}
 			if keyboard_check_pressed(ord("W")) && selecteditem >= 10 { selecteditem -= 10; audio_play_sound(sndSelect,0,0,global.sndvol); }
 			if keyboard_check_pressed(ord("S")) && selecteditem < invsize-10 { selecteditem += 10; audio_play_sound(sndSelect,0,0,global.sndvol); }
 			if keyboard_check_pressed(ord("D")) && selecteditem < invsize-1 { selecteditem++; audio_play_sound(sndSelect,0,0,global.sndvol); }
 			if keyboard_check_pressed(ord("A")) && selecteditem > 0  { selecteditem--; audio_play_sound(sndSelect,0,0,global.sndvol); }
+			if keyboard_check_pressed(ord("Z")) item_to_crafting(0,2);
+			if keyboard_check_pressed(ord("X")) item_to_crafting(1,2);
+			if keyboard_check_pressed(ord("C")) item_to_crafting(2,2);
+			
 			if(prevmousex != device_mouse_x_to_gui(0) && prevmousex != device_mouse_y_to_gui(0))
 			{
 				invmousex = device_mouse_x_to_gui(0);
@@ -59,8 +72,8 @@ if(invopen == true)
 		}
 	}
 	
-	//global
-	if (device_mouse_check_button_pressed(0,mb_left) || gamepad_button_check_pressed(0,gp_face1))
+	//global on inventory
+	if (mouse_check_button_pressed(mb_left) || gamepad_button_check_pressed(0,gp_face1))
 	{
 		
 		if(invmousex > invx-4 && invmousex < invx+164 && invmousey > invy-16 && invmousey < invy)
@@ -69,12 +82,18 @@ if(invopen == true)
 			audio_play_sound(sndAccept,0,0,global.sndvol);
 		}
 		
-		if(invmousex > invx && invmousex < invx+160 && invmousey > invy && invmousey < invy+64)
+		if(invmousex > invx && invmousex < invx+160 && invmousey > invy && invmousey < invy+64)//si está dentro de los slots
 		{
 			var _sx = (invmousex-invx)>>4
 			var _sy = (invmousey-invy)>>4
 			selecteditem = _sx+(10*_sy);
 			audio_play_sound(sndAccept,0,0,global.sndvol);
+			
+			
+			// Drag!!1
+			var preinv = inventory[selecteditem];
+			inventory[selecteditem] = selector;
+			selector = preinv;	
 		}
 	}
 	if (device_mouse_check_button_released(0,mb_left) || gamepad_button_check_released(0,gp_face1))
@@ -89,26 +108,27 @@ if(invopen == true)
 	}
 	
 }
-else
+else//fuera del inventario
 {
 #region pc input
 if(os_type == os_windows || os_type == os_macosx || os_type == os_win8native || os_type == os_operagx)
 {
+	if keyboard_check_pressed(vk_escape) instance_create_layer(x,y,"instances",objPause);
 	_move = keyboard_check(ord("W")) - keyboard_check(ord("S"));
 	_smove = keyboard_check(ord("A")) - keyboard_check(ord("D"));
 	if keyboard_check_pressed(ord("E")) { invopen = true; invmousex = gw>>1; invmousey = gh>>1; audio_play_sound(sndAccept,0,0,global.sndvol); }
 	
-	if mouse_wheel_down() && selecteditem < invsize selecteditem++;
-	selecteditem = selecteditem mod invsize
+	if mouse_wheel_down() && hotbarsel < hotbarsize hotbarsel++;
+	hotbarsel = hotbarsel mod hotbarsize;
 	if(mouse_wheel_up())
 	{
-		if(selecteditem > 0)
+		if(hotbarsel > 0)
 		{
-			selecteditem--;
+			hotbarsel--;
 		}
 		else
 		{
-			selecteditem = invsize-1;
+			hotbarsel = hotbarsize-1;
 		}
 	}
 	
@@ -125,21 +145,23 @@ if(os_type == os_windows || os_type == os_macosx || os_type == os_win8native || 
 #region gamepad input
 if(gamepad_is_connected(0))
 {
+	//pausar
+	if gamepad_button_check_pressed(0,gp_start) {instance_create_layer(0,0,"instances",objPause);}
 	_move = -round(gamepad_axis_value(0, gp_axislv))
 	_smove = -round(gamepad_axis_value(0, gp_axislh))
 	camz = clamp(camz + (clamp(gamepad_axis_value(0, gp_axisrv)*global.fpsmode*global.settings.sensibility*0.02,-0.15*global.fpsmode,0.15*global.fpsmode) * (abs(camz) + 1)),-4,4);
 	cam_yaw += gamepad_axis_value(0, gp_axisrh)*global.settings.sensibility*global.fpsmode;
-	if gamepad_button_check_pressed(0,gp_shoulderr) && selecteditem < invsize selecteditem++;
-	selecteditem = selecteditem mod invsize
+	if gamepad_button_check_pressed(0,gp_shoulderr) && hotbarsel < hotbarsize hotbarsel++;
+	hotbarsel = hotbarsel mod hotbarsize;
 	if(gamepad_button_check_pressed(0,gp_shoulderl))
 	{
-		if(selecteditem > 0)
+		if(hotbarsel > 0)
 		{
-			selecteditem--;
+			hotbarsel--;
 		}
 		else
 		{
-			selecteditem = invsize-1;
+			hotbarsel = hotbarsize-1;
 		}
 	}
 	
@@ -149,6 +171,7 @@ if(gamepad_is_connected(0))
 	if gamepad_button_check_pressed(0, gp_face3) invopen = true; invmousex = gw>>1; invmousey = gh>>1;
 	if gamepad_button_check_pressed(0, gp_face4) time = 1000;
 	if gamepad_button_check_pressed(0, gp_shoulderrb) event_user(15);
+	
 }
 #endregion
 #region phones input
@@ -197,8 +220,6 @@ if(os_type == os_android || os_type == os_ios)
 					camz = clamp(camz + (clamp((mousey_r[i]-prevmousey_r[i]) *0.0025, -0.15, 0.15) * (abs(camz) + 1)), -4, 4);
 			
 				}
-				show_debug_message("MouseX: " + string(mousex_r[i]) + " PrevX: " + string(prevmousex_r[i]));
-				show_debug_message("MouseY: " + string(mousey_r[i]) + " PrevY: " + string(prevmousey_r[i]));
 		}
 	}
 }
@@ -206,62 +227,83 @@ if(os_type == os_android || os_type == os_ios)
 }
 #region movement
 if(_move != 0) {
-	f_sp += _move * ((sign(f_sp) != _move) ? 0.3 : 0.15);
-	f_sp = clamp(f_sp,-mspeed,mspeed);
+    f_sp += _move * ((sign(f_sp) != _move) ? 0.3 : 0.15);
+    f_sp = clamp(f_sp, -mspeed, mspeed);
 } else {
-	var _s = sign(f_sp);
-	f_sp -= _s * 0.1*global.fpsmode;
-	if(_s != sign(f_sp)) f_sp = 0;
+    var _s = sign(f_sp);
+    f_sp -= _s * 0.1 * global.fpsmode;
+    if(_s != sign(f_sp)) f_sp = 0;
 }
 
 if(_smove != 0) {
-	s_sp += _smove * ((sign(s_sp) != _smove) ? 0.3 : 0.15);
-	s_sp = clamp(s_sp,-mspeed,mspeed);
+    s_sp += _smove * ((sign(s_sp) != _smove) ? 0.3 : 0.15);
+    s_sp = clamp(s_sp, -mspeed, mspeed);
 } else {
-	var _s = sign(s_sp);
-	s_sp -= _s * 0.1*global.fpsmode;
-	if(_s != sign(s_sp)) s_sp = 0;
+    var _s = sign(s_sp);
+    s_sp -= _s * 0.1 * global.fpsmode;
+    if(_s != sign(s_sp)) s_sp = 0;
 }
 
-var _xmove = lengthdir_x(f_sp,((360 - cam_yaw) + 360) mod 360);
-var _ymove = lengthdir_y(f_sp,((360 - cam_yaw) + 360) mod 360);
 
-if(place_meeting(x + _xmove,y,objSolid)) {
-	while(!place_meeting(x + sign(_xmove) / 20,y,objSolid)) {
-		x += sign(_xmove) / 20;
-	}
-	_xmove = 0;
+if (room == dungeon) {
+	
+	var hitbox = 7; // Distancia desde el centro del jugador
+	var tiles = objDungeon.tiles;
+    var _tile_x, _tile_y;
+    var _xmove = lengthdir_x(f_sp, ((360 - cam_yaw) + 360) mod 360);
+    var _ymove = lengthdir_y(f_sp, ((360 - cam_yaw) + 360) mod 360);
+    
+    _tile_x = floor((x + _xmove + sign(_xmove) * hitbox) / 16);
+    _tile_y = floor(y / 16);
+    if (tiles[_tile_x][_tile_y] == 1) {
+        while (tiles[floor((x + sign(_xmove) * 0.05 + sign(_xmove) * hitbox) / 16)][_tile_y] != 1) {
+            x += sign(_xmove) * 0.05;
+        }
+        _xmove = 0;
+    }
+    
+    _tile_x = floor(x / 16);
+    _tile_y = floor((y + _ymove + sign(_ymove) * hitbox) / 16);
+    if (tiles[_tile_x][_tile_y] == 1) {
+        while (tiles[_tile_x][floor((y + sign(_ymove) * 0.05 + sign(_ymove) * hitbox) / 16)] != 1) {
+            y += sign(_ymove) * 0.05;
+        }
+        _ymove = 0;
+    }
+    
+    x += _xmove;
+    y += _ymove;
+    
+    _xmove = lengthdir_x(s_sp, ((360 - cam_yaw + 90) + 360) mod 360);
+    _ymove = lengthdir_y(s_sp, ((360 - cam_yaw + 90) + 360) mod 360);
+    
+    _tile_x = floor((x + _xmove + sign(_xmove) * hitbox) / 16);
+    _tile_y = floor(y / 16);
+    if (tiles[_tile_x][_tile_y] == 1) {
+        while (tiles[floor((x + sign(_xmove) / 20 + sign(_xmove) * hitbox) / 16)][_tile_y] != 1) {
+            x += sign(_xmove) / 20;
+        }
+        _xmove = 0;
+    }
+    
+    _tile_x = floor(x / 16);
+    _tile_y = floor((y + _ymove + sign(_ymove) * hitbox) / 16);
+    if (tiles[_tile_x][_tile_y] == 1) {
+        while (tiles[_tile_x][floor((y + sign(_ymove) / 20 + sign(_ymove) * hitbox) / 16)] != 1) {
+            y += sign(_ymove) / 20;
+        }
+        _ymove = 0;
+    }
+    
+    x += _xmove;
+    y += _ymove;
+} else {
+    x += lengthdir_x(f_sp, ((360 - cam_yaw) + 360) mod 360);
+    y += lengthdir_y(f_sp, ((360 - cam_yaw) + 360) mod 360);
+    x += lengthdir_x(s_sp, ((360 - cam_yaw + 90) + 360) mod 360);
+    y += lengthdir_y(s_sp, ((360 - cam_yaw + 90) + 360) mod 360);
 }
 
-if(place_meeting(x,y + _ymove,objSolid)) {
-	while(!place_meeting(x,y + sign(_ymove) / 20,objSolid)) {
-		y += sign(_ymove) / 20;
-	}
-	_ymove = 0;
-}
-
-x += _xmove;
-y += _ymove;
-
-_xmove = lengthdir_x(s_sp,((360 - cam_yaw + 90) + 360) mod 360);
-_ymove = lengthdir_y(s_sp,((360 - cam_yaw + 90) + 360) mod 360);
-
-if(place_meeting(x + _xmove,y,objSolid)) {
-	while(!place_meeting(x + sign(_xmove) / 20,y,objSolid)) {
-		x += sign(_xmove) / 20;
-	}
-	_xmove = 0;
-}
-
-if(place_meeting(x,y + _ymove,objSolid)) {
-	while(!place_meeting(x,y + sign(_ymove) / 20,objSolid)) {
-		y += sign(_ymove) / 20;
-	}
-	_ymove = 0;
-}
-
-x += _xmove;
-y += _ymove;
 #endregion
 #region camera
 cam_yaw = (cam_yaw + 360) mod 360;

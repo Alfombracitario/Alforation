@@ -30,11 +30,14 @@ fov_mod = (mspeed/global.fpsmode)*5
 mspeed = lerp(mspeed,_target_speed,0.25);
 
 #region CHUNKS
-pcx = floor(x/chunk_size);
-pcy = floor(y/chunk_size);
-update_chunks();
-last_pcx = pcx;
-last_pcy = pcy;
+if(room == game)
+{
+	pcx = floor(x/chunk_size);
+	pcy = floor(y/chunk_size);
+	update_chunks();
+	last_pcx = pcx;
+	last_pcy = pcy;
+}
 #endregion
 
 //random
@@ -52,58 +55,79 @@ if(_health < maxhealth)
 
 _temperature = (_temperature*63 + ExtTemperature)/64;
 
-//tiempo del día
-time += 0.01;//10 minutos = un ciclo
+if(room = game)
+{
+	//tiempo del día
+	time += 0.01;//10 minutos = un ciclo
 
-time = time mod 360;
+	time = time mod 360;
 
-notday = true;
-if(time < 160)//día
-{
-	fog_color = $FF9865;
-	notday = false;
-	timecolor = c_white;
-}
-else if(time > 160 && time < 180)//atardecer
-{
-	var color0 = [101,152,255];
-	var color1 = [255,159,10];
-	fog_color = get_color_gradient(time-160,color0,color1,20);
-	
-	var color2 = [255,255,255];
-	var color3 = [200,160,160];
-	timecolor = get_color_gradient(time-160,color2,color3,20);
-	
-}
-else if(time > 180 && time < 200)//anochecer
-{
-	var color0 = [255,159,10];
-	var color1 = [0,0,16];
-	fog_color = get_color_gradient(time-180,color0,color1,20);
-	
-	var color2 = [200,160,160];
-	var color3 = [108,108,128];
-	timecolor = get_color_gradient(time-180,color2,color3,20);
-}
-else if(time > 200 && time < 340)//noche
-{
-	fog_color = $0F0000;
-	timecolor = make_color_rgb(108,100,128);
-	if(irandom(500) == 500)
+	notday = true;
+
+	if(time < 160)//día
 	{
-		var _x = x + ((16 + irandom(16))<<4);
-		var _y = y + ((16 + irandom(16))<<4);
-		instance_create_layer(_x,_y,"instances",objEslime);
+		fog_color = $FF9865;
+		notday = false;
+		timecolor = c_white;
+	}
+	else if(time > 160 && time < 180)//atardecer
+	{
+		var color0 = [101,152,255];
+		var color1 = [255,159,10];
+		fog_color = get_color_gradient(time-160,color0,color1,20);
+	
+		var color2 = [255,255,255];
+		var color3 = [200,160,160];
+		timecolor = get_color_gradient(time-160,color2,color3,20);
+	
+	}
+	else if(time > 180 && time < 200)//anochecer
+	{
+		var color0 = [255,159,10];
+		var color1 = [0,0,16];
+		fog_color = get_color_gradient(time-180,color0,color1,20);
+	
+		var color2 = [200,160,160];
+		var color3 = [108,108,128];
+		timecolor = get_color_gradient(time-180,color2,color3,20);
+	}
+	else if(time > 200 && time < 340)//noche
+	{
+		fog_color = $0F0000;
+		timecolor = make_color_rgb(108,100,128);
+		if(irandom(500) == 500)
+		{
+			var _x = x + ((16 + irandom(16))<<4);
+			var _y = y + ((16 + irandom(16))<<4);
+			instance_create_layer(_x,_y,"instances",objEslime);
+		}
+	}
+	else if(time > 340)//mañana
+	{
+		var color0 = [0,0,16];
+		var color1 = [101,152,255];
+		fog_color = get_color_gradient(time-340,color0,color1,20);
+	
+		var color2 = [108,108,128];
+		var color3 = [255,255,255];
+		timecolor = get_color_gradient(time-340,color2,color3,20);
 	}
 }
-else if(time > 340)//mañana
+if(room = dungeon)
 {
-	var color0 = [0,0,16];
-	var color1 = [101,152,255];
-	fog_color = get_color_gradient(time-340,color0,color1,20);
-	
-	var color2 = [108,108,128];
-	var color3 = [255,255,255];
-	timecolor = get_color_gradient(time-340,color2,color3,20);
+	fog_color = c_black;
+	if(keyboard_check(vk_space)) //antorcha placeholder
+	{
+		notday = false;
+		fog_density = 400;
+		fog_depth = 600;
+	}
+	else
+	{
+		notday = true;
+		timecolor = make_color_rgb(108,100,128);
+		fog_density = 40;
+		fog_depth = 100;
+	}
 }
 if cooldown > 0 cooldown--;
