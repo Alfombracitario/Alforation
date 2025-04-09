@@ -44,9 +44,6 @@ function get_craftable_items(input_array) {
             continue;
         }
 
-        // Ver cuántas veces se puede craftear
-        var cantidad_max = 999999;
-
         for (var i = 0; i < array_length(ingredientes); i++) {
             var ing_id = ingredientes[i][0];
             var ing_qty = ingredientes[i][1];
@@ -64,13 +61,9 @@ function get_craftable_items(input_array) {
             }
 
             var posible = floor(tengo / ing_qty);
-            if (posible < cantidad_max) {
-                cantidad_max = posible;
-            }
         }
-
-        if (puede_craftear && cantidad_max > 0) {
-            array_push(result, [recipe.output_id, cantidad_max]);
+        if (puede_craftear && posible > 0) {
+            array_push(result, [recipe.output_id,posible,recipe.output_qty,r]);
         }
     }
 

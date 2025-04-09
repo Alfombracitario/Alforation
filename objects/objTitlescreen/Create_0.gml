@@ -1,5 +1,5 @@
 screen = 0;
-
+Bid = 0;
 //botones
 selected = -1;
 presel = -1;

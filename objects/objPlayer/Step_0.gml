@@ -31,7 +31,7 @@ if(invopen == true)
 	}
 	else
 	{
-		if(os_type == os_windows || os_type == os_macosx || os_type == os_win8native || os_type == os_operagx)
+		if(os_type == os_windows || os_type == os_macosx || os_type == os_operagx)
 		{
 			if keyboard_check_pressed(ord("E"))
 			{ 
@@ -63,19 +63,57 @@ if(invopen == true)
 			if keyboard_check_pressed(ord("Z")) item_to_crafting(0,2);
 			if keyboard_check_pressed(ord("X")) item_to_crafting(1,2);
 			if keyboard_check_pressed(ord("C")) item_to_crafting(2,2);
+			if keyboard_check_pressed(ord("V")) inventory_sort();
 			
 			if(prevmousex != device_mouse_x_to_gui(0) && prevmousex != device_mouse_y_to_gui(0))
 			{
 				invmousex = device_mouse_x_to_gui(0);
 				invmousey = device_mouse_y_to_gui(0);
 			}
+			
 		}
 	}
 	
 	//global on inventory
 	if (mouse_check_button_pressed(mb_left) || gamepad_button_check_pressed(0,gp_face1))
 	{
+		//crafteo
+		if(invmousex > craftx-4 && invmousex < craftx+104 && invmousey > crafty-16 && invmousey < crafty)
+		{
+			craftmove = true;
+			audio_play_sound(sndAccept,0,0,global.sndvol);
+		}
+		if(invmousex > craftx && invmousex < craftx+48 && invmousey > crafty && invmousey < crafty+16)//crafting grid
+		{
+			var _sx = (invmousex-craftx)>>4;
+			audio_play_sound(sndSelect,0,0,global.sndvol);
+			
+			//drag (crafteo)!11!
+			var preinv = crafting_grid[_sx]
+			crafting_grid[_sx] = selector;
+			selector = preinv;
+			
+			craftable = get_craftable_items(crafting_grid);
+		}
 		
+		var craftableresults = array_length(craftable);//craftable results
+		
+		if(craftableresults >= 1)
+		{
+			show_debug_message(craftableresults);
+			if(invmousex > craftx && invmousex < craftx+(craftableresults<<4) && invmousey > crafty+24 && invmousey < crafty+40)
+			{
+				var _i = (invmousex-craftx)>>4;
+				craftresult = craftable[_i];
+				audio_play_sound(sndSelect,0,0,global.sndvol);
+			}
+		}
+		if(invmousex > craftx+80 && invmousex < craftx+96 && invmousey > crafty && invmousey < crafty+16)//craftear algo
+		{
+			do_craft();
+		}
+		
+		//inventario
 		if(invmousex > invx-4 && invmousex < invx+164 && invmousey > invy-16 && invmousey < invy)
 		{
 			invmove = true;
@@ -91,6 +129,11 @@ if(invopen == true)
 			
 			
 			// Drag!!1
+			if(inventory[selecteditem][0] == selector[0] && selector[0] > 99)
+			{
+				inventory[selecteditem][1] += selector[1];
+				selector = [0,0,0];
+			}
 			var preinv = inventory[selecteditem];
 			inventory[selecteditem] = selector;
 			selector = preinv;	
@@ -99,19 +142,24 @@ if(invopen == true)
 	if (device_mouse_check_button_released(0,mb_left) || gamepad_button_check_released(0,gp_face1))
 	{
 		invmove = false;
+		craftmove = false;
 	}
 	
-	if(invmove = true)
+	if(invmove)
 	{
 		invx += invmousex-previnvmousex;
 		invy += invmousey-previnvmousey;
 	}
-	
+	if(craftmove)
+	{
+		craftx += invmousex-previnvmousex;
+		crafty += invmousey-previnvmousey;
+	}
 }
 else//fuera del inventario
 {
 #region pc input
-if(os_type == os_windows || os_type == os_macosx || os_type == os_win8native || os_type == os_operagx)
+if(os_type == os_windows || os_type == os_macosx || os_type == os_operagx)
 {
 	if keyboard_check_pressed(vk_escape) instance_create_layer(x,y,"instances",objPause);
 	_move = keyboard_check(ord("W")) - keyboard_check(ord("S"));
@@ -314,11 +362,9 @@ var yfrom = y;
 
 var _z = -22 + (sin(sin_tic *0.1) * 0.02);
 
-var dtrcam_yaw = degtorad(cam_yaw)
-
-var xto = xfrom + cos(dtrcam_yaw);
-var yto = yfrom + sin(dtrcam_yaw);
-var zto = camz + (sin(sin_tic / 10) * 0.01);
+var xto = xfrom + dcos(cam_yaw);
+var yto = yfrom + dsin(cam_yaw);
+var zto = camz + (sin(sin_tic *0.1) * 0.01);
 
 sway_amount = clamp(abs(s_sp) + abs(f_sp),-mspeed,mspeed);
 
@@ -327,8 +373,10 @@ sin_tic += sway_amount;
 sway_x += sway_amount / 1.5;
 sway_y += sway_amount / 0.75;
 
+var h = -29.5;
+if fly camz = 0;
 //Update the camera
-var mat = matrix_build_lookat(xfrom, yfrom, _z, xto, yto, _z + zto, 0, 0, 1);
+var mat = matrix_build_lookat(xfrom, yfrom, _z+fly*h, xto, yto, _z+fly*h + zto, 0, 0, 1);
 camera_set_view_mat(view_camera[0], mat);
 #endregion
 
@@ -340,9 +388,9 @@ if(global.update3Dtime == update3Dindex)
 	if(prevcamyaw != cam_yaw)
 	{
 		global.update3d = true;
-		var cyphp = dtrcam_yaw+halfpi;
-		global.sincyphp = sin(cyphp);
-		global.coscyphp = cos(cyphp);
+		var cam_yawp90 = cam_yaw+90
+		global.sincyphp = dsin(cam_yawp90);
+		global.coscyphp = dcos(cam_yawp90);
 	}
 	else
 	{

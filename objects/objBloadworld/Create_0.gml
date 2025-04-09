@@ -2,7 +2,7 @@ image_xscale = (room_width*0.05)-1.6;
 image_yscale = 3;
 selectedworld = 0;
 locked = 0;
-
+Bid = 0;
 var base_path = working_directory + "data/";
 var dir = file_find_first(base_path + "*", fa_directory);
 var folder_names = [];

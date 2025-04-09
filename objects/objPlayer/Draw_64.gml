@@ -1,4 +1,6 @@
 gpu_set_fog(false,0,0,0);
+if(fly == false)
+{
 draw_set_valign(fa_top);
 draw_set_halign(fa_left);
 if(added_tic > 0)
@@ -82,11 +84,13 @@ if(invopen)
 	{
 		var _x = craftx+(i<<4);
 		draw_sprite(sprItems,crafting_grid[i][0],_x,crafty);
-		draw_text(_x,crafty,crafting_grid[i][1]);
+		if crafting_grid[i][1] > 1 draw_text(_x,crafty,crafting_grid[i][1]);
 	}
 	
 	draw_sprite(sprArrowright,0,craftx+52,crafty);
 	draw_sprite(sprSlot,0,craftx+80,crafty);
+	draw_sprite(sprItems,craftresult[0],craftx+80,crafty);
+	draw_text(craftx+80,crafty,craftresult[2]);
 	
 	var _crftc = array_length(craftable)
 	for(var i = 0; i<_crftc; i++)
@@ -124,9 +128,18 @@ if(invopen)
 			var _sx = invx+(j<<4);
 			var _sy = invy+(i<<4);
 			draw_sprite(sprItems,inventory[_slot][0],_sx,_sy);
-			if (inventory[_slot][1] > 1)
+			if(inventory[_slot][0] <= 99 && inventory[_slot][0] > 0)
 			{
-				draw_text(_sx+16,_sy+8,inventory[_slot][1]);
+				_tier = floor(inventory[_slot][0]*0.1)
+				draw_sprite_ext(sprPixel,0,_sx,_sy,2,(inventory[_slot][1]/w_dur[_tier])*16,0,c_lime,1);
+				
+			}
+			else
+			{
+				if (inventory[_slot][1] > 1)
+				{
+					draw_text(_sx+16,_sy+8,inventory[_slot][1]);
+				}
 			}
 		}
 	}	
@@ -200,4 +213,5 @@ if(display_info == true)
 {
 	draw_text(0,0,"X: "+string(x)+"\nY: "+string(y)+"\nCx: "+string(pcx)+"\nCy: "+string(pcy)+"\nFPS "+string(fps)+"\nFPSr "+string(fps_real));
 	draw_text(0,64,instance_count);
+}
 }

@@ -1,4 +1,4 @@
-function add_item(_id, _cantidad = 1, _durabilidad = 1) {//este código se ejecuta en objPlayer
+function add_item(_id, _cantidad = 1, _efectos = 1) {//este código se ejecuta en objPlayer
 	if (_cantidad != 0)
 	{
 		added_item = _id
@@ -17,7 +17,7 @@ function add_item(_id, _cantidad = 1, _durabilidad = 1) {//este código se ejecu
     for (var i = 0; i < invs; i++) {
         if (inventory[i][0] == _id) {
             inventory[i][1] += _cantidad;
-            inventory[i][2] = _durabilidad;
+            inventory[i][2] = _efectos;
             return true;
         }
     }
@@ -27,7 +27,7 @@ function add_item(_id, _cantidad = 1, _durabilidad = 1) {//este código se ejecu
         if (inventory[i][0] == 0) {
             inventory[i][0] = _id;
             inventory[i][1] = _cantidad;
-            inventory[i][2] = _durabilidad;
+            inventory[i][2] = _efectos;
             return true;
         }
     }

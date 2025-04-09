@@ -1,5 +1,5 @@
 {
-  "$GMProject":"",
+  "$GMProject":"v1",
   "%Name":"alforation",
   "AudioGroups":[
     {"$GMAudioGroup":"","%Name":"audiogroup_default","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
@@ -10,6 +10,7 @@
   },
   "defaultScriptType":1,
   "Folders":[
+    {"$GMFolder":"","%Name":"!Presentación","folderPath":"folders/!Presentación.yy","name":"!Presentación","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Objects","folderPath":"folders/Objects.yy","name":"Objects","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Enemies","folderPath":"folders/Objects/Enemies.yy","name":"Enemies","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"scene","folderPath":"folders/Objects/scene.yy","name":"scene","resourceType":"GMFolder","resourceVersion":"2.0",},
@@ -29,11 +30,12 @@
     {"$GMFolder":"","%Name":"Sprites","folderPath":"folders/Sprites.yy","name":"Sprites","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"ui","folderPath":"folders/Sprites/ui.yy","name":"ui","resourceType":"GMFolder","resourceVersion":"2.0",},
   ],
+  "ForcedPrefabProjectReferences":[],
   "IncludedFiles":[],
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.11.0.179",
+    "IDEVersion":"2024.13.0.190",
   },
   "name":"alforation",
   "resources":[
@@ -51,6 +53,7 @@
     {"id":{"name":"objHitscan","path":"objects/objHitscan/objHitscan.yy",},},
     {"id":{"name":"objPause","path":"objects/objPause/objPause.yy",},},
     {"id":{"name":"objPlayer","path":"objects/objPlayer/objPlayer.yy",},},
+    {"id":{"name":"objPresentacion","path":"objects/objPresentacion/objPresentacion.yy",},},
     {"id":{"name":"objSolid","path":"objects/objSolid/objSolid.yy",},},
     {"id":{"name":"objTitlescreen","path":"objects/objTitlescreen/objTitlescreen.yy",},},
     {"id":{"name":"objVisioncol","path":"objects/objVisioncol/objVisioncol.yy",},},
@@ -69,6 +72,7 @@
     {"id":{"name":"buffer_write_hex","path":"scripts/buffer_write_hex/buffer_write_hex.yy",},},
     {"id":{"name":"chunk_key","path":"scripts/chunk_key/chunk_key.yy",},},
     {"id":{"name":"detect_tile","path":"scripts/detect_tile/detect_tile.yy",},},
+    {"id":{"name":"do_craft","path":"scripts/do_craft/do_craft.yy",},},
     {"id":{"name":"do_player_hurt","path":"scripts/do_player_hurt/do_player_hurt.yy",},},
     {"id":{"name":"draw_3d_cube","path":"scripts/draw_3d_cube/draw_3d_cube.yy",},},
     {"id":{"name":"draw_3d_image","path":"scripts/draw_3d_image/draw_3d_image.yy",},},
@@ -89,6 +93,7 @@
     {"id":{"name":"hitscan","path":"scripts/hitscan/hitscan.yy",},},
     {"id":{"name":"init_3d_image_tile","path":"scripts/init_3d_image_tile/init_3d_image_tile.yy",},},
     {"id":{"name":"init_3d_model","path":"scripts/init_3d_model/init_3d_model.yy",},},
+    {"id":{"name":"inventory_sort","path":"scripts/inventory_sort/inventory_sort.yy",},},
     {"id":{"name":"item_to_crafting","path":"scripts/item_to_crafting/item_to_crafting.yy",},},
     {"id":{"name":"load_chunk_buffer","path":"scripts/load_chunk_buffer/load_chunk_buffer.yy",},},
     {"id":{"name":"load_chunk_ini","path":"scripts/load_chunk_ini/load_chunk_ini.yy",},},
@@ -143,6 +148,7 @@
     {"id":{"name":"sprPinetreebig","path":"sprites/sprPinetreebig/sprPinetreebig.yy",},},
     {"id":{"name":"sprPixel","path":"sprites/sprPixel/sprPixel.yy",},},
     {"id":{"name":"sprPlayer","path":"sprites/sprPlayer/sprPlayer.yy",},},
+    {"id":{"name":"sprPresentacion","path":"sprites/sprPresentacion/sprPresentacion.yy",},},
     {"id":{"name":"sprSand","path":"sprites/sprSand/sprSand.yy",},},
     {"id":{"name":"sprSlot","path":"sprites/sprSlot/sprSlot.yy",},},
     {"id":{"name":"sprSnow","path":"sprites/sprSnow/sprSnow.yy",},},

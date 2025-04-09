@@ -26,7 +26,7 @@ view_set_surface_id(0,_surf);
 */
 gpu_set_alphatestenable(true);
 gpu_set_ztestenable(true);
-//gpu_set_zwriteenable(true);
+gpu_set_zwriteenable(true);
 //shader_set(sh_timecolor);
 
 if(os_type == os_windows || os_type == os_win8native || os_type == os_macosx)
@@ -39,7 +39,7 @@ camera_set_proj_mat(view_camera[0],matrix_build_projection_perspective_fov(60,w_
 
 gamepad_set_axis_deadzone(0,0.01);
 
-
+fly = false;
 invmousex = w_width>>1;
 invmousey = w_height>>1;
 previnvmousex = 0;
@@ -48,6 +48,7 @@ gw = display_get_gui_width();
 gh = display_get_gui_height();
 invmove = false;
 craftmove = false;
+craftresult = [0,0,0,0];
 prevmousex[0] = 0;
 prevmousey[0] = 0;
 prevmousex_r[0] = 0;
@@ -165,7 +166,8 @@ for (var i = 0; i < invsize; i++) {
 }
 /*
 	j[0] = id
-	j[1] = cantidad
+	j[1] = cantidad/durabilidad
+	j[2] = efectos
 */
 
 //hotbar
@@ -186,6 +188,7 @@ instance_create_layer(x,y,"instances",objVisioncol);
 	w_coold = [5,15,7,2,45];
 	w_damincrmt = [10,5,2,1,5];
 	w_damage = [ 1, 10, 5, 2,15,];
+	w_dur = [32,64,210,270,300,400,460,700,850,1000];
 	//obtener texcoords
 	var tx = sprite_get_width(sprBtiles)>>4;
 	var ty = sprite_get_height(sprBtiles)>>4;
@@ -271,7 +274,7 @@ instance_create_layer(x,y,"instances",objVisioncol);
 	#macro I_STONE_SWORD 11
 	#macro I_STONE_PIC 12
 	#macro I_STONE_HOE 13
-	#macro I_STONE_AXE 11
+	#macro I_STONE_AXE 14
 	
 	#endregion
 	//drops					//Item Id, count
@@ -313,44 +316,44 @@ instance_create_layer(x,y,"instances",objVisioncol);
 	add_recipe(I_STICK,8,, [
 	    [I_WOOD, 1],
 	])
-	add_recipe(I_WOODEN_SWORD,,, [
+	add_recipe(I_WOODEN_SWORD,w_dur[0],, [
 	    [I_STICK, 1], 
 	    [I_WOOD, 12]
 	])
-	add_recipe(I_WOODEN_PIC,,, [
+	add_recipe(I_WOODEN_PIC,w_dur[0],, [
 	    [I_STICK, 1], 
 	    [I_WOOD, 20]
 	])
-	add_recipe(I_WOODEN_AXE,,, [
+	add_recipe(I_WOODEN_AXE,w_dur[0],, [
 	    [I_STICK, 1], 
 	    [I_WOOD, 9]
 	])
-	add_recipe(I_WOODEN_HOE,,, [
+	add_recipe(I_WOODEN_HOE,w_dur[0],, [
 	    [I_STICK, 1], 
 	    [I_WOOD, 5]
 	])
 
-	add_recipe(I_STONE_SWORD,,, [
+	add_recipe(I_STONE_SWORD,w_dur[1],, [
 	    [I_STICK, 1], 
 	    [I_STONE, 12]
 	])
 	
-	add_recipe(I_STONE_PIC,,, [
+	add_recipe(I_STONE_PIC,w_dur[1],, [
 	    [I_STICK, 1], 
 	    [I_STONE, 20]
 	])
 	
-	add_recipe(I_STONE_AXE,,, [
+	add_recipe(I_STONE_AXE,w_dur[1],, [
 	    [I_STICK, 1], 
 	    [I_STONE, 9]
 	])
 	
-	add_recipe(I_STONE_HOE,,, [
+	add_recipe(I_STONE_HOE,w_dur[1],, [
 	    [I_STICK, 1], 
 	    [I_STONE, 5]
 	])
 	
-	add_recipe(I_STONE_SPEAR,,, [
+	add_recipe(I_STONE_SPEAR,w_dur[1],, [
 	    [I_STICK, 1], 
 	    [I_STONE, 10]
 	])

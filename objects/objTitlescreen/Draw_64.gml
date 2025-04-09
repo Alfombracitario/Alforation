@@ -1,5 +1,4 @@
 var rw = room_width;
-var rh = room_height;
 for (var i = 0; i < bc; i++)
 {
 	var _bl = 0; 

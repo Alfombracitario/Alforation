@@ -5,5 +5,7 @@ for (var i = 0; i < invsize; i++) {
 		
 		//lol
 		inventory[i][0] = irandom(143);
+		inventory[i][1] = 1;
+		inventory[i][2] = 0;
     }
 }

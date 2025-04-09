@@ -31,4 +31,6 @@ with(objHit)
 	damage = _damage;
 	pic = _pic;
 	axe = _axe;
+	//inventory[hotbar[hotbarsel]][1]--;
+	//if inventory[hotbar[hotbarsel]][1] > 1 inventory[hotbar[hotbarsel]] = [0,0,0];
 }
