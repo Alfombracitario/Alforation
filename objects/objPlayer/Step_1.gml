@@ -24,9 +24,7 @@ if(os_type == os_android || os_type == os_ios)
 var _target_speed = (keyboard_check(vk_shift) ? 2.8 : 1.8) * global.fpsmode;
 
 if gamepad_button_check(0,gp_face2) _target_speed = 2.8*global.fpsmode;
-
 fov_mod = (mspeed/global.fpsmode)*5
-
 mspeed = lerp(mspeed,_target_speed,0.25);
 
 #region CHUNKS
@@ -58,40 +56,40 @@ _temperature = (_temperature*63 + ExtTemperature)/64;
 if(room = game)
 {
 	//tiempo del día
-	time += 0.01;//10 minutos = un ciclo
+	_time += 0.01;//10 minutos = un ciclo
 
-	time = time mod 360;
+	_time = _time mod 360;
 
 	notday = true;
 
-	if(time < 160)//día
+	if(_time < 160)//día
 	{
 		fog_color = $FF9865;
 		notday = false;
 		timecolor = c_white;
 	}
-	else if(time > 160 && time < 180)//atardecer
+	else if(_time > 160 && _time < 180)//atardecer
 	{
 		var color0 = [101,152,255];
 		var color1 = [255,159,10];
-		fog_color = get_color_gradient(time-160,color0,color1,20);
+		fog_color = get_color_gradient(_time-160,color0,color1,20);
 	
 		var color2 = [255,255,255];
 		var color3 = [200,160,160];
-		timecolor = get_color_gradient(time-160,color2,color3,20);
+		timecolor = get_color_gradient(_time-160,color2,color3,20);
 	
 	}
-	else if(time > 180 && time < 200)//anochecer
+	else if(_time > 180 && _time < 200)//anochecer
 	{
 		var color0 = [255,159,10];
 		var color1 = [0,0,16];
-		fog_color = get_color_gradient(time-180,color0,color1,20);
+		fog_color = get_color_gradient(_time-180,color0,color1,20);
 	
 		var color2 = [200,160,160];
 		var color3 = [108,108,128];
-		timecolor = get_color_gradient(time-180,color2,color3,20);
+		timecolor = get_color_gradient(_time-180,color2,color3,20);
 	}
-	else if(time > 200 && time < 340)//noche
+	else if(_time > 200 && _time < 340)//noche
 	{
 		fog_color = $0F0000;
 		timecolor = make_color_rgb(108,100,128);
@@ -102,15 +100,15 @@ if(room = game)
 			instance_create_layer(_x,_y,"instances",objEslime);
 		}
 	}
-	else if(time > 340)//mañana
+	else if(_time > 340)//mañana
 	{
 		var color0 = [0,0,16];
 		var color1 = [101,152,255];
-		fog_color = get_color_gradient(time-340,color0,color1,20);
+		fog_color = get_color_gradient(_time-340,color0,color1,20);
 	
 		var color2 = [108,108,128];
 		var color3 = [255,255,255];
-		timecolor = get_color_gradient(time-340,color2,color3,20);
+		timecolor = get_color_gradient(_time-340,color2,color3,20);
 	}
 }
 if(room = dungeon)

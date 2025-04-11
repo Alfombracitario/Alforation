@@ -32,7 +32,8 @@ if(activated == true)
 					
 					array_delete(objects,_index,1);
 					objectcount--;
-					global.update3d = true;
+					instance_activate_object(objVisioncol);
+					draw = true;
 				}
 			}
 		}

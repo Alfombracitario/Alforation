@@ -293,6 +293,5 @@ function load_chunk_ini(cx, cy) {
 		}
 		//mentirle al juego para que actualize los modelos 3D
 		prevcamyaw--;
-		
     }
 }

@@ -1,6 +1,6 @@
 randomize();
-global.worldname = "save/";
-
+global.worldname = "";
+#macro WORLDIR working_directory+"save/"
 global.chunk_size = 256;
 
 global.font = font_add_sprite_ext(sprFont,"1234567890ABCDEFGHIJKLMNÑOPQRSTUVWXYZaábcdeéfghiíjklmnñoópqrstuúüvwxyz*/\"':;.,¡!¿?-~()[]{}<>\\@#$%➤",1,1);
@@ -18,6 +18,8 @@ global.fog = ini_read_real("options","fog",1);
 global.musvol = ini_read_real("options","musvol",0.125);
 global.sndvol = ini_read_real("options","sndvol",1);
 global.bigui = ini_read_real("options","bigui",0);
+
+global.screendiv = global.screendiv>>0
 /*
 audio_play_sound(musTitle,0,0,global.musvol);
 */

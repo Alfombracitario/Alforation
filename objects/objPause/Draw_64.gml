@@ -5,8 +5,6 @@ shader_reset();
 display_set_gui_size(gw,gh)
 
 draw_set_font(global.font2);
-draw_set_halign(fa_middle);
-draw_set_valign(fa_center);
 draw_text_shadow(gw>>1,16,"Game paused")
 
 

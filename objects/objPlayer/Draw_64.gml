@@ -1,8 +1,5 @@
+gpu_set_ztestenable(false);
 gpu_set_fog(false,0,0,0);
-if(fly == false)
-{
-draw_set_valign(fa_top);
-draw_set_halign(fa_left);
 if(added_tic > 0)
 {
 	var _y = 24
@@ -10,7 +7,6 @@ if(added_tic > 0)
 	{
 		_y = added_tic
 	}
-	draw_set_font(global.font2);
 	added_tic--;
 	draw_sprite_ext(sprTransparentuitriangleleft,0,gw,_y-24,3,1,0,$FFFFFF,1);
 	draw_sprite_ext(sprItems,added_item,gw-23,_y-23,1,1,0,c_black,0.5);
@@ -73,10 +69,7 @@ for(var i = 0; i<hotbarsize;i++)
 
 #region inventory
 if(invopen)
-{	
-	draw_set_font(global.font2);
-	window_mouse_set_locked(false);
-	
+{
 	//crafteo
 	draw_sprite_ext(sprContainer,0,craftx-5,crafty-16,11,9,0,c_white,1);
 	draw_sprite_ext(sprSlot,0,craftx,crafty,3,1,0,c_white,1);
@@ -86,11 +79,11 @@ if(invopen)
 		draw_sprite(sprItems,crafting_grid[i][0],_x,crafty);
 		if crafting_grid[i][1] > 1 draw_text(_x,crafty,crafting_grid[i][1]);
 	}
-	
+	var craftp80 = craftx+80
 	draw_sprite(sprArrowright,0,craftx+52,crafty);
-	draw_sprite(sprSlot,0,craftx+80,crafty);
-	draw_sprite(sprItems,craftresult[0],craftx+80,crafty);
-	draw_text(craftx+80,crafty,craftresult[2]);
+	draw_sprite(sprSlot,0,craftp80,crafty);
+	draw_sprite(sprItems,craftresult[0],craftp80,crafty);
+	draw_text(craftp80,crafty,craftresult[2]);
 	
 	var _crftc = array_length(craftable)
 	for(var i = 0; i<_crftc; i++)
@@ -214,4 +207,4 @@ if(display_info == true)
 	draw_text(0,0,"X: "+string(x)+"\nY: "+string(y)+"\nCx: "+string(pcx)+"\nCy: "+string(pcy)+"\nFPS "+string(fps)+"\nFPSr "+string(fps_real));
 	draw_text(0,64,instance_count);
 }
-}
+gpu_set_ztestenable(true);

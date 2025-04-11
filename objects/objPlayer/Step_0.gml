@@ -164,7 +164,7 @@ if(os_type == os_windows || os_type == os_macosx || os_type == os_operagx)
 	if keyboard_check_pressed(vk_escape) instance_create_layer(x,y,"instances",objPause);
 	_move = keyboard_check(ord("W")) - keyboard_check(ord("S"));
 	_smove = keyboard_check(ord("A")) - keyboard_check(ord("D"));
-	if keyboard_check_pressed(ord("E")) { invopen = true; invmousex = gw>>1; invmousey = gh>>1; audio_play_sound(sndAccept,0,0,global.sndvol); }
+	if keyboard_check_pressed(ord("E")) { invopen = true; invmousex = gw>>1; invmousey = gh>>1; audio_play_sound(sndAccept,0,0,global.sndvol); window_mouse_set_locked(false);}
 	
 	if mouse_wheel_down() && hotbarsel < hotbarsize hotbarsel++;
 	hotbarsel = hotbarsel mod hotbarsize;
@@ -217,7 +217,6 @@ if(gamepad_is_connected(0))
 	gamepad_set_vibration(0,hurt_tic,hurt_tic);
 	if gamepad_button_check_pressed(0, gp_select) display_info = !display_info;
 	if gamepad_button_check_pressed(0, gp_face3) invopen = true; invmousex = gw>>1; invmousey = gh>>1;
-	if gamepad_button_check_pressed(0, gp_face4) time = 1000;
 	if gamepad_button_check_pressed(0, gp_shoulderrb) event_user(15);
 	
 }
@@ -326,19 +325,19 @@ if (room == dungeon) {
     _ymove = lengthdir_y(s_sp, ((360 - cam_yaw + 90) + 360) mod 360);
     
     _tile_x = floor((x + _xmove + sign(_xmove) * hitbox) / 16);
-    _tile_y = floor(y / 16);
+    _tile_y = y>>4;
     if (tiles[_tile_x][_tile_y] == 1) {
-        while (tiles[floor((x + sign(_xmove) / 20 + sign(_xmove) * hitbox) / 16)][_tile_y] != 1) {
-            x += sign(_xmove) / 20;
+        while (tiles[floor((x + sign(_xmove) * 0.02 + sign(_xmove) * hitbox) / 16)][_tile_y] != 1) {
+            x += sign(_xmove) * 0.02;
         }
         _xmove = 0;
     }
     
-    _tile_x = floor(x / 16);
+    _tile_x = x>>4;
     _tile_y = floor((y + _ymove + sign(_ymove) * hitbox) / 16);
     if (tiles[_tile_x][_tile_y] == 1) {
-        while (tiles[_tile_x][floor((y + sign(_ymove) / 20 + sign(_ymove) * hitbox) / 16)] != 1) {
-            y += sign(_ymove) / 20;
+        while (tiles[_tile_x][floor((y + sign(_ymove) * 0.02 + sign(_ymove) * hitbox) / 16)] != 1) {
+            y += sign(_ymove) * 0.02;
         }
         _ymove = 0;
     }
@@ -370,13 +369,11 @@ sway_amount = clamp(abs(s_sp) + abs(f_sp),-mspeed,mspeed);
 
 sin_tic += sway_amount;
 
-sway_x += sway_amount / 1.5;
-sway_y += sway_amount / 0.75;
+sway_x += sway_amount *0.7;
+sway_y += sway_amount *1.3;
 
-var h = -29.5;
-if fly camz = 0;
 //Update the camera
-var mat = matrix_build_lookat(xfrom, yfrom, _z+fly*h, xto, yto, _z+fly*h + zto, 0, 0, 1);
+var mat = matrix_build_lookat(xfrom, yfrom, _z, xto, yto, _z + zto, 0, 0, 1);
 camera_set_view_mat(view_camera[0], mat);
 #endregion
 
@@ -388,13 +385,15 @@ if(global.update3Dtime == update3Dindex)
 	if(prevcamyaw != cam_yaw)
 	{
 		global.update3d = true;
-		var cam_yawp90 = cam_yaw+90
+		instance_activate_object(objVisioncol);
+		var cam_yawp90 = cam_yaw+90;
 		global.sincyphp = dsin(cam_yawp90);
 		global.coscyphp = dcos(cam_yawp90);
 	}
 	else
 	{
 		global.update3d = false;
+		instance_deactivate_object(objVisioncol);
 	}
 	prevcamyaw = cam_yaw;
 	

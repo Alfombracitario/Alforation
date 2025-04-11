@@ -1,7 +1,5 @@
-if(global.update3d == true )
-{
 with(other)
 {
+	draw = true;
 	event_user(2);
-}
 }

@@ -1,3 +1,5 @@
 x = objPlayer.x;
 y = objPlayer.y;
-image_angle = -objPlayer.cam_yaw
+image_angle = -objPlayer.cam_yaw;
+direction = image_angle
+objChunk.draw = false;

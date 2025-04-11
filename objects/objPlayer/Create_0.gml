@@ -29,7 +29,7 @@ gpu_set_ztestenable(true);
 gpu_set_zwriteenable(true);
 //shader_set(sh_timecolor);
 
-if(os_type == os_windows || os_type == os_win8native || os_type == os_macosx)
+if(os_type == os_windows || os_type == os_macosx || os_type == os_operagx)
 {
 	window_mouse_set_locked(true);
 }
@@ -39,7 +39,6 @@ camera_set_proj_mat(view_camera[0],matrix_build_projection_perspective_fov(60,w_
 
 gamepad_set_axis_deadzone(0,0.01);
 
-fly = false;
 invmousex = w_width>>1;
 invmousey = w_height>>1;
 previnvmousex = 0;
@@ -123,7 +122,7 @@ audio_stop_all();
 
 #region load data
 
-ini_open(working_directory+global.worldname+"data.ini");
+ini_open(WORLDIR+global.worldname+"/data.ini");
 if(room == game)
 {
 	x = ini_read_real("p","x",0);
@@ -133,7 +132,7 @@ _health = ini_read_real("p","health",100);
 _hunger = ini_read_real("p","hunger",100);
 _temperature = ini_read_real("p","temp",128);
 cam_yaw = ini_read_real("p","camyaw",0);
-time = ini_read_real("p","time",0);
+_time = ini_read_real("p","time",0);
 maxhealth = ini_read_real("p","maxhealth",100);
 //configuraciones que se cargan en el jugador por algún motivo
 ini_close();
@@ -153,7 +152,7 @@ buttoniy = ini_read_real("options","buttonby",0.48);
 craftx = ini_read_real("options","craftx",256);
 crafty = ini_read_real("options","crafty",64);
 ini_close();
-ini_open(working_directory+global.worldname+"data.ini");
+ini_open(WORLDIR+global.worldname+"data.ini");
 #endregion
 
 //inventario
@@ -180,7 +179,7 @@ for(var i = 0; i < hotbarsize; i++)
 
 
 //más optimizaciones:
-instance_create_layer(x,y,"instances",objVisioncol);
+if room == game instance_create_layer(x,y,"instances",objVisioncol);
 
 	//datos de los items
 

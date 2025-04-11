@@ -30,8 +30,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sprDungeonladderdown",
-    "path":"sprites/sprDungeonladderdown/sprDungeonladderdown.yy",
+    "name":"sprGrasstop",
+    "path":"sprites/sprGrasstop/sprGrasstop.yy",
   },
   "spriteMaskId":null,
   "visible":true,

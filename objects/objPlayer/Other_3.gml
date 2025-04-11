@@ -10,7 +10,7 @@ ini_write_real("p","health",_health);
 ini_write_real("p","hunger",_hunger);
 ini_write_real("p","temp",_temperature);
 ini_write_real("p","camyaw",cam_yaw);
-ini_write_real("p","time",time);
+ini_write_real("p","time",_time);
 var invdata = 3;
 for (var i = 0; i < invsize; i++) {
     for (var j = 0; j < invdata; j++) {
