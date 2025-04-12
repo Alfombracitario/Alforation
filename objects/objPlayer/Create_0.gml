@@ -122,7 +122,7 @@ audio_stop_all();
 
 #region load data
 
-ini_open(WORLDIR+global.worldname+"/data.ini");
+ini_open(WORLDIR+global.worldname+"/inv.ini");
 if(room == game)
 {
 	x = ini_read_real("p","x",0);
@@ -134,6 +134,19 @@ _temperature = ini_read_real("p","temp",128);
 cam_yaw = ini_read_real("p","camyaw",0);
 _time = ini_read_real("p","time",0);
 maxhealth = ini_read_real("p","maxhealth",100);
+//inventario
+invsize = 40;
+var invdata = 3;
+for (var i = 0; i < invsize; i++) {
+    for (var j = 0; j < invdata; j++) {
+        inventory[i][j] = ini_read_real(j,i,0);
+    }
+}
+/*
+	j[0] = id
+	j[1] = cantidad/durabilidad
+	j[2] = efectos
+*/
 //configuraciones que se cargan en el jugador por algún motivo
 ini_close();
 ini_open(working_directory+"options.ini");
@@ -152,22 +165,9 @@ buttoniy = ini_read_real("options","buttonby",0.48);
 craftx = ini_read_real("options","craftx",256);
 crafty = ini_read_real("options","crafty",64);
 ini_close();
-ini_open(WORLDIR+global.worldname+"data.ini");
 #endregion
+ini_open(WORLDIR+global.worldname+"/data.ini");
 
-//inventario
-invsize = 40;
-var invdata = 3;
-for (var i = 0; i < invsize; i++) {
-    for (var j = 0; j < invdata; j++) {
-        inventory[i][j] = ini_read_real("i"+string(j),i,0);
-    }
-}
-/*
-	j[0] = id
-	j[1] = cantidad/durabilidad
-	j[2] = efectos
-*/
 
 //hotbar
 hotbar = 0;

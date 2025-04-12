@@ -30,44 +30,44 @@ function load_chunk_ini(cx, cy) {
 				if(temperature > 220 && humidity < 20)//Desierto
 				{
 					var times = irandom(11);
-					add_obj(times,7,1);//arbusto muerto
+					add_obj(times,T_DEAD_BUSH);
 					
 					var times = irandom(7);
-					add_obj(times,8,1);//cactus
+					add_obj(times,T_CACTUS);
 					
 					sprite_index = sprSand;
 				}
 				else if(temperature > 160 && humidity < 80) //acacia
 				{
 					var times = irandom(2);
-					add_obj(times,T_DEAD_BUSH,1);
+					add_obj(times,T_DEAD_BUSH);
 					
 					var times = irandom(11);
-					add_obj(times,T_TREE,10);
+					add_obj(times,T_TREE);
 					
 					var times = irandom(32);
-					add_obj(times,T_GRASS,0);
+					add_obj(times,T_GRASS);
 					
 					times = irandom(5);
-					add_obj(times,2,3);//roca
+					add_obj(times,T_STONE);
 
 					times = irandom(1);
-					add_obj(times,4,1);//champiñón
+					add_obj(times,T_MUSHROOM1);
 				
 					times = irandom(1);
-					add_obj(times,5,1);//champiñón2
+					add_obj(times,T_MUSHROOM2);
 					
 					times = irandom(1);
-					add_obj(times,11,1);//carbón
+					add_obj(times,T_STONE_COAL);
 					
 					if(irandom(5) == 0)
 					{
-						add_obj(1,12,1);//tin
+						add_obj(1,T_STONE_TIN);
 					}
 					
 					if(irandom(15) == 0)
 					{
-						add_obj(1,13,1);//copper
+						add_obj(1,T_STONE_COPPER);
 					}
 					
 					th = -44;
@@ -79,9 +79,9 @@ function load_chunk_ini(cx, cy) {
 				{
 					
 					var times = irandom(11);
-					add_obj(times,7,1);//arbusto muerto
+					add_obj(times,T_DEAD_BUSH);//arbusto muerto
 					var times = irandom(11);
-					add_obj(times,0,10);//arbol
+					add_obj(times,T_TREE);//arbol
 					
 					tree = sprite_get_texture(sprPinetree,1);
 					sprite_index = sprSnow;
@@ -90,16 +90,16 @@ function load_chunk_ini(cx, cy) {
 				{
 
 					var times = irandom(15);
-					add_obj(times,0,10);//arbol
+					add_obj(times,T_TREE);
 					
 					times = irandom(12);
-					add_obj(times,T_GRASS,1);
+					add_obj(times,T_GRASS);
 					
 					times = irandom(6);
-					add_obj(times,T_FERN,1);
+					add_obj(times,T_FERN);
 					
 					times = irandom(3);
-					add_obj(times,T_WATERMELON,1);
+					add_obj(times,T_WATERMELON);
 					
 					tree = sprite_get_texture(sprBamboo,0);
 					th = -52;
@@ -109,16 +109,16 @@ function load_chunk_ini(cx, cy) {
 				else if(temperature < 100 && temperature > 50 && humidity < 110 && humidity > 80)//bosque de pinos grandes
 				{
 					var times = irandom(12);
-					add_obj(times,0,20);//arbol
+					add_obj(times,T_TREE);//Pinos grandes
 					
 					var times = irandom(5);
-					add_obj(times,7,1);//arbusto muerto
+					add_obj(times,T_DEAD_BUSH);
 					
 					times = irandom(6);
-					add_obj(times,3,1);//fern
+					add_obj(times,T_FERN);
 					
 					times = irandom(12);
-					add_obj(times,1,1);//pasto
+					add_obj(times,T_GRASS);
 					
 					tw = 48;
 					th = -192;
@@ -132,31 +132,31 @@ function load_chunk_ini(cx, cy) {
 					image_blend = get_color_colormap(temperature,humidity)
 					
 					var times = irandom(12);
-					add_obj(times,0,10);//arbol
+					add_obj(times,T_TREE);
 				
 					times = irandom(15);
-					add_obj(times,1,1);//pasto
+					add_obj(times,T_GRASS);
 				
 					times = irandom(7);
-					add_obj(times,2,3);//roca
+					add_obj(times,T_STONE);
 
 					times = irandom(2);
-					add_obj(times,4,1);//champiñón
+					add_obj(times,T_MUSHROOM1);
 				
 					times = irandom(4);
-					add_obj(times,5,1);//champiñón2
+					add_obj(times,T_MUSHROOM2);
 					
 					times = irandom(1);
-					add_obj(times,11,1);//carbón
+					add_obj(times,T_STONE_COAL);
 					
 					if(irandom(5) == 0)
 					{
-						add_obj(1,12,1);//tin
+						add_obj(1,T_STONE_TIN);
 					}
 					
 					if(irandom(15) == 0)
 					{
-						add_obj(1,13,1);//copper
+						add_obj(1,T_STONE_COPPER);
 					}
 				}
 				else if(temperature < 40 && humidity > 180)//corrupción
@@ -167,19 +167,19 @@ function load_chunk_ini(cx, cy) {
 					image_blend = get_color_colormap(temperature,humidity);
 					
 					var times = irandom(4);
-					add_obj(times,0,20);//arbol
+					add_obj(times,T_TREE);
 					
 					var times = irandom(5);
-					add_obj(times,7,1);//arbusto muerto
+					add_obj(times,T_DEAD_BUSH);
 					
 					times = irandom(6);
-					add_obj(times,1,1);//pasto
+					add_obj(times,T_GRASS);
 					
 					times = irandom(5);
-					add_obj(times,9,1);//champiñón corrupción 1
+					add_obj(times,T_MUSHROOM3);
 					
 					times = irandom(5);
-					add_obj(times,10,1);//champiñón corrupción 2
+					add_obj(times,T_GRASS2);
 					
 				}
 				else
@@ -188,37 +188,37 @@ function load_chunk_ini(cx, cy) {
 					image_blend = get_color_colormap(temperature,humidity)
 					
 					var times = irandom(11);
-					add_obj(times,0,10);//arbol
+					add_obj(times,T_TREE);
 				
 					times = irandom((humidity+temperature)>>4);
-					add_obj(times,1,1);//pasto
+					add_obj(times,T_GRASS);
 				
 					times = irandom(7);
-					add_obj(times,2,3);//roca
+					add_obj(times,T_STONE);
 				
 					times = irandom(humidity>>5);
-					add_obj(times,3,1);//fern
+					add_obj(times,T_FERN);
 
 					times = irandom(2);
-					add_obj(times,4,1);//champiñón
+					add_obj(times,T_MUSHROOM1);
 				
 					times = irandom(2);
-					add_obj(times,5,1);//champiñón2
+					add_obj(times,T_MUSHROOM2);
 
 					times = irandom(temperature>>7);
-					add_obj(times,6,1);//trigo weón
+					add_obj(times,T_WILD_WHEAT);
 					
 					times = irandom(1);
-					add_obj(times,11,1);//carbón
+					add_obj(times,T_STONE_COAL);
 					
 					if(irandom(5) == 0)
 					{
-						add_obj(1,12,1);//tin
+						add_obj(1,T_STONE_TIN);
 					}
 					
 					if(irandom(15) == 0)
 					{
-						add_obj(1,13,1);//copper
+						add_obj(1,T_STONE_COPPER);
 					}
 				}
 				if(temperature > 150 && temperature < 230 && humidity > 80)
@@ -234,16 +234,17 @@ function load_chunk_ini(cx, cy) {
 		#region Load chunk
 		else
 		{	//Si el chunk existe, cargar los datos
-			var ins = instance_create_layer(_cxx,_cyy,"instances",objChunk);
+			var ins = instance_create_depth(_cxx,_cyy,0,objChunk);
 			with(ins)
 			{
 				//Basicamente este es el evento create del chunk, solo que ejecutado desde aquí
 				
 				var values = generate_noise(cx,cy,global.seed);
 			
-				ins.temperature = values[0];
-				ins.humidity = values[1];
-				save = true;
+				temperature = values[0];
+				humidity = values[1];
+				save = true; //si no se guardan, el juego los tomará como chunks nuevos y los regenerá
+				
 				if(temperature > 230 && humidity < 20)
 				{
 					sprite_index = sprSand;
@@ -268,15 +269,13 @@ function load_chunk_ini(cx, cy) {
 						hex_digit[0] = string_char_at(valuetoread, 2);
 						hex_digit[1] = string_char_at(valuetoread, 3);
 						valuetoread = string_char_at(valuetoread, 1);
-						valuetoread = int64(valuetoread);
+						valuetoread = real(valuetoread);
 
 						objects[i][0] = valuetoread; //objeto
-						objects[i][1] =  x+(hex_to_dec_one(hex_digit[0])<<4); //X pos
-						objects[i][2] =  y+(hex_to_dec_one(hex_digit[1])<<4); //Y pos
-						objects[i][3] = 1;//POR FAVOR CAMBIA ESTO TE LO PIDO POR FAVOR!!!!!!
+						objects[i][1] = x+(hex_to_dec_one(hex_digit[0])<<4); //X pos
+						objects[i][2] = y+(hex_to_dec_one(hex_digit[1])<<4); //Y pos
 					}
 				}
-				
 			}
 		}
 		#endregion

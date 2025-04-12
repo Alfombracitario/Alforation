@@ -50,6 +50,7 @@
     {"id":{"name":"objEslime","path":"objects/objEslime/objEslime.yy",},},
     {"id":{"name":"objHit","path":"objects/objHit/objHit.yy",},},
     {"id":{"name":"objHitscan","path":"objects/objHitscan/objHitscan.yy",},},
+    {"id":{"name":"objImposter","path":"objects/objImposter/objImposter.yy",},},
     {"id":{"name":"objPause","path":"objects/objPause/objPause.yy",},},
     {"id":{"name":"objPlayer","path":"objects/objPlayer/objPlayer.yy",},},
     {"id":{"name":"objSolid","path":"objects/objSolid/objSolid.yy",},},
