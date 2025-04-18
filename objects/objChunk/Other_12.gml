@@ -8,12 +8,15 @@ var bill2 = [c*tw,c*8];
 var zsize = [th,-16];
 
 var color = [c_white,image_blend];
-vertex_begin(v[0],f[0]);
-vertex_begin(v[1],f[1]);
-
 var tc = objPlayer.tc;
 var tuc = objPlayer.tuc;
 
+tc[T_TREE].x1 = uv[0];
+tc[T_TREE].x2 = uv[2];
+tc[T_TREE].y1 = uv[1];
+tc[T_TREE].y2 = uv[3];
+
+vertex_begin(v,f);
 for(var i = 0; i < objectcount; i++)
 {
 		var j = objects[i][0];
@@ -31,25 +34,24 @@ for(var i = 0; i < objectcount; i++)
 		var leftx  = _x + bill2[j]+8;
 		var rightx = _x - bill2[j]+8;
 	
-		vertex_position_3d(v[j],leftx,lefty,0);
-		vertex_color(v[j],c,1);
-		vertex_texcoord(v[j],tc[h].x2,tc[h].y2);
-		vertex_position_3d(v[j],leftx,lefty,zsize[j]);
-		vertex_color(v[j],c,1);
-		vertex_texcoord(v[j],tc[h].x2,tc[h].y1);
-		vertex_position_3d(v[j],rightx,righty,zsize[j]);
-		vertex_color(v[j],c,1);
-		vertex_texcoord(v[j],tc[h].x1,tc[h].y1);
-		vertex_position_3d(v[j],leftx,lefty,0);
-		vertex_color(v[j],c,1);
-		vertex_texcoord(v[j],tc[h].x2,tc[h].y2);
-		vertex_position_3d(v[j],rightx,righty,0);
-		vertex_color(v[j],c,1);
-		vertex_texcoord(v[j],tc[h].x1,tc[h].y2);
-		vertex_position_3d(v[j],rightx,righty,zsize[j]);
-		vertex_color(v[j],c,1);
-		vertex_texcoord(v[j],tc[h].x1,tc[h].y1);
+		vertex_position_3d(v,leftx,lefty,0);
+		vertex_color(v,c,1);
+		vertex_texcoord(v,tc[h].x2,tc[h].y2);
+		vertex_position_3d(v,leftx,lefty,zsize[j]);
+		vertex_color(v,c,1);
+		vertex_texcoord(v,tc[h].x2,tc[h].y1);
+		vertex_position_3d(v,rightx,righty,zsize[j]);
+		vertex_color(v,c,1);
+		vertex_texcoord(v,tc[h].x1,tc[h].y1);
+		vertex_position_3d(v,leftx,lefty,0);
+		vertex_color(v,c,1);
+		vertex_texcoord(v,tc[h].x2,tc[h].y2);
+		vertex_position_3d(v,rightx,righty,0);
+		vertex_color(v,c,1);
+		vertex_texcoord(v,tc[h].x1,tc[h].y2);
+		vertex_position_3d(v,rightx,righty,zsize[j]);
+		vertex_color(v,c,1);
+		vertex_texcoord(v,tc[h].x1,tc[h].y1);
 		
 }
-vertex_end(v[0]);
-vertex_end(v[1]);
+vertex_end(v);

@@ -1,8 +1,5 @@
-vertex_delete_buffer(v[0]);
-vertex_format_delete(f[0]);
-vertex_delete_buffer(v[1]);
-vertex_format_delete(f[1]);
-
+vertex_delete_buffer(v);
+vertex_format_delete(f);
 var key = chunk_key(cx, cy);
 if(save == true)
 {

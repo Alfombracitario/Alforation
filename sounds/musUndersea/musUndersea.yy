@@ -9,7 +9,7 @@
   "bitRate":128,
   "compression":3,
   "conversionMode":0,
-  "duration":150.43918,
+  "duration":-1.0,
   "name":"musUndersea",
   "parent":{
     "name":"Sounds",

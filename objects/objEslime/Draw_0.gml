@@ -1,1 +1,1 @@
-vertex_submit(v,pr_trianglelist,object_sprite);
+vertex_submit(v,pr_trianglelist,texture);

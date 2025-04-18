@@ -9,7 +9,7 @@
   "bitRate":128,
   "compression":3,
   "conversionMode":0,
-  "duration":0.307528,
+  "duration":0.30752835,
   "name":"sndCancel",
   "parent":{
     "name":"SFX",

@@ -2,12 +2,12 @@ randomize();
 global.seed = irandom(999999);
 var wns;
 wns = //nombres de los mundos
-["Epic world","New world","Wow, alforation sucks","Isn't this minecraft?","Terraria 3D?",
+["Epic world","New world","Wow, alforation sucks","Isn't this minecraft","Terraria 3D",
 "Subscribe to my channel!!1","Woah, a default name","Default name","Insert name here", "Text",
 "Random name","Creative name","Cool name","Epic name", "Alfombracitario is cool!","Idk","Just a name",
 "Normal name","Short name","Super ultra epic long name!!!!","ASFDSFS","a","Enter the world name"]
 
-global.worldname = wns[irandom(array_length(wns))];
+global.worldname = wns[irandom(array_length(wns)-1)];
 if(os_type == os_windows)
 {
 	global.worldname = get_string("Enter the world name",global.worldname);
@@ -15,6 +15,7 @@ if(os_type == os_windows)
 }
 global.chunks = ds_map_create();
 file_delete(WORLDIR+global.worldname+"/data.ini");
+file_delete(WORLDIR+global.worldname+"/inv.ini");
 ini_open(WORLDIR+global.worldname+"/data.ini");
 ini_write_real("world","seed",global.seed);
 instance_destroy(objBloadworld);

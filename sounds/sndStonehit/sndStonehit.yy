@@ -7,9 +7,9 @@
   },
   "bitDepth":1,
   "bitRate":128,
-  "compression":0,
+  "compression":3,
   "conversionMode":0,
-  "duration":0.072449,
+  "duration":0.07244898,
   "name":"sndStonehit",
   "parent":{
     "name":"SFX",

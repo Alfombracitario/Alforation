@@ -1,5 +1,6 @@
 var _move = 0;
 var _smove = 0;
+
 if(invopen == true)
 {
 	if(gamepad_is_connected(0))
@@ -188,6 +189,8 @@ if(os_type == os_windows || os_type == os_macosx || os_type == os_operagx)
 	cam_yaw -= turn_speed;
 	
 	if device_mouse_check_button_pressed(0,mb_left) event_user(15);//left click
+    if keyboard_check_pressed(ord("M")) event_user(15);
+    
 }
 #endregion
 #region gamepad input
@@ -235,8 +238,6 @@ if(os_type == os_android || os_type == os_ios)
 				var ds = round(gh*0.15);
 				var touch_x = mousex[i];
 				var touch_y = mousey[i];
-				var _move = 0;
-				var _smove = 0;
 	
 	
 				var touching_dpad = (touch_x >= dx && touch_x <= dx + (ds * 3) && touch_y >= dy && touch_y <= dy + (ds * 3));

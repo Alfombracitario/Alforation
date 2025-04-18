@@ -7,9 +7,9 @@
   },
   "bitDepth":1,
   "bitRate":128,
-  "compression":0,
+  "compression":3,
   "conversionMode":0,
-  "duration":0.099864,
+  "duration":0.09986395,
   "name":"sndTreehit",
   "parent":{
     "name":"SFX",

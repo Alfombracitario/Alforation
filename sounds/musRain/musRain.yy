@@ -9,7 +9,7 @@
   "bitRate":128,
   "compression":3,
   "conversionMode":0,
-  "duration":184.37224,
+  "duration":44.810158,
   "name":"musRain",
   "parent":{
     "name":"Sounds",

@@ -6,7 +6,7 @@ function update_chunks() {
         last_pcy = pcy;
         
 		ini_open(WORLDIR+global.worldname+"/data.ini");
-		with(all)
+		with(objChunk)
 		{
 			event_user(0);
 		}
@@ -21,7 +21,6 @@ function update_chunks() {
             }
         }
 		ini_close();
-		instance_activate_object(objVisioncol);
     }
 	
 }

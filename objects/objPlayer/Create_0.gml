@@ -1,7 +1,9 @@
+//ahorrar recursos
+texturegroup_unload("TGintro");
 draw_set_halign(fa_left);
 w_width = window_get_width();
 w_height = window_get_height();
-
+image_alpha = 0;
 view_enabled = true;
 view_visible[0] = true;
 camera_set_view_size(view_camera[0],w_width,w_height);
@@ -20,14 +22,11 @@ else
 
 
 surface_resize(application_surface,w_width>>global.screendiv,w_height>>global.screendiv);
-/*
-_surf = surface_create(w_height << global.screendiv,w_height << global.screendiv);
-view_set_surface_id(0,_surf);
-*/
+application_surface_draw_enable(false);
+
 gpu_set_alphatestenable(true);
 gpu_set_ztestenable(true);
 gpu_set_zwriteenable(true);
-//shader_set(sh_timecolor);
 
 if(os_type == os_windows || os_type == os_macosx || os_type == os_operagx)
 {
@@ -45,6 +44,9 @@ previnvmousex = 0;
 previnvmousey = 0;
 gw = display_get_gui_width();
 gh = display_get_gui_height();
+experience = 0;
+level = 1;
+xp_need = floor(50 * level * power(1.1, level));
 invmove = false;
 craftmove = false;
 craftresult = [0,0,0,0];
@@ -81,12 +83,14 @@ weapon_swaying = true;
 weapon_y = 0;
 wprev = w_width;
 hprev = w_height;
+humidity = 0;
 hurt_tic = 0;
 notday = false;
 timecolor = c_white;
 fog_color = $FF9865;
-fog_depth = (global.render_distance+0.5)*global.chunk_size;
-fog_density = 256;
+sky_color = fog_color;
+fog_depth = (global.render_distance+0.5)*CHUNK_SIZE;
+fog_density = CHUNK_SIZE;
 
 //variables de mierda de optimización
 halfpi = pi*0.5;
@@ -104,10 +108,9 @@ prevcamyaw = 0;
 global.update3d = false;
 
 #region CHUNKS
-chunk_size = 256;
 
-pcx = floor(x/chunk_size);
-pcy = floor(y/chunk_size);
+pcx = floor(x/CHUNK_SIZE);
+pcy = floor(y/CHUNK_SIZE);
 
 last_pcx = -99999999;
 last_pcy = -99999999;
@@ -177,10 +180,12 @@ for(var i = 0; i < hotbarsize; i++)
 	hotbar[i] = i;
 }
 
-
 //más optimizaciones:
-if room == game instance_create_layer(x,y,"instances",objVisioncol);
-
+if room == game 
+{
+	instance_create_depth(x,y,1,objVisioncol);
+	instance_create_depth(x,y,0,objImposter);
+}
 	//datos de los items
 
 	//hand,spear,sword,pic,hoe,axe
@@ -188,10 +193,7 @@ if room == game instance_create_layer(x,y,"instances",objVisioncol);
 	w_damincrmt = [10,5,2,1,5];
 	w_damage = [ 1, 10, 5, 2,15,];
 	w_dur = [32,64,210,270,300,400,460,700,850,1000];
-	//obtener texcoords
-	var tx = sprite_get_width(sprBtiles)>>4;
-	var ty = sprite_get_height(sprBtiles)>>4;
-	var td = 16;
+	
 	//     Tile name		Id
 	#macro T_TREE			0
 	#macro T_GRASS			1
@@ -216,33 +218,34 @@ if room == game instance_create_layer(x,y,"instances",objVisioncol);
 	#macro T_STONE_GOLD		20
 	#macro T_WATERMELON		21
 	
-	tc[T_TREE] =			get_texture_coords(0,0,1,1,1);
-	tc[T_GRASS] =			get_texture_coords(0,0,tx,ty,td);
-	tc[T_STONE] =			get_texture_coords(0,2,tx,ty,td);
-	tc[T_FERN] =			get_texture_coords(1,0,tx,ty,td);
-	tc[T_MUSHROOM1] =		get_texture_coords(0,1,tx,ty,td);
-	tc[T_MUSHROOM2] =		get_texture_coords(1,1,tx,ty,td);
-	tc[T_WILD_WHEAT] =		get_texture_coords(3,4,tx,ty,td);
-	tc[T_DEAD_BUSH] =		get_texture_coords(2,0,tx,ty,td);
-	tc[T_CACTUS] =			get_texture_coords(3,0,tx,ty,td);
-	tc[T_MUSHROOM3] =		get_texture_coords(2,1,tx,ty,td);
-	tc[T_GRASS2] =			get_texture_coords(4,0,tx,ty,td);
-	tc[T_STONE_COAL] =		get_texture_coords(1,2,tx,ty,td);
-	tc[T_STONE_TIN] =		get_texture_coords(2,2,tx,ty,td);
-	tc[T_STONE_COPPER] =	get_texture_coords(3,2,tx,ty,td);
-	tc[T_STONE_IRON] =		get_texture_coords(4,2,tx,ty,td);
-	tc[T_STONE_TUNGSTEN] =	get_texture_coords(5,2,tx,ty,td);
-	tc[T_STONE_RUBY] =		get_texture_coords(6,2,tx,ty,td);
-	tc[T_STONE_DIAMOND] =	get_texture_coords(7,2,tx,ty,td);
-	tc[T_STONE_AMETHYST] =	get_texture_coords(0,3,tx,ty,td);
-	tc[T_STONE_JUNGLE] =	get_texture_coords(1,3,tx,ty,td);
-	tc[T_STONE_GOLD] =		get_texture_coords(2,3,tx,ty,td);
-	tc[T_WATERMELON] =		get_texture_coords(12,4,tx,ty,td);
+	tc[T_TREE] =			get_texture_coords_sprite(sprBtiles,0);
+	tc[T_GRASS] =			get_texture_coords_sprite(sprBtiles,0);
+	tc[T_STONE] =			get_texture_coords_sprite(sprBtiles,20);
+	tc[T_FERN] =			get_texture_coords_sprite(sprBtiles,1);
+	tc[T_MUSHROOM1] =		get_texture_coords_sprite(sprBtiles,10);
+	tc[T_MUSHROOM2] =		get_texture_coords_sprite(sprBtiles,11);
+	tc[T_WILD_WHEAT] =		get_texture_coords_sprite(sprBtiles,43);
+	tc[T_DEAD_BUSH] =		get_texture_coords_sprite(sprBtiles,2);
+	tc[T_CACTUS] =			get_texture_coords_sprite(sprBtiles,3);
+	tc[T_MUSHROOM3] =		get_texture_coords_sprite(sprBtiles,12);
+	tc[T_GRASS2] =			get_texture_coords_sprite(sprBtiles,4);
+	tc[T_STONE_COAL] =		get_texture_coords_sprite(sprBtiles,21);
+	tc[T_STONE_TIN] =		get_texture_coords_sprite(sprBtiles,22);
+	tc[T_STONE_COPPER] =	get_texture_coords_sprite(sprBtiles,23);
+	tc[T_STONE_IRON] =		get_texture_coords_sprite(sprBtiles,24);
+	tc[T_STONE_TUNGSTEN] =	get_texture_coords_sprite(sprBtiles,25);
+	tc[T_STONE_RUBY] =		get_texture_coords_sprite(sprBtiles,26);
+	tc[T_STONE_DIAMOND] =	get_texture_coords_sprite(sprBtiles,27);
+	tc[T_STONE_AMETHYST] =	get_texture_coords_sprite(sprBtiles,30);
+	tc[T_STONE_JUNGLE] =	get_texture_coords_sprite(sprBtiles,31);
+	tc[T_STONE_GOLD] =		get_texture_coords_sprite(sprBtiles,32);
+	tc[T_WATERMELON] =		get_texture_coords_sprite(sprBtiles,49);
 	
 	//color0,1,2,3,4,5,6,7,8,9	
 	tuc = [0,1,0,1,0,0,1,0,0,0
 		  ,1,0,0,0,0,0,0,0,0,0
 		  ,0,0];
+	
 	#region Macros
 	#macro I_EMPTY 0
 	#macro I_WOOD 110
@@ -262,7 +265,18 @@ if room == game instance_create_layer(x,y,"instances",objVisioncol);
 	#macro I_AMETHYST 108
 	#macro I_JUNGLE 0 //La textura no existe
 	#macro I_STONE_GOLD 104
-	#macro I_WATERMELON 134
+	#macro I_WATERMELON 133
+	#macro I_SLIME 142
+	#macro I_BONE 141
+	#macro I_WOOD_BLOCK 151
+	#macro I_COBBLE_BLOCK 150
+	
+	#macro I_TIN_INGOT 112
+	#macro I_COPPER_INGOT 113
+	#macro I_BRONZE_INGOT 114
+	#macro I_IRON_INGOT 115
+	#macro I_LEAD_INGOT 116
+	#macro I_TUNGSTEN_INGOT 117
 	
 	#macro I_WOODEN_SWORD 1
 	#macro I_WOODEN_PIC 2
@@ -303,6 +317,7 @@ if room == game instance_create_layer(x,y,"instances",objVisioncol);
 	#region crafteos
 	global.crafting_recipes = [];
 	#macro C_ANY 0
+	#macro C_FURNACE 1
 	
 	craftable = [];
 	
@@ -355,5 +370,57 @@ if room == game instance_create_layer(x,y,"instances",objVisioncol);
 	add_recipe(I_STONE_SPEAR,w_dur[1],, [
 	    [I_STICK, 1], 
 	    [I_STONE, 10]
+	])
+	
+	//Bloques y otras cosas generales
+	add_recipe(I_WOOD_BLOCK,1,,
+	[
+		[I_WOOD,4]
+	])
+	
+	add_recipe(I_COBBLE_BLOCK,1,,
+	[
+		[I_STONE,8]
+	])
+	
+	add_recipe(I_WOOD,1,,
+	[
+		[I_STICK,8]
+	])
+	
+	add_recipe(I_WOOD,4,,
+	[
+		[I_WOOD_BLOCK,1]
+	])
+	
+	add_recipe(I_STONE,8,,
+	[
+		[I_COBBLE_BLOCK,1]
+	])
+	
+	
+	
+	//horno
+	add_recipe(I_TIN_INGOT,1,C_FURNACE,
+	[
+		[I_STONE_TIN,1]
+	])
+	add_recipe(I_COPPER_INGOT,1,C_FURNACE,
+	[
+		[I_STONE_COPPER,1]
+	])
+	add_recipe(I_BRONZE_INGOT,1,C_FURNACE,
+	[
+		[I_STONE_TIN,1],
+		[I_STONE_COPPER,1],
+	])
+	add_recipe(I_IRON_INGOT,1,C_FURNACE,
+	[
+		[I_STONE_IRON,2]
+	])
+	add_recipe(I_LEAD_INGOT,1,C_FURNACE,
+	[
+		[I_STONE_IRON,4],
+		[I_COAL,1]
 	])
 	#endregion

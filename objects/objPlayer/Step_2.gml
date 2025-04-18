@@ -28,13 +28,11 @@ if(wprev != w_width || hprev != w_height) {
 	view_set_wport(0,w_width);
 	view_set_hport(0,w_height);
 	camera_set_view_size(view_camera[0],w_width,w_height);
-	
 	/*
 	surface_free(_surf);
 	_surf = surface_create(w_width>>global.screendiv,w_height>>global.screendiv);
 	view_set_surface_id(0,_surf);
 	*/
-	
 	if(w_height > 1)
 	{
 	surface_resize(application_surface,w_width>>global.screendiv,w_height>>global.screendiv);
@@ -48,7 +46,8 @@ if(wprev != w_width || hprev != w_height) {
 		uisize = factor<<global.bigui;
 	}
 	
-		display_set_gui_size(w_width div uisize, w_height div uisize);
+        gw = w_width div uisize
+        gh = w_height div uisize
 	}
 }
 camera_set_proj_mat(view_camera[0],matrix_build_projection_perspective_fov(60+fov_mod,w_width/w_height,1,fog_depth));

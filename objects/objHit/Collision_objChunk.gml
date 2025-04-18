@@ -1,5 +1,9 @@
 if(activated == true)
 {
+	var _tree = other.tree;
+	var _th = other.th;
+	var _tw = other.tw;
+	var _uv = other.uv;
 	var _x = (x>>4)<<4;
 	var _y = (y>>4)<<4;
 	var dam = damage;
@@ -13,14 +17,29 @@ if(activated == true)
 				activated = false;//chocó con un tile, se desactiva el golpe
 				
 				//activar al impostor
+				var _tile_index = objects[_index][0];
 				with(objImposter)
 				{
-					activated = true;
-					tile_index = _index;
+					tile_index = _tile_index;
 					damage = dam;
 					x = _x;
 					y = _y;
+					if _tile_index == 0
+					{
+						tree = _tree;
+						uv = _uv;
+						th = _th;
+						tw = _tw;
+					}
+					else
+					{
+						th = -16;
+						tw = 8;
+						//uv
+					}
+					event_user(1);
 				}
+                objPlayer.experience++;
 				array_delete(objects,_index,1);
 				objectcount--;
 				instance_activate_object(objVisioncol);

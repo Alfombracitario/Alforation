@@ -1,7 +1,10 @@
+var _th = th;
+var _tile = tile_index;
 with(objPlayer)
 {
-	var _item = drops[tile_index][0];
-	var _count = drops[tile_index][1];
+	var _item = drops[_tile][0];
+	var _count = drops[_tile][1];
+	if _tile == 0 _count = (_th*-1)>>5;
 
 	if(_count < 1)
 	{

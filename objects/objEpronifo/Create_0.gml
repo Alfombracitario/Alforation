@@ -1,0 +1,13 @@
+hp = 10;
+maxhp = hp;
+state = 0;
+mspeed = 0;
+knockspd = 0;
+drop = true;
+init_3d_model_animation(9);
+zv = -32;
+z = 0;
+sw = 16;
+draw_3d_image();
+alarm_set(0,2);
+texture = sprite_get_texture(sprEpronifo,0);

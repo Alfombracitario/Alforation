@@ -6,4 +6,4 @@ ini_write_string("options","uisize",global.uisize);
 ini_write_string("options","screendiv",global.screendiv);
 
 ini_close();
-game_restart()
+room_restart();

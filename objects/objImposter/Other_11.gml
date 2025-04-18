@@ -1,0 +1,2 @@
+//activación
+activated = true;

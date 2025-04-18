@@ -9,7 +9,7 @@
   "bitRate":64,
   "compression":3,
   "conversionMode":0,
-  "duration":285.44,
+  "duration":99.76598,
   "name":"musDungeonA",
   "parent":{
     "name":"Sounds",
