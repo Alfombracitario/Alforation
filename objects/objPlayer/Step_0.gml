@@ -1,6 +1,6 @@
 var _move = 0;
 var _smove = 0;
-
+#region input
 if(invopen == true)
 {
 	if(gamepad_is_connected(0))
@@ -163,7 +163,8 @@ else//fuera del inventario
 if(os_type == os_windows || os_type == os_macosx || os_type == os_operagx)
 {
 	if keyboard_check_pressed(vk_escape) instance_create_layer(x,y,"instances",objPause);
-	_move = keyboard_check(ord("W")) - keyboard_check(ord("S"));
+	if keyboard_check_pressed(vk_shift) running = true;
+    _move = keyboard_check(ord("W")) - keyboard_check(ord("S"));
 	_smove = keyboard_check(ord("A")) - keyboard_check(ord("D"));
 	if keyboard_check_pressed(ord("E")) { invopen = true; invmousex = gw>>1; invmousey = gh>>1; audio_play_sound(sndAccept,0,0,global.sndvol); window_mouse_set_locked(false);}
 	
@@ -180,7 +181,17 @@ if(os_type == os_windows || os_type == os_macosx || os_type == os_operagx)
 			hotbarsel = hotbarsize-1;
 		}
 	}
-	
+    if(keyboard_check(vk_space))
+    {
+        if(z == 0)
+        {
+            zspeed = jumpf;
+            grav = GRAV_JUMP;
+        }
+    }
+    else {
+    	grav = GRAV_NORMAL;
+    }
 	if(window_mouse_get_locked()) {
 	camz = clamp(camz + (clamp(window_mouse_get_delta_y() / 200,-0.15,0.15) * (abs(camz) + 1)),-4,4);
 		turn_speed = lerp(turn_speed,clamp(-window_mouse_get_delta_x() / 3,-15,15),0.75);
@@ -198,7 +209,22 @@ if(gamepad_is_connected(0))
 {
 	//pausar
 	if gamepad_button_check_pressed(0,gp_start) {instance_create_layer(0,0,"instances",objPause);}
-	_move = -round(gamepad_axis_value(0, gp_axislv))
+	if gamepad_button_check_pressed(0,gp_face2) running = !running;
+    if (gamepad_button_check_pressed(0, gp_stickl)) {
+        running = !running;
+    }
+    if(gamepad_button_check(0,gp_face1))
+    {
+        if(z == 0)
+        {
+            zspeed = jumpf;
+            grav = GRAV_JUMP;
+        }
+    }
+    else {
+    	grav = GRAV_NORMAL;
+    }
+    _move = -round(gamepad_axis_value(0, gp_axislv))
 	_smove = -round(gamepad_axis_value(0, gp_axislh))
 	camz = clamp(camz + (clamp(gamepad_axis_value(0, gp_axisrv)*global.fpsmode*global.settings.sensibility*0.02,-0.15*global.fpsmode,0.15*global.fpsmode) * (abs(camz) + 1)),-4,4);
 	cam_yaw += gamepad_axis_value(0, gp_axisrh)*global.settings.sensibility*global.fpsmode;
@@ -272,6 +298,7 @@ if(os_type == os_android || os_type == os_ios)
 	}
 }
 #endregion
+    #endregion
 }
 #region movement
 if(_move != 0) {
@@ -360,21 +387,33 @@ cam_yaw = (cam_yaw + 360) mod 360;
 var xfrom = x;
 var yfrom = y;
 
+
 var _z = -22 + (sin(sin_tic *0.1) * 0.02);
 
 var xto = xfrom + dcos(cam_yaw);
 var yto = yfrom + dsin(cam_yaw);
 var zto = camz + (sin(sin_tic *0.1) * 0.01);
 
+
+var swayspeed = 0;
+if(z == 0)
+{
+    swayspeed = 1;
+}
+else 
+{
+    swayspeed = 0.5;
+}
+
 sway_amount = clamp(abs(s_sp) + abs(f_sp),-mspeed,mspeed);
 
-sin_tic += sway_amount;
+sin_tic += sway_amount*swayspeed;
 
-sway_x += sway_amount *0.7;
-sway_y += sway_amount *1.3;
+sway_x += sway_amount *0.7*swayspeed;
+sway_y += sway_amount *1.3*swayspeed;
 
 //Update the camera
-var mat = matrix_build_lookat(xfrom, yfrom, _z, xto, yto, _z + zto, 0, 0, 1);
+var mat = matrix_build_lookat(xfrom, yfrom, z+_z, xto, yto, z+_z + zto, 0, 0, 1);
 camera_set_view_mat(view_camera[0], mat);
 #endregion
 

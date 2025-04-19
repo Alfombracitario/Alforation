@@ -1,7 +1,9 @@
+application_surface_draw_enable(true);
 _alpha = -0.5;
 screen = 0;
 intromode = 0;
 intro_tic = 0;
+selected_button = 0;
 //			sprite, x, y, isvertical
 intro[0] = [sprIalfomrade,0,-0.3];
 intro[1] = [sprImadera,-1,0.41];

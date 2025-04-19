@@ -1,26 +1,5 @@
 if(keyboard_check_pressed(ord("Q"))) do_player_hurt(5);
 
-previnvmousex = invmousex;
-previnvmousey = invmousey;
-
-prevmousex[0] = mousex[0];
-prevmousey[0] = mousey[0];
-
-prevmousex_r[0] = mousex_r[0];
-prevmousey_r[0] = mousey_r[0];
-
-if(os_type == os_android || os_type == os_ios)
-{
-	prevmousex[1] = mousex[1];
-	prevmousey[1] = mousey[1];
-	prevmousex[2] = mousex[2];
-	prevmousey[2] = mousey[2];
-	prevmousex_r[1] = mousex_r[1];
-	prevmousey_r[1] = mousey_r[1];
-	prevmousex_r[2] = mousex_r[2];
-	prevmousey_r[2] = mousey_r[2];
-}
-
 if(wprev != w_width || hprev != w_height) {
 	
 	wprev = w_width;

@@ -7,7 +7,6 @@ image_alpha = 0;
 view_enabled = true;
 view_visible[0] = true;
 camera_set_view_size(view_camera[0],w_width,w_height);
-
 var factor = round(w_height / 270);
 if (global.uisize < factor)
 {
@@ -38,15 +37,20 @@ camera_set_proj_mat(view_camera[0],matrix_build_projection_perspective_fov(60,w_
 
 gamepad_set_axis_deadzone(0,0.01);
 
+//macros iniciales
+#macro GRAV_NORMAL -0.15
+#macro GRAV_JUMP -0.13
 invmousex = w_width>>1;
 invmousey = w_height>>1;
 previnvmousex = 0;
 previnvmousey = 0;
 gw = display_get_gui_width();
 gh = display_get_gui_height();
-experience = 0;
-level = 1;
-xp_need = floor(50 * level * power(1.1, level));
+running = false;
+zspeed = 0;
+grav = -0.2;
+jumpf = 2;
+knockback = 0;
 invmove = false;
 craftmove = false;
 craftresult = [0,0,0,0];
@@ -112,8 +116,8 @@ global.update3d = false;
 pcx = floor(x/CHUNK_SIZE);
 pcy = floor(y/CHUNK_SIZE);
 
-last_pcx = -99999999;
-last_pcy = -99999999;
+last_pcx = 16777217;
+last_pcy = 16777217;
 ExtTemperature = 0;
 selector = [0,0,0,0];
 
@@ -130,6 +134,7 @@ if(room == game)
 {
 	x = ini_read_real("p","x",0);
 	y = ini_read_real("p","y",0);
+    z = ini_read_real("p","z",0);
 }
 _health = ini_read_real("p","health",100);
 _hunger = ini_read_real("p","hunger",100);
@@ -137,6 +142,9 @@ _temperature = ini_read_real("p","temp",128);
 cam_yaw = ini_read_real("p","camyaw",0);
 _time = ini_read_real("p","time",0);
 maxhealth = ini_read_real("p","maxhealth",100);
+experience = ini_read_real("p","xp",0);
+level = ini_read_real("p","lv",1);
+xp_need = floor(25 * level * power(1.1, level));
 //inventario
 invsize = 40;
 var invdata = 3;

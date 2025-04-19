@@ -1,4 +1,4 @@
-texturegroup_load("intro");
+texturegroup_load("TGintro");
 screen = -1;
 if(debug_mode)
 {
@@ -40,8 +40,8 @@ switch(os_browser)
 }
 
 draw_set_font(global.font2);
-draw_set_halign(fa_middle);
-draw_set_valign(fa_center);
+draw_set_valign(fa_middle);
+draw_set_halign(fa_center);
 
 //macros
 #macro CHUNK_SIZE 256

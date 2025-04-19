@@ -25,34 +25,38 @@ function load_chunk_ini(cx, cy) {
 				save = false;
 				
 				objectcount = 0;
-				
+                
+				var times = 0;
+                
 				if(temperature > 210 && humidity < 30)//Desierto
 				{
-					var times = irandom(11);
+					times = irandom(11);
 					add_obj(times,T_DEAD_BUSH);
 					
-					var times = irandom(7);
+					times = irandom(7);
 					add_obj(times,T_CACTUS);
 					
 					sprite_index = sprSand;
+                    
+                    set_tree(sprPinetree)
 				}
 				else if(temperature > 160 && humidity < 80) //acacia
 				{
-					var times = irandom(2);
+					times = irandom(2);
 					add_obj(times,T_DEAD_BUSH);
 					
-					var times = irandom(11);
+					times = irandom(11);
 					add_obj(times,T_TREE);
 					
-					var times = irandom(32);
+					times = irandom(32);
 					add_obj(times,T_GRASS);
 					
 					times = irandom(5);
 					add_obj(times,T_STONE);
-
+                    
 					times = irandom(1);
 					add_obj(times,T_MUSHROOM1);
-				
+                    
 					times = irandom(1);
 					add_obj(times,T_MUSHROOM2);
 					
@@ -75,9 +79,9 @@ function load_chunk_ini(cx, cy) {
 				else if(temperature < 25 && humidity < 40)//Nieve
 				{
 					
-					var times = irandom(11);
+					times = irandom(11);
 					add_obj(times,T_DEAD_BUSH);
-					var times = irandom(11);
+					times = irandom(11);
 					add_obj(times,T_TREE);
 					
 					set_tree(sprPinetree,1);
@@ -114,10 +118,10 @@ function load_chunk_ini(cx, cy) {
 				}
 				else if(temperature < 100 && temperature > 50 && humidity < 110 && humidity > 80)//bosque de pinos grandes
 				{
-					var times = irandom(12);
+					times = irandom(12);
 					add_obj(times,T_TREE);//Pinos grandes
 					
-					var times = irandom(5);
+					times = irandom(5);
 					add_obj(times,T_DEAD_BUSH);
 					
 					times = irandom(6);
@@ -134,7 +138,7 @@ function load_chunk_ini(cx, cy) {
 					set_tree(sprBirchTree);
 					image_blend = get_color_colormap(temperature,humidity)
 					
-					var times = irandom(12);
+					times = irandom(12);
 					add_obj(times,T_TREE);
 				
 					times = irandom(15);
@@ -167,10 +171,10 @@ function load_chunk_ini(cx, cy) {
 					set_tree(sprDeadtree);
 					image_blend = get_color_colormap(temperature,humidity);
 					
-					var times = irandom(4);
+					times = irandom(4);
 					add_obj(times,T_TREE);
 					
-					var times = irandom(5);
+					times = irandom(5);
 					add_obj(times,T_DEAD_BUSH);
 					
 					times = irandom(6);
@@ -187,7 +191,7 @@ function load_chunk_ini(cx, cy) {
 				{
 					set_tree(sprSwamptree);
 					image_blend = get_color_colormap(temperature,humidity);
-					var times = irandom(18);
+					times = irandom(18);
 					add_obj(times,T_TREE);
 					times = irandom(3)
 					add_obj(times,T_DEAD_BUSH);
@@ -204,7 +208,7 @@ function load_chunk_ini(cx, cy) {
 					set_tree(sprPinetree);
 					image_blend = get_color_colormap(temperature,humidity)
 					
-					var times = irandom(11);
+					times = irandom(11);
 					add_obj(times,T_TREE);
 				
 					times = irandom((humidity+temperature)>>4);

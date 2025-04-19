@@ -1,4 +1,4 @@
-var _time = objPlayer._time;
+_time = objPlayer._time;
 x = objPlayer.x;
 y = objPlayer.y-CHUNK_SIZE*dsin(_time+90);
 
@@ -9,9 +9,9 @@ var rightyv = y-(32*dsin(_time));
 
 var leftx = x + 16;
 var rightx= x - 16;
-
-var z = CHUNK_SIZE*dsin(_time+180);
-var zv = CHUNK_SIZE*dsin(_time+188);
+var _z = objPlayer.z
+var z = _z + CHUNK_SIZE*dsin(_time+180);
+var zv = _z + CHUNK_SIZE*dsin(_time+188);
 
 vertex_begin(v,f);
 //sol
@@ -47,8 +47,8 @@ rightyv = y-(32*dsin(_time));
 leftx = x + 16;
 rightx= x - 16;
 
-z = CHUNK_SIZE*dsin(_time+180);
-zv = CHUNK_SIZE*dsin(_time+188);
+z = _z+ CHUNK_SIZE*dsin(_time+180);
+zv = _z + CHUNK_SIZE*dsin(_time+188);
 
 vertex_position_3d(v,leftx,leftyv,z);
 vertex_color(v,c_white,1);

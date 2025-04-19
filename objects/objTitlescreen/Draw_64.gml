@@ -28,7 +28,7 @@ if(screen == -1)
 		gpu_set_tex_filter(false);
 		for(var j = 0; j < 8; j++)
 			{
-				var color = merge_color($100000,$C0A0A0,j*0.125);
+				color = merge_color($100000,$C0A0A0,j*0.125);
 				scale = 0.9402+(j*0.0078125);
 				draw_sprite_ext(intro[i][0],0,rw*0.5+rw*intro[i][1],rh*intro[i][2],scale,scale,0,color,1);
 			}

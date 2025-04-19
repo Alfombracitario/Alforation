@@ -1,3 +1,12 @@
+if(mode == 0)
+{
+objBloadworld.y = 9999;
+objBloadworld.x = 9999;
+instance_destroy(objBdeleteworld);
+instance_destroy(objBworld);
+x = 0;
+mode = 1;
+bc = 2;
 randomize();
 global.seed = irandom(999999);
 var wns;
@@ -8,18 +17,10 @@ wns = //nombres de los mundos
 "Normal name","Short name","Super ultra epic long name!!!!","ASFDSFS","a","Enter the world name"]
 
 global.worldname = wns[irandom(array_length(wns)-1)];
-if(os_type == os_windows)
-{
-	global.worldname = get_string("Enter the world name",global.worldname);
-	global.seed = get_integer("Enter the world seed",global.seed);
+
+var _string = "World name: "+string(global.worldname);
+//			event,xscale,yscale,x,y,string
+button[0] = [2,string_length(_string),2,0,24,_string];
+_string = "Seed: "+string(global.seed)
+button[1] = [3,string_length(_string),2,0,48,_string];
 }
-global.chunks = ds_map_create();
-file_delete(WORLDIR+global.worldname+"/data.ini");
-file_delete(WORLDIR+global.worldname+"/inv.ini");
-ini_open(WORLDIR+global.worldname+"/data.ini");
-ini_write_real("world","seed",global.seed);
-instance_destroy(objBloadworld);
-instance_destroy(objBdeleteworld);
-instance_destroy(objTitlescreen);
-instance_destroy(objBcreateworld);
-room_goto(game);

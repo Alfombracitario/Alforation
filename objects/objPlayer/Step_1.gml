@@ -3,6 +3,28 @@ w_height = window_get_height();
 gw = display_get_gui_width();
 gh = display_get_gui_height();
 
+previnvmousex = invmousex;
+previnvmousey = invmousey;
+
+prevmousex[0] = mousex[0];
+prevmousey[0] = mousey[0];
+
+prevmousex_r[0] = mousex_r[0];
+prevmousey_r[0] = mousey_r[0];
+
+if(os_type == os_android || os_type == os_ios)
+{
+	prevmousex[1] = mousex[1];
+	prevmousey[1] = mousey[1];
+	prevmousex[2] = mousex[2];
+	prevmousey[2] = mousey[2];
+	prevmousex_r[1] = mousex_r[1];
+	prevmousey_r[1] = mousey_r[1];
+	prevmousex_r[2] = mousex_r[2];
+	prevmousey_r[2] = mousey_r[2];
+}
+
+
 mousex[0] = device_mouse_x_to_gui(0);
 mousey[0] = device_mouse_y_to_gui(0);
 
@@ -20,12 +42,18 @@ if(os_type == os_android || os_type == os_ios)
 	mousex[2] = device_mouse_x_to_gui(2);
 	mousey[2] = device_mouse_y_to_gui(2);
 }
+var _target_speed = (running ? 2.8 : 1.8) * global.fpsmode;
 
-var _target_speed = (keyboard_check(vk_shift) ? 2.8 : 1.8) * global.fpsmode;
-
-if gamepad_button_check(0,gp_face2) _target_speed = 2.8*global.fpsmode;
 fov_mod = (mspeed/global.fpsmode)*5
 mspeed = lerp(mspeed,_target_speed,0.25);
+
+z-=zspeed;
+zspeed+=grav;
+if(z > 0)
+{
+    z = 0;
+    zspeed = 0;
+}
 
 #region CHUNKS
 if(room == game)
@@ -42,7 +70,6 @@ if(room == game)
 hurt_tic-=0.01;
 
 //datos para controlar tiempo, hambre, temperatura, etc
-
 _hunger -= _target_speed*0.0005;
 
 if(_health < maxhealth)

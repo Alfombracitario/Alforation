@@ -1,15 +1,23 @@
 gpu_set_ztestenable(false);
 gpu_set_fog(false,0,0,0);
+
 //dibujar la pantalla
 var grh;
 if(camz <= 0.03) grh = (gh>>1)-(gh*(camz-0.05)) else grh = gh>>1;
-draw_rectangle_color(0,0,gw,grh,sky_color,sky_color,fog_color,fog_color,false);
-display_set_gui_size(w_width<<global.screendiv,w_height<<global.screendiv);
+draw_rectangle_color(0,0,gw,grh,sky_color,sky_color,fog_color,fog_color,false);//gradiente
+draw_set_color(fog_color);
+draw_rectangle(0,grh,gw,gh,false);
+draw_set_color(c_white);
+
+//dibujar la pantalla a resolución completa
+display_set_gui_size(w_width>>global.screendiv,w_height>>global.screendiv);
 draw_surface_ext(application_surface,0,0,1,1,0,timecolor,1);
 display_set_gui_size(gw,gh);
 
-draw_sprite(sprCompass,cam_yaw *0.0888888888888889,gw,gh);
 
+
+
+draw_sprite_ext(sprCompass,cam_yaw *0.0888888888888889,gw,gh,2,2,0,c_white,1);
 if(added_tic > 0)
 {
 	var _y = 24
