@@ -15,7 +15,8 @@ if(activated == true)
 			if(_index != -1)
 			{
 				activated = false;//chocó con un tile, se desactiva el golpe
-				
+                
+                with(objPlayer) damage_hand_item(1);
 				//activar al impostor
 				var _tile_index = objects[_index][0];
 				with(objImposter)
@@ -42,9 +43,10 @@ if(activated == true)
                 add_xp(1);
 				array_delete(objects,_index,1);
 				objectcount--;
-				instance_activate_object(objVisioncol);
-				draw = true;
 			}
 		}
+        //actualizar solo el chunk afectado
+        draw = true;
+        event_user(2);
 	}
 }

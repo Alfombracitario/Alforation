@@ -30,8 +30,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sprGrasstop",
-    "path":"sprites/sprGrasstop/sprGrasstop.yy",
+    "name":"sprBg",
+    "path":"sprites/sprBg/sprBg.yy",
   },
   "spriteMaskId":null,
   "visible":true,

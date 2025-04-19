@@ -22,5 +22,5 @@ function update_chunks() {
         }
 		ini_close();
     }
-	
+
 }

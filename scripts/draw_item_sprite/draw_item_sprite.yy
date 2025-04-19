@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"draw_item_sprite",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_item_sprite",
+  "parent":{
+    "name":"inventory",
+    "path":"folders/Scripts/inventory.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

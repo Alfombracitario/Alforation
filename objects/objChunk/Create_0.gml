@@ -1,3 +1,3 @@
-draw = true;
+draw = false;
 image_xscale = 16;
 image_yscale = 16;

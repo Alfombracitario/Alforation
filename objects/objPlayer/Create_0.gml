@@ -1,5 +1,4 @@
 //ahorrar recursos
-texturegroup_unload("TGintro");
 draw_set_halign(fa_left);
 w_width = window_get_width();
 w_height = window_get_height();
@@ -46,6 +45,7 @@ previnvmousex = 0;
 previnvmousey = 0;
 gw = display_get_gui_width();
 gh = display_get_gui_height();
+z = 0;
 running = false;
 zspeed = 0;
 grav = -0.2;

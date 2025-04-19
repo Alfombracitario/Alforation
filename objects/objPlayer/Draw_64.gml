@@ -15,9 +15,7 @@ draw_surface_ext(application_surface,0,0,1,1,0,timecolor,1);
 display_set_gui_size(gw,gh);
 
 
-
-
-draw_sprite_ext(sprCompass,cam_yaw *0.0888888888888889,gw,gh,2,2,0,c_white,1);
+draw_sprite_ext(sprCompass,cam_yaw*0.0888888888888889,gw,gh,2,2,0,c_white,1);
 if(added_tic > 0)
 {
 	var _y = 24
@@ -43,7 +41,7 @@ if(inventory[hotbar[hotbarsel]][0] != 0)
 		_color1 = merge_color($666666,timecolor-$444444,1-_index);
 		_color2 = merge_color($666666,timecolor-$444444,_index);
 		_color = merge_color(timecolor,$666666,_index);
-	if inventory[hotbar[hotbarsel]][0] < 100 
+	if(inventory[hotbar[hotbarsel]][0] < 100)
 	{
 		angle = 24;
 		hiy += 16;
@@ -94,6 +92,8 @@ draw_set_font(global.font);
 draw_text_shadow(0,20,level);
 draw_text(0,gh-16,ExtTemperature);
 draw_set_font(global.font2);
+
+
 //hotbar
 var _scl = (hotbarsize*0.8)+0.3;
 var _hbx = hotbarx+(gw>>1)-_scl*10
@@ -102,8 +102,7 @@ draw_sprite_ext(sprSlot,0,_hbx+3,gh-21,hotbarsize,1,0,c_white,1);
 draw_sprite(sprInvselected,0,_hbx+3+(hotbarsel<<4),gh-21);
 for(var i = 0; i<hotbarsize;i++)
 {
-	draw_sprite(sprItems,inventory[hotbar[i]][0],3+_hbx+(i<<4),gh-21);
-	if inventory[hotbar[i]][1] > 1 draw_text(3+_hbx+(i<<4),gh-21,inventory[hotbar[i]][1]);
+    draw_item_sprite(3+_hbx+(i<<4),gh-21,inventory[hotbar[i]][0],inventory[hotbar[i]][1]);
 }
 
 
@@ -113,11 +112,10 @@ if(invopen)
 	//crafteo
 	draw_sprite_ext(sprContainer,0,craftx-5,crafty-16,11,9,0,c_white,1);
 	draw_sprite_ext(sprSlot,0,craftx,crafty,3,1,0,c_white,1);
-	for(var i = 0; i<3; i++)//dibujar los items
+    
+	for(var i = 0; i<3; i++)//dibujar los items del crafting grid
 	{
-		var _x = craftx+(i<<4);
-		draw_sprite(sprItems,crafting_grid[i][0],_x,crafty);
-		if crafting_grid[i][1] > 1 draw_text(_x,crafty,crafting_grid[i][1]);
+        draw_item_sprite(craftx+(i<<4),crafty,crafting_grid[i][0],crafting_grid[i][1]);
 	}
 	var craftp80 = craftx+80
 	draw_sprite(sprArrowright,0,craftx+52,crafty);
@@ -131,12 +129,10 @@ if(invopen)
 		var _x = craftx+(i<<4);
 		var _y = crafty+24;
 		
-		draw_sprite(sprSlot,0,_x,_y);
-		draw_sprite(sprItems,craftable[i][0],_x,_y)
-		draw_text(_x,_y,craftable[i][1]);
+        draw_sprite(sprSlot,0,_x,_y);
+        draw_item_sprite(_x,_y,craftable[i][0],craftable[i][1]);
 	}
 	draw_text_shadow(craftx,crafty-10,"Crafting");
-	
 	
 	
 	
@@ -151,33 +147,14 @@ if(invopen)
 	,invy+(floor(selecteditem*0.1)<<4)
 	);
 	
-	
-	
-	draw_set_halign(fa_right);
 	for (var i = 0; i < rows; i++) {
 		for (var j = 0; j < 10; j++) {
 			
 			var _slot = j+(10*i);
-			var _sx = invx+(j<<4);
-			var _sy = invy+(i<<4);
-			draw_sprite(sprItems,inventory[_slot][0],_sx,_sy);
-			if(inventory[_slot][0] <= 99 && inventory[_slot][0] > 0)
-			{
-				var _tier = floor(inventory[_slot][0]*0.1)
-				draw_sprite_ext(sprPixel,0,_sx,_sy,2,(inventory[_slot][1]/w_dur[_tier])*16,0,c_lime,1);
-				
-			}
-			else
-			{
-				if (inventory[_slot][1] > 1)
-				{
-					draw_text(_sx+16,_sy+8,inventory[_slot][1]);
-				}
-			}
+            draw_item_sprite(invx+(j<<4),invy+(i<<4),inventory[_slot][0],inventory[_slot][1]);
 		}
 	}	
 	
-	draw_set_halign(fa_left);
 	if(gamepad_is_connected(0))
 	{
 		if(selector[0] == 0)
@@ -188,9 +165,7 @@ if(invopen)
 	}
 	if(selector[0] != 0)//dibujar el item que se está moviendo
 	{
-		draw_sprite(sprItems,selector[0],invmousex,invmousey);
-		if selector[1] > 1 draw_text(invmousex,invmousey,selector[1]);
-		
+        draw_item_sprite(invmousex,invmousey,selector[0],selector[1],1);
 	}
 }
 #endregion
@@ -247,5 +222,4 @@ if(display_info == true)
 	draw_text(0,0,"X: "+string(x)+"\nY: "+string(y)+"\nCx: "+string(pcx)+"\nCy: "+string(pcy)+"\nFPS "+string(fps)+"\nFPSr "+string(fps_real));
 	draw_text(0,64,instance_count);
 }
-draw_text(0,32,camz);
 gpu_set_ztestenable(true);

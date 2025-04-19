@@ -1,3 +1,4 @@
+//cuando se destruye
 var _th = th;
 var _tile = tile_index;
 with(objPlayer)

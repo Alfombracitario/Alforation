@@ -71,7 +71,7 @@ vertex_format_add_texcoord();
 f = vertex_format_end();
 v = vertex_create_buffer();
 
-tex = get_texture_coords(0,7);
+tex = get_texture_coords_sprite(sprBtiles,70)
 
 texture = sprite_get_texture(sprBtiles,0);
 vertex_begin(v,f);
@@ -112,7 +112,7 @@ for(_x = 0; _x < _xlimit; _x++)
 	var sx = x+16; //cuanto mide en X
 	var sy = y+16; //cuanto mide en Y
 	
-	var _c;
+	var _c = 0;
 	_c[0] = $ffffff;
 	_c[1] = $ffffff;
 	z = 0;
@@ -398,11 +398,12 @@ vertex_end(v);
 x = 0;
 y = 0;
 image_blend = c_gray;
-var _px = irandom(_xlimit-2)+1
-var _py = irandom(_ylimit-2)+1
+var _px = irandom(_xlimit-2)+1;
+var _py = irandom(_ylimit-2)+1;
+
 while(tiles[_px][_py] == 1)
 {
-	var _px = irandom(_xlimit-2)+1
-	var _py = irandom(_ylimit-2)+1
+	_px = irandom(_xlimit-2)+1;
+    _py = irandom(_ylimit-2)+1;
 }
 instance_create_layer(_px<<4,_py<<4,"instances",objPlayer);

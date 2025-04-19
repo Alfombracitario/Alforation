@@ -5,7 +5,7 @@ function add_xp(amount)
         experience += amount;
         if(experience >= xp_need)
         {
-            audio_play_sound(sndLevelup,0,0);
+            audio_play_sound(sndLevelup,0,0,global.sndvol);
             level++;
             experience-=xp_need;
             xp_need = floor(25 * level * power(1.1, level));
@@ -13,7 +13,7 @@ function add_xp(amount)
         else
         {
             var _pitch = 1+(experience/xp_need);
-            audio_play_sound(sndExperience,0,0,1,0,_pitch);
+            audio_play_sound(sndExperience,0,0,global.sndvol*0.5,0,_pitch);
         }
     }
 }

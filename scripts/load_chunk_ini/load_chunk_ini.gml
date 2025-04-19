@@ -4,7 +4,6 @@ function load_chunk_ini(cx, cy) {
 	var _cxx = cx*CHUNK_SIZE
 	var _cyy = cy*CHUNK_SIZE
 	
-	
     var key = chunk_key(cx, cy);
 	
     if (!ds_map_exists(global.chunks, key)) 
@@ -20,12 +19,21 @@ function load_chunk_ini(cx, cy) {
 			ins.temperature = values[0];
 			ins.humidity = values[1];
 			
+            
 			with(ins)
 			{	
-				save = false;
-				
-				objectcount = 0;
+                //probabilidad ultra baja de hacer aparecer un dungueon
+                var _r = irandom(100)
+                if(_r == 1)
+                {
+                    var _x = x+(irandom(15)<<4);
+			        var _y = y+(irandom(15)<<4);
+                    _d = instance_create_depth(_x,_y,0,objDungeonladderdown)
+                    _d.image_blend = get_color_colormap(temperature,humidity);
+                }
                 
+				save = false;
+				objectcount = 0;
 				var times = 0;
                 
 				if(temperature > 210 && humidity < 30)//Desierto
@@ -329,7 +337,7 @@ function load_chunk_ini(cx, cy) {
 					
 						var valuetoread = ini_read_string(key,i,0);
 				
-						var hex_digit;
+						var hex_digit = 0;
 				
 						hex_digit[0] = string_char_at(valuetoread, 2);
 						hex_digit[1] = string_char_at(valuetoread, 3);
@@ -355,6 +363,6 @@ function load_chunk_ini(cx, cy) {
 			event_user(2);
 		}
 		//mentirle al juego para que actualize los modelos 3D
-		prevcamyaw--;
+        prevcamyaw--;
     }
 }

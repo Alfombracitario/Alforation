@@ -69,7 +69,7 @@ else
 	}
 
 
-	if selected != presel audio_play_sound(sndSelect,0,0,global.sndvol);
+	if selected != presel && selected != -1 audio_play_sound(sndSelect,0,0,global.sndvol);
 	presel = selected;
 var ww = window_get_width();
 var wh = window_get_height();

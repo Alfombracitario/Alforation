@@ -13,12 +13,15 @@ function add_item(_id, _cantidad = 1, _efectos = 1) {//este código se ejecuta e
 
     var invs = invsize;
     
-    // Primero buscar si el item ya está en el inventario
-    for (var i = 0; i < invs; i++) {
-        if (inventory[i][0] == _id) {
-            inventory[i][1] += _cantidad;
-            inventory[i][2] = _efectos;
-            return true;
+    if(_id >= 100)//si no es un arma entonces se puede stackear
+    {
+        // Primero buscar si el item ya está en el inventario
+        for (var i = 0; i < invs; i++) {
+            if (inventory[i][0] == _id) {
+                inventory[i][1] += _cantidad;
+                inventory[i][2] = _efectos;
+                return true;
+            }
         }
     }
     

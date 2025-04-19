@@ -101,7 +101,6 @@ if(invopen == true)
 		
 		if(craftableresults >= 1)
 		{
-			show_debug_message(craftableresults);
 			if(invmousex > craftx && invmousex < craftx+(craftableresults<<4) && invmousey > crafty+24 && invmousey < crafty+40)
 			{
 				var _i = (invmousex-craftx)>>4;
@@ -411,7 +410,6 @@ sin_tic += sway_amount*swayspeed;
 
 sway_x += sway_amount *0.7*swayspeed;
 sway_y += sway_amount *1.3*swayspeed;
-
 //Update the camera
 var mat = matrix_build_lookat(xfrom, yfrom, z+_z, xto, yto, z+_z + zto, 0, 0, 1);
 camera_set_view_mat(view_camera[0], mat);
@@ -425,7 +423,7 @@ if(global.update3Dtime == update3Dindex)
 	if(prevcamyaw != cam_yaw)
 	{
 		global.update3d = true;
-		instance_activate_object(objVisioncol);
+		update_world();
 		var cam_yawp90 = cam_yaw+90;
 		global.sincyphp = dsin(cam_yawp90);
 		global.coscyphp = dcos(cam_yawp90);
