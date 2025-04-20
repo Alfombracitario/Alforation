@@ -2,20 +2,25 @@ gpu_set_ztestenable(false);
 gpu_set_fog(false,0,0,0);
 
 //dibujar la pantalla
-var grh;
-if(camz <= 0.03) grh = (gh>>1)-(gh*(camz-0.05)) else grh = gh>>1;
-draw_rectangle_color(0,0,gw,grh,sky_color,sky_color,fog_color,fog_color,false);//gradiente
-draw_set_color(fog_color);
-draw_rectangle(0,grh,gw,gh,false);
-draw_set_color(c_white);
-
+if(global.hd)
+{
+    var grh;
+    if(camz <= 0.03) grh = (gh>>1)-(gh*(camz-0.05)) else grh = gh>>1;
+    draw_rectangle_color(0,0,gw,grh,sky_color,sky_color,fog_color,fog_color,false);//gradiente
+    draw_set_color(fog_color);
+    draw_rectangle(0,grh,gw,gh,false);
+    draw_set_color(c_white);
+}
+else {
+    draw_set_color(fog_color);
+    draw_rectangle(0,0,gw,gh,false);
+    draw_set_color(c_white);
+}
 //dibujar la pantalla a resolución completa
-display_set_gui_size(w_width>>global.screendiv,w_height>>global.screendiv);
-draw_surface_ext(application_surface,0,0,1,1,0,timecolor,1);
-display_set_gui_size(gw,gh);
-
+draw_surface_stretched_ext(application_surface,0,0,gw,gh,timecolor,1);
 
 draw_sprite_ext(sprCompass,cam_yaw*0.0888888888888889,gw,gh,2,2,0,c_white,1);
+
 if(added_tic > 0)
 {
 	var _y = 24
@@ -31,41 +36,48 @@ if(added_tic > 0)
 	draw_text_shadow(gw-26,_y-18,"+"+string(added_count),1);
 	draw_set_halign(fa_left);
 }
-if(inventory[hotbar[hotbarsel]][0] != 0)
+if(inventory[hotbar[hotbarsel]][0] != 0)//item en la mano
 {
-	var hix = (gw * 0.72) + (sin(sway_x *0.1) * sway_amount * 8 * weapon_swaying)
-	var hiy = gh-116+(sin(sway_y *0.1) + 1) * sway_amount * 2 * weapon_swaying + weapon_y+(cooldown<<2)
-	var angle = 12
-	var scale, _color, color, _index, _color1, _color2;
-		_index = abs(((((_time)+cam_yaw+90) mod 360)/180)-1);
-		_color1 = merge_color($666666,timecolor-$444444,1-_index);
-		_color2 = merge_color($666666,timecolor-$444444,_index);
-		_color = merge_color(timecolor,$666666,_index);
-	if(inventory[hotbar[hotbarsel]][0] < 100)
-	{
-		angle = 24;
-		hiy += 16;
-		for(var i = 0.5; i <8; i+=0.5)//armas
-		{
-			
-			color = merge_color(_color1,_color2,1-i*0.125);
-			scale = 7.5+(i*0.1);
-			draw_sprite_ext(sprItems,inventory[hotbar[hotbarsel]][0],hix-i*0.5,hiy+(i*0.5),scale,scale,angle,color,1);
-		}
-		//obtener los datos para la luz
-		
-		draw_sprite_ext(sprItems,inventory[hotbar[hotbarsel]][0],hix-4,hiy+4,8.3,8.3,angle,_color,1);
-	}
-	else
-	{
-		for(var i = 0.5; i <8; i+=0.5)
-		{
-			color = merge_color(_color1,_color2,1-i*0.125);
-			scale = 7.5+(i*0.1);
-			draw_sprite_ext(sprItems,inventory[hotbar[hotbarsel]][0],hix-i,hiy-i,scale,scale,angle,color,1);
-		}
-		draw_sprite_ext(sprItems,inventory[hotbar[hotbarsel]][0],hix-8,hiy-8,8.3,8.3,angle,_color,1);
-	}
+    var hix = (gw * 0.72) + (sin(sway_x *0.1) * sway_amount * 8 * weapon_swaying)
+    var hiy = gh-116+(sin(sway_y *0.1) + 1) * sway_amount * 2 * weapon_swaying + weapon_y+(cooldown<<2)
+    var angle = 12
+    if(global.hd)
+    {
+    	var scale, _color, color, _index, _color1, _color2;
+    		_index = abs(((((_time)+cam_yaw+90) mod 360)/180)-1);
+    		_color1 = merge_color($666666,timecolor-$444444,1-_index);
+    		_color2 = merge_color($666666,timecolor-$444444,_index);
+    		_color = merge_color(timecolor,$666666,_index);
+    	if(inventory[hotbar[hotbarsel]][0] < 100)
+    	{
+    		angle = 24;
+    		hiy += 16;
+    		for(var i = 0.5; i <8; i+=0.5)//armas
+    		{
+    			
+    			color = merge_color(_color1,_color2,1-i*0.125);
+    			scale = 7.5+(i*0.1);
+    			draw_sprite_ext(sprItems,inventory[hotbar[hotbarsel]][0],hix-i*0.5,hiy+(i*0.5),scale,scale,angle,color,1);
+    		}
+    		//obtener los datos para la luz
+    		
+    		draw_sprite_ext(sprItems,inventory[hotbar[hotbarsel]][0],hix-4,hiy+4,8.3,8.3,angle,_color,1);
+    	}
+    	else
+    	{
+    		for(var i = 0.5; i <8; i+=0.5)
+    		{
+    			color = merge_color(_color1,_color2,1-i*0.125);
+    			scale = 7.5+(i*0.1);
+    			draw_sprite_ext(sprItems,inventory[hotbar[hotbarsel]][0],hix-i,hiy-i,scale,scale,angle,color,1);
+    		}
+    		draw_sprite_ext(sprItems,inventory[hotbar[hotbarsel]][0],hix-8,hiy-8,8.3,8.3,angle,_color,1);
+    	}
+    }
+    else {
+    
+        draw_sprite_ext(sprItems,inventory[hotbar[hotbarsel]][0],hix-4,hiy+4,8.3,8.3,angle,c_white,1);
+    }
 }
 if(hurt_tic > 0)
 {
@@ -86,13 +98,17 @@ draw_sprite_ext(sprBar,0,0,0,_health*0.082,1,0,c_red,1);
 //barra de xp
 var xp = experience/xp_need;
 var color = merge_color($FF7f00,$00FF70,xp);
-draw_sprite_ext(sprBar,1,0,20,8.2,0.5,0,color,1);
-draw_sprite_ext(sprBar,0,0,20,xp*8.2,0.5,0,color,1);
+draw_sprite_ext(sprBar,1,0,20,8.2,0.8,0,color,1);
+draw_sprite_ext(sprBar,0,0,20,xp*8.2,0.8,0,color,1);
 draw_set_font(global.font);
-draw_text_shadow(0,20,level);
-draw_text(0,gh-16,ExtTemperature);
+draw_text(0,20,level);
 draw_set_font(global.font2);
 
+//temperatura
+color = merge_color($FF0000,$0000FF,ExtTemperature/255);
+draw_sprite_ext(sprTemperature,0,82,0,1,1,0,color,1);
+color = merge_color($FF0000,$0000FF,_temperature/255);
+draw_sprite_ext(sprTemperature,1,82,0,1,1,0,color,1);
 
 //hotbar
 var _scl = (hotbarsize*0.8)+0.3;
@@ -185,32 +201,22 @@ else
 	{
 		if(os_type == os_android || os_type == os_ios)
 		{
-			var dx = gw*invdpadx;
-			var dy = gh*invdpady;
-			var ds = round(gh*0.15);
-			var bs = ds*0.05;
-			var bax = gw*buttonax;
-			var bay = gw*buttonay;
-			var bbx = gw*buttonbx;
-			var bby = gw*buttonby;
-			var bix = gw*buttonix;
-			var biy = gw*buttoniy;
+            var _a = 0.5;
+			draw_sprite_ext(sprAndroidbuttons,0,dx,dy,bs,bs,0,c_white,_a);
+			draw_sprite_ext(sprAndroidbuttons,1,dx+ds,dy,bs,bs,0,c_white,_a);
+			draw_sprite_ext(sprAndroidbuttons,2,dx+(ds<<1),dy,bs,bs,0,c_white,_a);
 			
-			draw_sprite_ext(sprAndroidbuttons,0,dx,dy,bs,bs,0,c_white,1);
-			draw_sprite_ext(sprAndroidbuttons,1,dx+ds,dy,bs,bs,0,c_white,1);
-			draw_sprite_ext(sprAndroidbuttons,2,dx+(ds<<1),dy,bs,bs,0,c_white,1);
+			draw_sprite_ext(sprAndroidbuttons,3,dx,dy+ds,bs,bs,0,c_white,_a);
 			
-			draw_sprite_ext(sprAndroidbuttons,3,dx,dy+ds,bs,bs,0,c_white,1);
+			draw_sprite_ext(sprAndroidbuttons,5,dx+(ds<<1),dy+ds,bs,bs,0,c_white,_a);
 			
-			draw_sprite_ext(sprAndroidbuttons,5,dx+(ds<<1),dy+ds,bs,bs,0,c_white,1);
+			draw_sprite_ext(sprAndroidbuttons,6,dx,dy+(ds<<1),bs,bs,0,c_white,_a);
+			draw_sprite_ext(sprAndroidbuttons,7,dx+ds,dy+(ds<<1),bs,bs,0,c_white,_a);
+			draw_sprite_ext(sprAndroidbuttons,8,dx+(ds<<1),dy+(ds<<1),bs,bs,0,c_white,_a);
 			
-			draw_sprite_ext(sprAndroidbuttons,6,dx,dy+(ds<<1),bs,bs,0,c_white,1);
-			draw_sprite_ext(sprAndroidbuttons,7,dx+ds,dy+(ds<<1),bs,bs,0,c_white,1);
-			draw_sprite_ext(sprAndroidbuttons,8,dx+(ds<<1),dy+(ds<<1),bs,bs,0,c_white,1);
-			
-			draw_sprite_ext(sprAndroidbuttons,9,bax,bay,bs,bs,0,c_white,1-cooldown/cooldownmax);
-			draw_sprite_ext(sprAndroidbuttons,10,bbx,bby,bs,bs,0,c_white,1);
-			draw_sprite_ext(sprAndroidbuttons,11,bix,biy,bs,bs,0,c_white,1);
+			draw_sprite_ext(sprAndroidbuttons,9,bax,bay,bs,bs,0,c_white,_a);
+			draw_sprite_ext(sprAndroidbuttons,10,bbx,bby,bs,bs,0,c_white,_a);
+			draw_sprite_ext(sprAndroidbuttons,11,bix,biy,bs,bs,0,c_white,_a);
 		}
 	}
 	//global, out the inventory

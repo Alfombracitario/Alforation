@@ -11,7 +11,6 @@ prevmousey[0] = mousey[0];
 
 prevmousex_r[0] = mousex_r[0];
 prevmousey_r[0] = mousey_r[0];
-
 if(os_type == os_android || os_type == os_ios)
 {
 	prevmousex[1] = mousex[1];
@@ -67,7 +66,7 @@ if(room == game)
 #endregion
 
 //random
-hurt_tic-=0.01;
+hurt_tic-=0.01*global.fpsmode;
 
 //datos para controlar tiempo, hambre, temperatura, etc
 _hunger -= _target_speed*0.0005;
@@ -78,12 +77,12 @@ if(_health < maxhealth)
 	_hunger -= 0.003*global.fpsmode;
 }
 
-_temperature = (_temperature*63 + ExtTemperature)/64;
+_temperature = (_temperature*255*global.fpsmode + ExtTemperature)/256*global.fpsmode;
 
 if (room == game)
 {
     // Tiempo del día
-    _time += 0.01; // 10 minutos = un ciclo
+    _time += 0.01*global.fpsmode; // 10 minutos = un ciclo
     _time = _time mod 360;
 
     notday = true;
@@ -107,16 +106,16 @@ if (room == game)
     {
         var amt = (_time - 160) * 0.05;
 
-        fog_color = merge_color($0A9FFF, $0F0204, amt); // Naranja → Negro azulado
-        timecolor = merge_color($A0A0Ff, $5a4a4a, amt); // Rosado claro → Gris azulado
+        fog_color = merge_color($0A9FFF, $120406, amt); // Naranja → Negro azulado
+        timecolor = merge_color($A0A0Ff, $7a6a6a, amt); // Rosado claro → Gris azulado
         sky_color = merge_color($3f054a,$000000, amt);
     }
     else if (_time < 340) // Noche
     {
-        fog_color = $0F0204;
-        timecolor = $5a4a4a;
+        fog_color = $120406;
+        timecolor = $7a6a6a;
 		sky_color = $000000;
-		if fog_density < fog_depth<<1 fog_density+=32;
+		if fog_density < fog_depth<<1 fog_density+=17;
 
         if (irandom(500) == 0)
         {
@@ -136,8 +135,8 @@ if (room == game)
     {
         var amt = (_time - 340) * 0.05;
         sky_color = merge_color($3f050a, $DF5F2F, amt)
-        fog_color = merge_color($100000, $FF9865, amt); // Negro azulado → Azul claro
-        timecolor = merge_color($806C6C, $FFFFFF, amt); // Gris azulado → Blanco
+        fog_color = merge_color($120406, $FF9865, amt); // Negro azulado → Azul claro
+        timecolor = merge_color($7a6a6a, $FFFFFF, amt); // Gris azulado → Blanco
     }
 }
 
@@ -145,7 +144,7 @@ if (room == game)
 if(ExtTemperature > 215 && humidity > 215)//Jungla
 {
 	if(fog_density < fog_depth) fog_density+=16;
-	fog_color += $003000;
+	fog_color += $002000;
 }
 else if(ExtTemperature < 40 && humidity > 180)//corrupción
 {
@@ -156,22 +155,4 @@ else
 {
 	if(fog_density > CHUNK_SIZE) fog_density-=16;	
 }
-
-if(room = dungeon)
-{
-	fog_color = c_black;
-	if(keyboard_check(vk_space)) //antorcha placeholder
-	{
-		notday = false;
-		fog_density = 400;
-		fog_depth = 600;
-	}
-	else
-	{
-		notday = true;
-		timecolor = make_color_rgb(108,100,128);
-		fog_density = 40;
-		fog_depth = 100;
-	}
-}
-if cooldown > 0 cooldown--;
+if cooldown > 0 cooldown -= global.fpsmode;

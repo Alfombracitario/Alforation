@@ -19,13 +19,21 @@ tc[T_TREE].y2 = uv[3];
 vertex_begin(v,f);
 for(var i = 0; i < objectcount; i++)
 {
+    
 		var j = objects[i][0];
 		if j == -1 continue; //si es -1 entonces saltar
-		var c = color[tuc[j]];
+		c = color[tuc[j]];
 		var h = j;
 		
-		if !j == 0 j = 1;//si no es un arbol usa modelo 0
-	
+		
+            
+        //muy mala pracitca pero bueno
+        zsize[1] = -16;
+        if j == T_TALLGRASS zsize[1] = -32;
+	    if j == T_BAMBOO zsize[1] = -52;
+            
+        if !j == 0 j = 1;//si no es un arbol usa modelo 0
+    
 		var _x = objects[i][1];
 		var _y = objects[i][2];
 	

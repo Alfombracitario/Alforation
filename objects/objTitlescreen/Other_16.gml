@@ -1,4 +1,4 @@
-var factor = round(window_get_height() / 270);
+var factor = round(window_get_height() / 180);
 global.uisize = global.uisize mod factor;
 global.uisize++;
 

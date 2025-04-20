@@ -9,6 +9,7 @@ button[1] = [4,16,2,0.5,72,"Render distance: "+string(1+(global.render_distance<
 button[2] = [5,16,2,0.5,96,"Screen resolution: "+string(global.screendiv)];
 button[3] = [6,16,2,0.5,120,"Ui size: "+string(global.uisize)];
 button[4] = [7,16,2,0.5,144,"FPS rate: "+string(60/global.fpsmode)];
+button[5] = [8,16,2,0.5,168,"Graphics quality: "+string(global.hd)];
 //button[5] = [8,16,2,0.5,168,"Billboard res: "+string(global.update3Dtime)];
 
 bc = array_length(button);

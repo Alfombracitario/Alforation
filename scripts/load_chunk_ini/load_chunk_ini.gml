@@ -23,14 +23,14 @@ function load_chunk_ini(cx, cy) {
 			with(ins)
 			{	
                 //probabilidad ultra baja de hacer aparecer un dungueon
-                var _r = irandom(100)
+                /*var _r = irandom(100)
                 if(_r == 1)
                 {
                     var _x = x+(irandom(15)<<4);
 			        var _y = y+(irandom(15)<<4);
                     _d = instance_create_depth(_x,_y,0,objDungeonladderdown)
                     _d.image_blend = get_color_colormap(temperature,humidity);
-                }
+                }*/
                 
 				save = false;
 				objectcount = 0;
@@ -56,17 +56,14 @@ function load_chunk_ini(cx, cy) {
 					times = irandom(11);
 					add_obj(times,T_TREE);
 					
-					times = irandom(32);
+					times = irandom(21);
 					add_obj(times,T_GRASS);
+                    
+                    times = irandom(15);
+                    add_obj(times,T_TALLGRASS);
 					
 					times = irandom(5);
 					add_obj(times,T_STONE);
-                    
-					times = irandom(1);
-					add_obj(times,T_MUSHROOM1);
-                    
-					times = irandom(1);
-					add_obj(times,T_MUSHROOM2);
 					
 					times = irandom(1);
 					add_obj(times,T_STONE_COAL);
@@ -98,13 +95,16 @@ function load_chunk_ini(cx, cy) {
 				else if(temperature > 215 && humidity > 215)//Jungla
 				{
 
-					var times = irandom(25);
+					times = irandom(25);
 					add_obj(times,T_TREE);
 					
-					times = irandom(22);
+					times = irandom(6);
 					add_obj(times,T_GRASS);
+                    
+                    times = irandom(16);
+                    add_obj(times,T_TALLGRASS);
 					
-					times = irandom(16);
+					times = irandom(19);
 					add_obj(times,T_FERN);
 					
 					times = irandom(2);
@@ -113,15 +113,9 @@ function load_chunk_ini(cx, cy) {
 					times = irandom(1);
 					add_obj(times,T_STONE);
 					
-					
-					if(humidity>240)
-					{
-						set_tree(sprBamboo);
-					}
-					else
-					{
-						set_tree(sprJungletree);
-					}
+                    times = irandom(6);
+                    add_obj(times,T_BAMBOO);
+                    set_tree(sprJungletree);
 					image_blend = get_color_colormap(temperature,humidity);
 				}
 				else if(temperature < 100 && temperature > 50 && humidity < 110 && humidity > 80)//bosque de pinos grandes
@@ -137,6 +131,9 @@ function load_chunk_ini(cx, cy) {
 					
 					times = irandom(12);
 					add_obj(times,T_GRASS);
+                    
+                    times = irandom(2);
+                    add_obj(times,T_TALLGRASS);
 					
 					set_tree(sprPinetreebig);
 					image_blend = get_color_colormap(temperature,humidity);
@@ -195,7 +192,7 @@ function load_chunk_ini(cx, cy) {
 					add_obj(times,T_GRASS2);
 					
 				}
-				else if(temperature > 70 && temperature < 120 && humidity > 130)
+				else if(temperature > 70 && temperature < 120 && humidity > 130)//Pantano
 				{
 					set_tree(sprSwamptree);
 					image_blend = get_color_colormap(temperature,humidity);
@@ -207,8 +204,10 @@ function load_chunk_ini(cx, cy) {
 					add_obj(times,T_MUSHROOM1);
 					times = irandom(5);
 					add_obj(times,T_MUSHROOM2);
-					times = irandom(10);
+					times = irandom(8);
 					add_obj(times,T_GRASS);
+                    times = irandom(2);
+                    add_obj(times,T_TALLGRASS);
 					
 				}
 				else
@@ -221,6 +220,9 @@ function load_chunk_ini(cx, cy) {
 				
 					times = irandom((humidity+temperature)>>4);
 					add_obj(times,T_GRASS);
+                    
+                    times = irandom(4);
+                    add_obj(times,T_TALLGRASS);
 				
 					times = irandom(7);
 					add_obj(times,T_STONE);

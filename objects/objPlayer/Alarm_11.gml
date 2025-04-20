@@ -1,5 +1,5 @@
 //Music
-var music = irandom(6)
+var music = irandom(7)
 
 switch(music)
 {
@@ -30,8 +30,12 @@ switch(music)
 	case 6:
 		audio_play_sound(musUntitled,0,0,global.musvol);
 	break;
+    
+    case 7:
+		audio_play_sound(musInfluenza,0,0,global.musvol);
+	break;
 }
 
-var atime = irandom_range(12000,20000);
+var atime = irandom_range(13000,15000);
 
 alarm_set(11,atime);

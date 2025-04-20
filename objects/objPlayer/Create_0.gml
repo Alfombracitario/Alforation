@@ -6,7 +6,7 @@ image_alpha = 0;
 view_enabled = true;
 view_visible[0] = true;
 camera_set_view_size(view_camera[0],w_width,w_height);
-var factor = round(w_height / 270);
+var factor = round(w_height / 180);
 if (global.uisize < factor)
 {
 	display_set_gui_size(w_width div global.uisize, w_height div global.uisize);
@@ -37,8 +37,8 @@ camera_set_proj_mat(view_camera[0],matrix_build_projection_perspective_fov(60,w_
 gamepad_set_axis_deadzone(0,0.01);
 
 //macros iniciales
-#macro GRAV_NORMAL -0.15
-#macro GRAV_JUMP -0.13
+#macro GRAV_NORMAL -0.15*global.fpsmode
+#macro GRAV_JUMP -0.13*global.fpsmode
 invmousex = w_width>>1;
 invmousey = w_height>>1;
 previnvmousex = 0;
@@ -48,20 +48,20 @@ gh = display_get_gui_height();
 z = 0;
 running = false;
 zspeed = 0;
-grav = -0.2;
+grav = -0.2*global.fpsmode;
 jumpf = 2;
 knockback = 0;
 invmove = false;
 craftmove = false;
 craftresult = [0,0,0,0];
-prevmousex[0] = 0;
-prevmousey[0] = 0;
-prevmousex_r[0] = 0;
-prevmousey_r[0] = 0;
-mousex[0] = 0;
-mousey[0] = 0;
-mousex_r[0] = 0;
-mousey_r[0] = 0;
+prevmousex = [0,0,0];
+prevmousey = [0,0,0];
+prevmousex_r = [0,0,0];
+prevmousey_r = [0,0,0];
+mousex = [0,0,0];
+mousey = [0,0,0];
+mousex_r = [0,0,0];
+mousey_r = [0,0,0];
 offset = 0;
 display_info = false;
 fov_mod = 0;
@@ -101,11 +101,6 @@ halfpi = pi*0.5;
 global.sincyphp = sin(halfpi);
 global.coscyphp = cos(halfpi);
 update3Dindex = 0;
-
-
-global.settings = {
-	sensibility : 4
-};
 
 prevcamyaw = 0;
 
@@ -165,16 +160,34 @@ invx = ini_read_real("options","invx",64);
 invy = ini_read_real("options","invy",64);
 hotbarx = ini_read_real("options","hotbx",0);
 hotbarsize = ini_read_real("options","hotbs",8);
-invdpadx = ini_read_real("options","invdpadx",0.05);
-invdpady = ini_read_real("options","invdpady",0.5);
-buttonax = ini_read_real("options","buttonax",0.9);
-buttonay = ini_read_real("options","buttonay",0.28);
-buttonbx = ini_read_real("options","buttonbx",0.81);
-buttonby = ini_read_real("options","buttonby",0.38);
-buttonix = ini_read_real("options","buttonbx",0.76);
-buttoniy = ini_read_real("options","buttonby",0.48);
+if(os_type == os_android || os_type == os_ios)
+{
+    dx = gw*invdpadx;
+	dy = gh*invdpady;
+	ds = round(gh*0.15);
+	bs = ds*0.05;
+	bax = gw*buttonax;
+	bay = gh*buttonay;
+	bbx = gw*buttonbx;
+	bby = gh*buttonby;
+	bix = gw*buttonix;
+	biy = gh*buttoniy;   
+    invdpadx = ini_read_real("options","invdpadx",0.05);
+    invdpady = ini_read_real("options","invdpady",0.5);
+    buttonax = ini_read_real("options","buttonax",0.9);
+    buttonay = ini_read_real("options","buttonay",0.5);
+    buttonbx = ini_read_real("options","buttonbx",0.81);
+    buttonby = ini_read_real("options","buttonby",0.65);
+    buttonix = ini_read_real("options","buttonix",0.76);
+    buttoniy = ini_read_real("options","buttoniy",0.8);
+}
+
+
+
 craftx = ini_read_real("options","craftx",256);
 crafty = ini_read_real("options","crafty",64);
+
+
 ini_close();
 #endregion
 ini_open(WORLDIR+global.worldname+"/data.ini");
@@ -225,6 +238,8 @@ if room == game
 	#macro T_STONE_JUNGLE	19
 	#macro T_STONE_GOLD		20
 	#macro T_WATERMELON		21
+    #macro T_TALLGRASS      22
+    #macro T_BAMBOO      23
 	
 	tc[T_TREE] =			get_texture_coords_sprite(sprBtiles,0);
 	tc[T_GRASS] =			get_texture_coords_sprite(sprBtiles,0);
@@ -248,11 +263,13 @@ if room == game
 	tc[T_STONE_JUNGLE] =	get_texture_coords_sprite(sprBtiles,31);
 	tc[T_STONE_GOLD] =		get_texture_coords_sprite(sprBtiles,32);
 	tc[T_WATERMELON] =		get_texture_coords_sprite(sprBtiles,49);
+    tc[T_TALLGRASS] =       get_texture_coords_sprite(sprBtiles16b32,0);
+    tc[T_BAMBOO] =          get_texture_coords_sprite(sprBamboo,0);
 	
 	//color0,1,2,3,4,5,6,7,8,9	
 	tuc = [0,1,0,1,0,0,1,0,0,0
 		  ,1,0,0,0,0,0,0,0,0,0
-		  ,0,0];
+		  ,0,0,1,0];
 	
 	#region Macros
 	#macro I_EMPTY 0
@@ -321,7 +338,9 @@ if room == game
 	drops[T_STONE_JUNGLE]	= [I_JUNGLE,1];
 	drops[T_STONE_GOLD]		= [I_STONE_GOLD,1];
 	drops[T_WATERMELON]		= [I_WATERMELON,1];
-	
+	drops[T_TALLGRASS]		= [0,0];
+    drops[T_BAMBOO]		    = [I_WOOD,0.5];
+
 	#region crafteos
 	global.crafting_recipes = [];
 	#macro C_ANY 0

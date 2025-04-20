@@ -25,7 +25,12 @@ if(invopen == true)
 		if gamepad_button_check_pressed(0,gp_padd) && selecteditem < invsize-10 { selecteditem += 10; audio_play_sound(sndSelect,0,0,global.sndvol);}
 		if gamepad_button_check_pressed(0,gp_padr) && selecteditem < invsize-1 { selecteditem++; audio_play_sound(sndSelect,0,0,global.sndvol);}
 		if gamepad_button_check_pressed(0,gp_padl) && selecteditem > 0 { selecteditem--; audio_play_sound(sndSelect,0,0,global.sndvol); }
-		if gamepad_button_check_pressed(0, gp_face3) || gamepad_button_check_pressed(0, gp_face2) { invopen = false; audio_play_sound(sndCancel,0,0,global.sndvol); }
+		if gamepad_button_check_pressed(0, gp_face3) || gamepad_button_check_pressed(0, gp_face2) { 
+            invopen = false;
+            audio_play_sound(sndCancel,0,0,global.sndvol);
+            if selector[0] != 0 add_item(selector[0],selector[1],selector[2]);
+			selector = [0,0,0];
+        }
 		if gamepad_button_check_pressed(0, gp_face4) hotbar[hotbarsel] = selecteditem;
 		invmousex += gamepad_axis_value(0, gp_axislh)*global.settings.sensibility*global.fpsmode;
 		invmousey += gamepad_axis_value(0, gp_axislv)*global.settings.sensibility*global.fpsmode;
@@ -34,13 +39,13 @@ if(invopen == true)
 	{
 		if(os_type == os_windows || os_type == os_macosx || os_type == os_operagx)
 		{
-			if keyboard_check_pressed(ord("E"))
+			if(keyboard_check_pressed(ord("E")) || keyboard_check_pressed(vk_escape))
 			{ 
 				invopen = false;
 				window_mouse_set_locked(true);
 				audio_play_sound(sndCancel,0,0,global.sndvol); 
 				if selector[0] != 0 add_item(selector[0],selector[1],selector[2]);
-				selector = [0,0,0,0];
+				selector = [0,0,0];
 			}
 			if mouse_wheel_down() && hotbarsel < invsize { hotbarsel++; audio_play_sound(sndSelect,0,0,global.sndvol);}
 			selecteditem = selecteditem mod invsize
@@ -73,6 +78,23 @@ if(invopen == true)
 			}
 			
 		}
+        if(os_type == os_android || os_type == os_ios)
+        {
+            if(keyboard_check_pressed(vk_backspace))
+            {
+                invopen = false;
+                audio_play_sound(sndCancel,0,0,global.sndvol);
+                if selector[0] != 0 add_item(selector[0],selector[1],selector[2]);
+			    selector = [0,0,0];
+            }
+            
+            //creo que esto también es útil aquí idk
+            if(prevmousex != device_mouse_x_to_gui(0) && prevmousex != device_mouse_y_to_gui(0))
+			{
+				invmousex = device_mouse_x_to_gui(0);
+				invmousey = device_mouse_y_to_gui(0);
+			}
+        }
 	}
 	
 	//global on inventory
@@ -162,7 +184,7 @@ else//fuera del inventario
 if(os_type == os_windows || os_type == os_macosx || os_type == os_operagx)
 {
 	if keyboard_check_pressed(vk_escape) instance_create_layer(x,y,"instances",objPause);
-	if keyboard_check_pressed(vk_shift) running = true;
+	if keyboard_check_pressed(vk_shift) running = !running;
     _move = keyboard_check(ord("W")) - keyboard_check(ord("S"));
 	_smove = keyboard_check(ord("A")) - keyboard_check(ord("D"));
 	if keyboard_check_pressed(ord("E")) { invopen = true; invmousex = gw>>1; invmousey = gh>>1; audio_play_sound(sndAccept,0,0,global.sndvol); window_mouse_set_locked(false);}
@@ -201,6 +223,8 @@ if(os_type == os_windows || os_type == os_macosx || os_type == os_operagx)
 	if device_mouse_check_button_pressed(0,mb_left) event_user(15);//left click
     if keyboard_check_pressed(ord("M")) event_user(15);
     
+    if device_mouse_check_button_pressed(0,mb_right) event_user(14);//right click
+    if keyboard_check_pressed(ord("N")) event_user(14);
 }
 #endregion
 #region gamepad input
@@ -246,56 +270,84 @@ if(gamepad_is_connected(0))
 	if gamepad_button_check_pressed(0, gp_select) display_info = !display_info;
 	if gamepad_button_check_pressed(0, gp_face3) invopen = true; invmousex = gw>>1; invmousey = gh>>1;
 	if gamepad_button_check_pressed(0, gp_shoulderrb) event_user(15);
-	
+	if gamepad_button_check_pressed(0, gp_shoulderlb) event_user(14);
 }
 #endregion
 #region phones input
 if(os_type == os_android || os_type == os_ios)
 {
-	
+    if keyboard_check_pressed(vk_backspace) instance_create_depth(x,y,0,objPause);
 	for(var i = 0; i < 2; i++)
 	{
-			if(device_mouse_check_button(i,mb_left))
+		if(device_mouse_check_button(i, mb_left))
+		{
+			var dx = gw * invdpadx;
+			var dy = gh * invdpady;
+			var ds = round(gh * 0.15);
+			var touch_x = mousex[i];
+			var touch_y = mousey[i];
+
+			var touching_dpad = (touch_x >= dx && touch_x <= dx + (ds * 3) &&
+								 touch_y >= dy && touch_y <= dy + (ds * 3));
+
+			if (touching_dpad) {
+				if (touch_x >= dx && touch_x <= dx + (ds * 3) && touch_y >= dy && touch_y <= dy + ds) {
+					_move = 1; // Arriba
+				}
+				if (touch_x >= dx && touch_x <= dx + ds && touch_y >= dy && touch_y <= dy + (ds * 3)) {
+					_smove = 1; // Izquierda
+				}
+				if (touch_x >= dx + (ds * 2) && touch_x <= dx + (ds * 3) && touch_y >= dy && touch_y <= dy + (ds * 3)) {
+					_smove = -1; // Derecha
+				}
+				if (touch_x >= dx && touch_x <= dx + (ds * 3) && touch_y >= dy + (ds * 2) && touch_y <= dy + (ds * 3)) {
+					_move = -1; // Abajo
+				}
+			}
+			else
 			{
-				/// Comprobar entrada táctil para movimiento
-				var dx = gw * invdpadx;
-				var dy = gh * invdpady;
-				var ds = round(gh*0.15);
-				var touch_x = mousex[i];
-				var touch_y = mousey[i];
-	
-	
-				var touching_dpad = (touch_x >= dx && touch_x <= dx + (ds * 3) && touch_y >= dy && touch_y <= dy + (ds * 3));
-	
-				if (touching_dpad) {
-				    if (touch_x >= dx && touch_x <= dx + (ds * 3) && touch_y >= dy && touch_y <= dy + ds) {
-				        _move = 1; // Arriba
-				    }
-					if (touch_x >= dx && touch_x <= dx + ds && touch_y >= dy && touch_y <= dy + (ds * 3)) {
-				        _smove = 1; // Izquierda
-				    }
-					if (touch_x >= dx + (ds * 2) && touch_x <= dx + (ds * 3) && touch_y >= dy && touch_y <= dy + (ds * 3)) {
-				        _smove = -1; // Derecha
-				    }
-					if (touch_x >= dx && touch_x <= dx + (ds * 3) && touch_y >= dy + (ds * 2) && touch_y <= dy + (ds * 3)) {
-				        _move = -1; // Abajo
-				    }
+				// Detección de botones
+				var ax = gw * buttonax;
+				var ay = gh * buttonay;
+				var bx = gw * buttonbx;
+				var by = gh * buttonby;
+				var ix = gw * buttonix;
+				var iy = gh * buttoniy;
+
+				if (touch_x >= ax && touch_x <= ax + ds && touch_y >= ay && touch_y <= ay + ds) {
+                    if(z == 0)
+                    {
+                        zspeed = jumpf;
+                        grav = GRAV_JUMP;
+                    }
+                }
+                else
+                {
+            	    grav = GRAV_NORMAL;
 				}
-				else
-				{	
-					if(device_mouse_check_button_pressed(i,mb_left))
-					{
-						prevmousex_r[i] = mousex_r[i];
-						prevmousey_r[i] = mousey_r[i];
-					}
-					//camera
-					cam_yaw += (mousex_r[i]-prevmousex_r[i])*0.25;
-					camz = clamp(camz + (clamp((mousey_r[i]-prevmousey_r[i]) *0.0025, -0.15, 0.15) * (abs(camz) + 1)), -4, 4);
-			
+				if (touch_x >= bx && touch_x <= bx + ds && touch_y >= by && touch_y <= by + ds) {
+					running = !running;
 				}
+				if (touch_x >= ix && touch_x <= ix + ds && touch_y >= iy && touch_y <= iy + ds) {
+					invopen = true;
+				}
+
+				if(device_mouse_check_button_pressed(i, mb_left))
+				{
+					prevmousex_r[i] = mousex_r[i];
+					prevmousey_r[i] = mousey_r[i];
+                    event_user(15);//wow, se tocó la pantalla, increíble
+                    event_user(14);//wow, se tocó la pantalla, increíble
+				}
+				// Cámara
+				cam_yaw += (mousex_r[i] - prevmousex_r[i]) * 0.25;
+				camz = clamp(camz + (clamp((mousey_r[i] - prevmousey_r[i]) * 0.0025, -0.15, 0.15) * (abs(camz) + 1)), -4, 4);
+			}
 		}
 	}
 }
+
+
 #endregion
     #endregion
 }
@@ -305,7 +357,7 @@ if(_move != 0) {
     f_sp = clamp(f_sp, -mspeed, mspeed);
 } else {
     var _s = sign(f_sp);
-    f_sp -= _s * 0.1 * global.fpsmode;
+    f_sp -= _s * 0.1;
     if(_s != sign(f_sp)) f_sp = 0;
 }
 
@@ -314,7 +366,7 @@ if(_smove != 0) {
     s_sp = clamp(s_sp, -mspeed, mspeed);
 } else {
     var _s = sign(s_sp);
-    s_sp -= _s * 0.1 * global.fpsmode;
+    s_sp -= _s * 0.1;
     if(_s != sign(s_sp)) s_sp = 0;
 }
 
