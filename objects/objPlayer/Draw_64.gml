@@ -19,9 +19,16 @@ else {
 //dibujar la pantalla a resolución completa
 draw_surface_stretched_ext(application_surface,0,0,gw,gh,timecolor,1);
 
+//dibujar el contorno de oscuridad
+if(room != game)
+{
+    gpu_set_tex_filter(true);
+    draw_sprite_stretched(sprDark,0,0,0,gw,gh);
+    gpu_set_tex_filter(false);
+}
 draw_sprite_ext(sprCompass,cam_yaw*0.0888888888888889,gw,gh,2,2,0,c_white,1);
 
-if(added_tic > 0)
+if(added_tic > 0)//item conseguido
 {
 	var _y = 24
 	if(added_tic < _y)
@@ -35,6 +42,17 @@ if(added_tic > 0)
 	draw_set_halign(fa_right);
 	draw_text_shadow(gw-26,_y-18,"+"+string(added_count),1);
 	draw_set_halign(fa_left);
+}
+if(hand_text_tic > 0)
+{
+    draw_set_alpha(hand_text_tic);
+    draw_set_halign(fa_center);//oh no! el rendimiento se muere
+    draw_set_font(global.font);
+    draw_text(gw>>1,gh*0.85,hand_text);
+    draw_set_font(global.font2);
+    draw_set_halign(fa_left);
+    hand_text_tic-=0.005*global.fpsmode
+    draw_set_alpha(1);
 }
 if(inventory[hotbar[hotbarsel]][0] != 0)//item en la mano
 {
@@ -137,7 +155,7 @@ if(invopen)
 	draw_sprite(sprArrowright,0,craftx+52,crafty);
 	draw_sprite(sprSlot,0,craftp80,crafty);
 	draw_sprite(sprItems,craftresult[0],craftp80,crafty);
-	draw_text(craftp80,crafty,craftresult[2]);
+	draw_text(craftp80,crafty,craftresult[2]*craftresult[4]);
 	
 	var _crftc = array_length(craftable)
 	for(var i = 0; i<_crftc; i++)

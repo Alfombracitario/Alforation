@@ -1,0 +1,1 @@
+global.floor = 0;

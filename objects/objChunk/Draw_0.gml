@@ -1,5 +1,11 @@
 if(draw)
-{
+{   
 	draw_self();
+    shader_set(sBillboard);
+	shader_set_uniform_f(u_s_tw,global.sincyphp*tw);
+    shader_set_uniform_f(u_c_tw,global.coscyphp*tw);
+    shader_set_uniform_f(u_s_8,global.sincyphp*8);
+    shader_set_uniform_f(u_c_8,global.coscyphp*8);
 	vertex_submit(v,pr_trianglelist,2);
+    shader_reset();
 }

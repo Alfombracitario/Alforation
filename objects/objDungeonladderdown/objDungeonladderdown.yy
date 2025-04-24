@@ -30,8 +30,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sprBg",
-    "path":"sprites/sprBg/sprBg.yy",
+    "name":"sprDungeonladderdown",
+    "path":"sprites/sprDungeonladderdown/sprDungeonladderdown.yy",
   },
   "spriteMaskId":null,
   "visible":true,

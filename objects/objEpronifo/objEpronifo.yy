@@ -37,8 +37,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sprPlayer",
-    "path":"sprites/sprPlayer/sprPlayer.yy",
+    "name":"sprShadow",
+    "path":"sprites/sprShadow/sprShadow.yy",
   },
   "spriteMaskId":null,
   "visible":true,

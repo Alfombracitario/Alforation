@@ -13,7 +13,7 @@ function add_xp(amount)
         else
         {
             var _pitch = 1+(experience/xp_need);
-            audio_play_sound(sndExperience,0,0,global.sndvol*0.5,0,_pitch);
+            audio_play_sound(sndExperience,0,0,global.sndvol*0.25,0,_pitch);
         }
     }
 }

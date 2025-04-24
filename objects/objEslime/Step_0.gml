@@ -9,5 +9,5 @@ if(hp < 0)
 }
 else
 {
-	draw_3d_image_animation();
+	draw_3d_sprite();
 }

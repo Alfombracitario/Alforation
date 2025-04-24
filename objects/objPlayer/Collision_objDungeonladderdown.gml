@@ -1,2 +1,3 @@
 instance_destroy();
-room_goto(dungeon)
+room_goto(dungeon);
+global.floor++;

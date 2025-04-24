@@ -15,7 +15,6 @@ function draw_item_sprite(_x,_y,_sprite,_count,_shpos = 0){
         draw_set_color(color);
 		draw_rectangle(_x,_y,_x,_y+1+_durabilitypercentage*14,false);
         draw_set_color(c_white);
-	
 	}
 	else
 	{

@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"draw_3d_image_animation",
+  "%Name":"draw_3d_sprite",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"draw_3d_image_animation",
+  "name":"draw_3d_sprite",
   "parent":{
     "name":"3D",
     "path":"folders/Scripts/3D.yy",

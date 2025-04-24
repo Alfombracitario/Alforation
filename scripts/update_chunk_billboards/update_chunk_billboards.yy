@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"update_chunk_billboards",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"update_chunk_billboards",
+  "parent":{
+    "name":"3D",
+    "path":"folders/Scripts/3D.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -88,6 +88,8 @@ function load_chunk_ini(cx, cy) {
 					add_obj(times,T_DEAD_BUSH);
 					times = irandom(11);
 					add_obj(times,T_TREE);
+                    times = irandom(1);
+                    add_obj(times,T_STONE_IRON);
 					
 					set_tree(sprPinetree,1);
 					sprite_index = sprSnow;
@@ -361,7 +363,6 @@ function load_chunk_ini(cx, cy) {
 		
 		with(ins)
 		{
-			init_3d_model(false);
 			event_user(2);
 		}
 		//mentirle al juego para que actualize los modelos 3D

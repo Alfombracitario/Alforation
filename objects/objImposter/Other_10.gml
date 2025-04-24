@@ -13,4 +13,5 @@ with(objPlayer)
 		_count = (random(1) < probabilidad) ? 1 : 0;
 	}
 	add_item(_item,_count);
+    add_xp(drops[_tile][2]);
 }

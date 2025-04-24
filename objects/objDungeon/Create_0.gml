@@ -1,4 +1,4 @@
-#region dungeuon generation
+#region dungeon generation con múltiples conexiones y sin salirse
 _xlimit = 64;
 _ylimit = 64;
 var _rooms = 32;
@@ -6,13 +6,6 @@ var _minroomh = 4;
 var _minroomv = 4;
 var _maxroomh = 8;
 var _maxroomv = 8;
-var _roomh, _roomv, _x, _y;
-
-image_xscale = _xlimit;
-image_yscale = _ylimit;
-
-room_width = _xlimit << 4;
-room_height = _ylimit << 4;
 
 // Inicializar array de tiles con paredes (1)
 tiles = array_create(_xlimit, 0);
@@ -20,47 +13,94 @@ for (var i = 0; i < _xlimit; i++) {
     tiles[i] = array_create(_ylimit, 1);
 }
 
-// Guardar las habitaciones
-var room_positions = [];
+// Lista de habitaciones [x, y, w, h]
+var room_list = [];
 
-// Generar habitaciones
-for (var i = 0; i < _rooms; i++) {
-    _roomh = irandom_range(_minroomh, _maxroomh);
-    _roomv = irandom_range(_minroomv, _maxroomv);
-    _x = irandom(_xlimit - _roomh);
-    _y = irandom(_ylimit - _roomv);
-
-    // Crear la habitación vacía (0)
-    for (var j = _x; j < _x + _roomh; j++) {
-        for (var h = _y; h < _y + _roomv; h++) {
-            tiles[j][h] = 0;
+// Verifica si un área está libre y dentro de los límites
+function is_area_free(x, y, w, h) {
+    if (x < 1 || y < 1 || x + w >= _xlimit - 1 || y + h >= _ylimit - 1) return false;
+    for (var i = x - 1; i < x + w + 1; i++) {
+        for (var j = y - 1; j < y + h + 1; j++) {
+            if (tiles[i][j] == 0) return false;
         }
     }
-
-    // Guardar el centro de la habitación
-    var center_x = _x + _roomh div 2;
-    var center_y = _y + _roomv div 2;
-    array_push(room_positions, [center_x, center_y]);
+    return true;
 }
 
-// Conectar las habitaciones en orden de generación
-for (var i = 0; i < array_length(room_positions) - 1; i++) {
-    var x1 = room_positions[i][0];
-    var y1 = room_positions[i][1];
-    var x2 = room_positions[i + 1][0];
-    var y2 = room_positions[i + 1][1];
-
-    // Crear un pasillo horizontal
-    for (var _x = min(x1, x2); _x <= max(x1, x2); _x++) {
-        tiles[_x][y1] = 0;
+// Crear habitación
+function make_room(x, y, w, h) {
+    for (var i = x; i < x + w; i++) {
+        for (var j = y; j < y + h; j++) {
+            tiles[i][j] = 0;
+        }
     }
+}
 
-    // Crear un pasillo vertical
-    for (var _y = min(y1, y2); _y <= max(y1, y2); _y++) {
-        tiles[x2][_y] = 0;
+// Crear primera habitación en el centro
+var start_w = irandom_range(_minroomh, _maxroomh);
+var start_h = irandom_range(_minroomv, _maxroomv);
+var start_x = (_xlimit div 2) - (start_w div 2);
+var start_y = (_ylimit div 2) - (start_h div 2);
+make_room(start_x, start_y, start_w, start_h);
+array_push(room_list, [start_x, start_y, start_w, start_h]);
+
+// Direcciones de expansión: [dx, dy]
+var directions = [
+    [0, -1], // arriba
+    [0, 1],  // abajo
+    [-1, 0], // izquierda
+    [1, 0]   // derecha
+];
+
+var attempts = 0;
+while (array_length(room_list) < _rooms && attempts < 10000) {
+    attempts++;
+
+    // Elegir una habitación base
+    var base = room_list[irandom(array_length(room_list) - 1)];
+    var bx = base[0], by = base[1], bw = base[2], bh = base[3];
+
+    // Mezclar las direcciones para intentar más de una
+    var dirs = array_shuffle(directions);
+
+    for (var d = 0; d < 4; d++) {
+        var dir = dirs[d];
+        var dx = dir[0], dy = dir[1];
+
+        // Nueva habitación aleatoria
+        var nw = irandom_range(_minroomh, _maxroomh);
+        var nh = irandom_range(_minroomv, _maxroomv);
+        var nx, ny, px, py;
+
+        if (dx == 0) {
+            // Vertical
+            nx = bx + irandom(bw - 1) - (nw div 2);
+            ny = (dy < 0) ? by - nh - 1 : by + bh + 1;
+            px = clamp(nx + (nw div 2), 1, _xlimit - 2);
+            py = (dy < 0) ? by - 1 : by + bh;
+        } else {
+            // Horizontal
+            nx = (dx < 0) ? bx - nw - 1 : bx + bw + 1;
+            ny = by + irandom(bh - 1) - (nh div 2);
+            nx = clamp(nx, 1, _xlimit - nw - 2);
+            py = clamp(ny + (nh div 2), 1, _ylimit - 2);
+            px = (dx < 0) ? bx - 1 : bx + bw;
+        }
+
+        // Verificar y crear
+        if (is_area_free(nx, ny, nw, nh)) {
+            make_room(nx, ny, nw, nh);
+            if (px >= 1 && px < _xlimit - 1 && py >= 1 && py < _ylimit - 1) {
+                tiles[px][py] = 0; // pasillo
+            }
+            array_push(room_list, [nx, ny, nw, nh]);
+            break; // solo una conexión nueva por intento
+        }
     }
 }
 #endregion
+
+
 
 #region 3D
 vertex_format_begin();

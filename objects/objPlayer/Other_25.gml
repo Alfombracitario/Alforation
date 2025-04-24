@@ -1,4 +1,5 @@
 //click izquierdo
+var damdiv = 1-(cooldown/cooldownmax);
 var item = inventory[hotbar[hotbarsel]][0];
 hitanim_tic = 60;
 
@@ -7,16 +8,24 @@ var _pic = 1;
 var _axe = 1;
 var _damage = 1;
 cooldownmax = 3
-if(item <= 100)//armas/armadura
+if(item == 0)
 {
-    var type = item mod 10;
-    if(type <= 4)//arma
+    
+    _damage = 0.5;
+}
+else{
+    if(item <= 100)//armas/armadura
     {
-		cooldownmax = w_coold[type];
-		_damage = w_damage[type]+(w_damincrmt[type]*((item*0.1)-type));
-		if type == 2 _pic = _damage;
-		if type == 4 _axe = _damage;
-	}
+        var type = item mod 10;
+        var tier = (item-type)*0.1;
+        if(type <= I_WOODEN_AXE)//arma
+        {
+    		cooldownmax = w_coold[type];
+    		_damage = (w_damage[type]+w_damincrmt[type]*tier)*damdiv;
+    		if type == 2 _pic = _damage;
+    		if type == 4 _axe = _damage;
+    	}
+    }
 }
 cooldown = cooldownmax;
 with(objHit)

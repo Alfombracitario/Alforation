@@ -1,4 +1,3 @@
-//ahorrar recursos
 draw_set_halign(fa_left);
 w_width = window_get_width();
 w_height = window_get_height();
@@ -17,7 +16,6 @@ else
 	display_set_gui_size(w_width div factor, w_height div factor);
 	uisize = factor;
 }
-
 
 surface_resize(application_surface,w_width>>global.screendiv,w_height>>global.screendiv);
 application_surface_draw_enable(false);
@@ -53,7 +51,7 @@ jumpf = 2;
 knockback = 0;
 invmove = false;
 craftmove = false;
-craftresult = [0,0,0,0];
+craftresult = [0,0,0,0,0];
 prevmousex = [0,0,0];
 prevmousey = [0,0,0];
 prevmousex_r = [0,0,0];
@@ -81,6 +79,8 @@ sway_x = 0;
 sway_y = 0;
 sway_amount = 0;
 hitanim_tic = 60;
+hand_text = "";
+hand_text_tic = 0;
 cooldown = 0;
 cooldownmax = 0;
 weapon_swaying = true;
@@ -108,8 +108,8 @@ global.update3d = false;
 
 #region CHUNKS
 
-pcx = floor(x/CHUNK_SIZE);
-pcy = floor(y/CHUNK_SIZE);
+pcx = (x/CHUNK_SIZE)<<0;
+pcy = (y/CHUNK_SIZE)<<0;
 
 last_pcx = 16777217;
 last_pcy = 16777217;
@@ -130,6 +130,10 @@ if(room == game)
 	x = ini_read_real("p","x",0);
 	y = ini_read_real("p","y",0);
     z = ini_read_real("p","z",0);
+}
+else {
+if room == dungeon tiles = objDungeon.tiles;
+if room == cave tiles = objCave.tiles;
 }
 _health = ini_read_real("p","health",100);
 _hunger = ini_read_real("p","hunger",100);
@@ -162,6 +166,14 @@ hotbarx = ini_read_real("options","hotbx",0);
 hotbarsize = ini_read_real("options","hotbs",8);
 if(os_type == os_android || os_type == os_ios)
 {
+    invdpadx = ini_read_real("options","invdpadx",0.05);
+    invdpady = ini_read_real("options","invdpady",0.5);
+    buttonax = ini_read_real("options","buttonax",0.9);
+    buttonay = ini_read_real("options","buttonay",0.5);
+    buttonbx = ini_read_real("options","buttonbx",0.81);
+    buttonby = ini_read_real("options","buttonby",0.65);
+    buttonix = ini_read_real("options","buttonix",0.76);
+    buttoniy = ini_read_real("options","buttoniy",0.8);
     dx = gw*invdpadx;
 	dy = gh*invdpady;
 	ds = round(gh*0.15);
@@ -171,15 +183,7 @@ if(os_type == os_android || os_type == os_ios)
 	bbx = gw*buttonbx;
 	bby = gh*buttonby;
 	bix = gw*buttonix;
-	biy = gh*buttoniy;   
-    invdpadx = ini_read_real("options","invdpadx",0.05);
-    invdpady = ini_read_real("options","invdpady",0.5);
-    buttonax = ini_read_real("options","buttonax",0.9);
-    buttonay = ini_read_real("options","buttonay",0.5);
-    buttonbx = ini_read_real("options","buttonbx",0.81);
-    buttonby = ini_read_real("options","buttonby",0.65);
-    buttonix = ini_read_real("options","buttonix",0.76);
-    buttoniy = ini_read_real("options","buttoniy",0.8);
+	biy = gh*buttoniy;
 }
 
 
@@ -209,10 +213,10 @@ if room == game
 }
 	//datos de los items
 
-	//hand,spear,sword,pic,hoe,axe
-	w_coold = [5,15,7,2,45];
-	w_damincrmt = [10,5,2,1,5];
-	w_damage = [ 1, 10, 5, 2,15,];
+	//spear,sword,pic,hoe,axe
+	w_coold = [15,20,12,4,45];
+	w_damincrmt = [3,5,2,1,7];
+	w_damage = [7,10,5,2,15];
 	w_dur = [32,64,210,270,300,400,460,700,850,1000];
 	
 	//     Tile name		Id
@@ -239,7 +243,7 @@ if room == game
 	#macro T_STONE_GOLD		20
 	#macro T_WATERMELON		21
     #macro T_TALLGRASS      22
-    #macro T_BAMBOO      23
+    #macro T_BAMBOO         23
 	
 	tc[T_TREE] =			get_texture_coords_sprite(sprBtiles,0);
 	tc[T_GRASS] =			get_texture_coords_sprite(sprBtiles,0);
@@ -314,37 +318,67 @@ if room == game
 	#macro I_STONE_HOE 13
 	#macro I_STONE_AXE 14
 	
+	#macro I_TIN_SPEAR 20
+	#macro I_TIN_SWORD 21
+	#macro I_TIN_PIC 22
+	#macro I_TIN_HOE 23
+	#macro I_TIN_AXE 24
+
+	#macro I_COPPER_SPEAR 30
+	#macro I_COPPER_SWORD 31
+	#macro I_COPPER_PIC 32
+	#macro I_COPPER_HOE 33
+	#macro I_COPPER_AXE 34
+
+	#macro I_BRONZE_SPEAR 40
+	#macro I_BRONZE_SWORD 41
+	#macro I_BRONZE_PIC 42
+	#macro I_BRONZE_HOE 43
+	#macro I_BRONZE_AXE 44
+
+	#macro I_IRON_SPEAR 50
+	#macro I_IRON_SWORD 51
+	#macro I_IRON_PIC 52
+	#macro I_IRON_HOE 53
+	#macro I_IRON_AXE 54
+
+	#macro I_LEAD_SPEAR 60
+	#macro I_LEAD_SWORD 61
+	#macro I_LEAD_PIC 62
+	#macro I_LEAD_HOE 63
+	#macro I_LEAD_AXE 64
+
 	#endregion
-	//drops					//Item Id, count
-	drops[T_TREE]			= [I_WOOD,3];
-	drops[T_GRASS]			= [0,0];
-	drops[T_STONE]			= [I_STONE,1];
-	drops[T_FERN]			= [0,0];
-	drops[T_MUSHROOM1]		= [I_MUSHROOM1,1];
-	drops[T_MUSHROOM2]		= [I_MUSHROOM2,1];
-	drops[T_WILD_WHEAT]		= [I_WSEEDS,0.1];
-	drops[T_DEAD_BUSH]		= [I_STICK,0.6];
-	drops[T_CACTUS]			= [I_WOOD,0.2];
-	drops[T_MUSHROOM3]		= [I_MUSHROOM3,1];
+	//drops					//Item Id, count, xpcount
+	drops[T_TREE]			= [I_WOOD,3,1];
+	drops[T_GRASS]			= [0,0,0];
+	drops[T_STONE]			= [I_STONE,1,0.1];
+	drops[T_FERN]			= [0,0,0];
+	drops[T_MUSHROOM1]		= [I_MUSHROOM1,1,0];
+	drops[T_MUSHROOM2]		= [I_MUSHROOM2,1,0];
+	drops[T_WILD_WHEAT]		= [I_WSEEDS,0.1,0.1];
+	drops[T_DEAD_BUSH]		= [I_STICK,0.6,0];
+	drops[T_CACTUS]			= [I_WOOD,0.2,0];
+	drops[T_MUSHROOM3]		= [I_MUSHROOM3,1,0];
 	drops[T_GRASS2]			= [0,0];
-	drops[T_STONE_COAL]		= [I_COAL,1];
-	drops[T_STONE_TIN]		= [I_STONE_TIN,1];
-	drops[T_STONE_COPPER]	= [I_STONE_COPPER,1];
-	drops[T_STONE_IRON]		= [I_STONE_IRON,1];
-	drops[T_STONE_TUNGSTEN]	= [I_STONE_TUNGSTEN,1];
-	drops[T_STONE_RUBY]		= [I_RUBY,1];
-	drops[T_STONE_DIAMOND]	= [I_DIAMOND,1];
-	drops[T_STONE_AMETHYST]	= [I_AMETHYST,1];
-	drops[T_STONE_JUNGLE]	= [I_JUNGLE,1];
-	drops[T_STONE_GOLD]		= [I_STONE_GOLD,1];
-	drops[T_WATERMELON]		= [I_WATERMELON,1];
-	drops[T_TALLGRASS]		= [0,0];
-    drops[T_BAMBOO]		    = [I_WOOD,0.5];
+	drops[T_STONE_COAL]		= [I_COAL,1,2];
+	drops[T_STONE_TIN]		= [I_STONE_TIN,1,3];
+	drops[T_STONE_COPPER]	= [I_STONE_COPPER,1,5];
+	drops[T_STONE_IRON]		= [I_STONE_IRON,1,10];
+	drops[T_STONE_TUNGSTEN]	= [I_STONE_TUNGSTEN,1,15];
+	drops[T_STONE_RUBY]		= [I_RUBY,1,20];
+	drops[T_STONE_DIAMOND]	= [I_DIAMOND,1,25];
+	drops[T_STONE_AMETHYST]	= [I_AMETHYST,1,20];
+	drops[T_STONE_JUNGLE]	= [I_JUNGLE,1,20];
+	drops[T_STONE_GOLD]		= [I_STONE_GOLD,1,20];
+	drops[T_WATERMELON]		= [I_WATERMELON,1,0];
+	drops[T_TALLGRASS]		= [0,0,0];
+    drops[T_BAMBOO]		    = [I_WOOD,0.5,0];
 
 	#region crafteos
 	global.crafting_recipes = [];
 	#macro C_ANY 0
-	#macro C_FURNACE 1
+	#macro C_FURNACE 0 //temporal
 	
 	craftable = [];
 	
@@ -399,6 +433,138 @@ if room == game
 	    [I_STONE, 10]
 	])
 	
+
+    //estaño
+	add_recipe(I_TIN_SWORD,w_dur[2],, [
+	    [I_STICK, 1], 
+	    [I_TIN_INGOT, 12]
+	])
+	
+	add_recipe(I_TIN_PIC,w_dur[2],, [
+	    [I_STICK, 1], 
+	    [I_TIN_INGOT, 20]
+	])
+	
+	add_recipe(I_TIN_AXE,w_dur[2],, [
+	    [I_STICK, 1], 
+	    [I_TIN_INGOT, 9]
+	])
+	
+	add_recipe(I_TIN_HOE,w_dur[2],, [
+	    [I_STICK, 1], 
+	    [I_TIN_INGOT, 5]
+	])
+	
+	add_recipe(I_TIN_SPEAR,w_dur[2],, [
+	    [I_STICK, 1], 
+	    [I_TIN_INGOT, 10]
+	])
+
+
+    //cobre
+	add_recipe(I_COPPER_SWORD,w_dur[3],, [
+	    [I_STICK, 1], 
+	    [I_COPPER_INGOT, 12]
+	])
+	
+	add_recipe(I_COPPER_PIC,w_dur[3],, [
+	    [I_STICK, 1], 
+	    [I_COPPER_INGOT, 20]
+	])
+	
+	add_recipe(I_COPPER_AXE,w_dur[3],, [
+	    [I_STICK, 1], 
+	    [I_COPPER_INGOT, 9]
+	])
+	
+	add_recipe(I_COPPER_HOE,w_dur[3],, [
+	    [I_STICK, 1], 
+	    [I_COPPER_INGOT, 5]
+	])
+	
+	add_recipe(I_COPPER_SPEAR,w_dur[3],, [
+	    [I_STICK, 1], 
+	    [I_COPPER_INGOT, 10]
+	])
+
+    //Bronze
+	add_recipe(I_BRONZE_SWORD,w_dur[4],, [
+	    [I_STICK, 1], 
+	    [I_BRONZE_INGOT, 12]
+	])
+	
+	add_recipe(I_BRONZE_PIC,w_dur[4],, [
+	    [I_STICK, 1], 
+	    [I_BRONZE_INGOT, 20]
+	])
+	
+	add_recipe(I_BRONZE_AXE,w_dur[4],, [
+	    [I_STICK, 1], 
+	    [I_BRONZE_INGOT, 9]
+	])
+	
+	add_recipe(I_BRONZE_HOE,w_dur[4],, [
+	    [I_STICK, 1], 
+	    [I_BRONZE_INGOT, 5]
+	])
+	
+	add_recipe(I_BRONZE_SPEAR,w_dur[4],, [
+	    [I_STICK, 1], 
+	    [I_BRONZE_INGOT, 10]
+	])
+
+    //Iron
+	add_recipe(I_IRON_SWORD,w_dur[5],, [
+	    [I_STICK, 1], 
+	    [I_IRON_INGOT, 12]
+	])
+	
+	add_recipe(I_IRON_PIC,w_dur[5],, [
+	    [I_STICK, 1], 
+	    [I_IRON_INGOT, 20]
+	])
+	
+	add_recipe(I_IRON_AXE,w_dur[5],, [
+	    [I_STICK, 1], 
+	    [I_IRON_INGOT, 9]
+	])
+	
+	add_recipe(I_IRON_HOE,w_dur[5],, [
+	    [I_STICK, 1], 
+	    [I_IRON_INGOT, 5]
+	])
+	
+	add_recipe(I_IRON_SPEAR,w_dur[5],, [
+	    [I_STICK, 1], 
+	    [I_IRON_INGOT, 10]
+	])
+
+    //Lead
+	add_recipe(I_LEAD_SWORD,w_dur[6],, [
+	    [I_STICK, 1], 
+	    [I_LEAD_INGOT, 12]
+	])
+	
+	add_recipe(I_LEAD_PIC,w_dur[6],, [
+	    [I_STICK, 1], 
+	    [I_LEAD_INGOT, 20]
+	])
+	
+	add_recipe(I_LEAD_AXE,w_dur[6],, [
+	    [I_STICK, 1], 
+	    [I_LEAD_INGOT, 9]
+	])
+	
+	add_recipe(I_LEAD_HOE,w_dur[6],, [
+	    [I_STICK, 1], 
+	    [I_LEAD_INGOT, 5]
+	])
+	
+	add_recipe(I_LEAD_SPEAR,w_dur[6],, [
+	    [I_STICK, 1], 
+	    [I_LEAD_INGOT, 10]
+	])
+
 	//Bloques y otras cosas generales
 	add_recipe(I_WOOD_BLOCK,1,,
 	[

@@ -1,5 +1,6 @@
 var _move = 0;
 var _smove = 0;
+var prevhotbarsel = hotbarsel;
 #region input
 if(invopen == true)
 {
@@ -32,8 +33,8 @@ if(invopen == true)
 			selector = [0,0,0];
         }
 		if gamepad_button_check_pressed(0, gp_face4) hotbar[hotbarsel] = selecteditem;
-		invmousex += gamepad_axis_value(0, gp_axislh)*global.settings.sensibility*global.fpsmode;
-		invmousey += gamepad_axis_value(0, gp_axislv)*global.settings.sensibility*global.fpsmode;
+		invmousex += gamepad_axis_value(0, gp_axislh)*4*global.fpsmode;
+		invmousey += gamepad_axis_value(0, gp_axislv)*4*global.fpsmode;
 	}
 	else
 	{
@@ -115,8 +116,9 @@ if(invopen == true)
 			var preinv = crafting_grid[_sx]
 			crafting_grid[_sx] = selector;
 			selector = preinv;
-			
+			craftresult = [0,0,0,0,0];
 			craftable = get_craftable_items(crafting_grid);
+            
 		}
 		
 		var craftableresults = array_length(craftable);//craftable results
@@ -125,9 +127,21 @@ if(invopen == true)
 		{
 			if(invmousex > craftx && invmousex < craftx+(craftableresults<<4) && invmousey > crafty+24 && invmousey < crafty+40)
 			{
+                
 				var _i = (invmousex-craftx)>>4;
-				craftresult = craftable[_i];
-				audio_play_sound(sndSelect,0,0,global.sndvol);
+                show_debug_message(craftable[_i])
+                if(craftable[_i][1] > craftresult[4] && craftable[_i][0] == craftresult[0] || craftresult[0] == 0)
+                {
+    				craftresult[0] = craftable[_i][0];
+                    craftresult[1] = craftable[_i][1];
+                    craftresult[2] = craftable[_i][2];
+                    craftresult[3] = craftable[_i][3];
+                    craftresult[4]++;
+    				audio_play_sound(sndSelect,0,0,global.sndvol);
+                }
+                else {
+                	audio_play_sound(sndInvalid,0,0,global.sndvol);
+                }
 			}
 		}
 		if(invmousex > craftx+80 && invmousex < craftx+96 && invmousey > crafty && invmousey < crafty+16)//craftear algo
@@ -249,8 +263,8 @@ if(gamepad_is_connected(0))
     }
     _move = -round(gamepad_axis_value(0, gp_axislv))
 	_smove = -round(gamepad_axis_value(0, gp_axislh))
-	camz = clamp(camz + (clamp(gamepad_axis_value(0, gp_axisrv)*global.fpsmode*global.settings.sensibility*0.02,-0.15*global.fpsmode,0.15*global.fpsmode) * (abs(camz) + 1)),-4,4);
-	cam_yaw += gamepad_axis_value(0, gp_axisrh)*global.settings.sensibility*global.fpsmode;
+	camz = clamp(camz + (clamp(gamepad_axis_value(0, gp_axisrv)*global.fpsmode*0.08,-0.15*global.fpsmode,0.15*global.fpsmode) * (abs(camz) + 1)),-4,4);
+	cam_yaw += gamepad_axis_value(0, gp_axisrh)*4*global.fpsmode;
 	if gamepad_button_check_pressed(0,gp_shoulderr) && hotbarsel < hotbarsize hotbarsel++;
 	hotbarsel = hotbarsel mod hotbarsize;
 	if(gamepad_button_check_pressed(0,gp_shoulderl))
@@ -371,16 +385,15 @@ if(_smove != 0) {
 }
 
 
-if (room == dungeon) {
+if (room == dungeon || room == cave) {
 	
 	var hitbox = 7; // Distancia desde el centro del jugador
-	var tiles = objDungeon.tiles;
     var _tile_x, _tile_y;
     var _xmove = lengthdir_x(f_sp, ((360 - cam_yaw) + 360) mod 360);
     var _ymove = lengthdir_y(f_sp, ((360 - cam_yaw) + 360) mod 360);
     
-    _tile_x = floor((x + _xmove + sign(_xmove) * hitbox) / 16);
-    _tile_y = floor(y / 16);
+    _tile_x = ((x + _xmove + sign(_xmove) * hitbox) / 16)<<0;
+    _tile_y = (y / 16)<<0;
     if (tiles[_tile_x][_tile_y] == 1) {
         while (tiles[floor((x + sign(_xmove) * 0.05 + sign(_xmove) * hitbox) / 16)][_tile_y] != 1) {
             x += sign(_xmove) * 0.05;
@@ -388,8 +401,8 @@ if (room == dungeon) {
         _xmove = 0;
     }
     
-    _tile_x = floor(x / 16);
-    _tile_y = floor((y + _ymove + sign(_ymove) * hitbox) / 16);
+    _tile_x = (x / 16)<<0;
+    _tile_y = ((y + _ymove + sign(_ymove) * hitbox) / 16)<<0;
     if (tiles[_tile_x][_tile_y] == 1) {
         while (tiles[_tile_x][floor((y + sign(_ymove) * 0.05 + sign(_ymove) * hitbox) / 16)] != 1) {
             y += sign(_ymove) * 0.05;
@@ -489,3 +502,4 @@ if(global.update3Dtime == update3Dindex)
 	
 	update3Dindex = 0;
 }
+if prevhotbarsel != hotbarsel get_hand_text();

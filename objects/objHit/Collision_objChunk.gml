@@ -40,7 +40,7 @@ if(activated == true)
 					}
 					event_user(1);
 				}
-                add_xp(1);
+                
 				array_delete(objects,_index,1);
 				objectcount--;
 			}

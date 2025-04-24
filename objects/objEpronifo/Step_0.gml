@@ -1,5 +1,5 @@
 direction = point_direction(x,y,objPlayer.x,objPlayer.y);
-if(hp < 3)
+if(hp < 10)
 {
 	if mspeed > -2.5 mspeed -= 0.2
 }
@@ -15,8 +15,9 @@ else if(dist > 1024)
 }
 else
 {
-	draw_3d_image_animation();
+	draw_3d_sprite();
 }
 image_blend = merge_color(c_white,c_red,knockspd*0.25);
 if(knockspd < 0) knockspd += 0.1;
 speed = mspeed+knockspd;
+uv = get_texture_coords_sprite(sprEpronifo,frame_index)

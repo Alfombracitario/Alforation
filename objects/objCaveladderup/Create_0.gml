@@ -1,0 +1,73 @@
+depth= -1;
+init_3d_model(false);
+
+uv = get_texture_coords_sprite(sprBtiles,122);
+var _y = y+2
+var rightx = x+16;
+var z = 0;
+var z2 = -16;
+var c = c_white;
+vertex_begin(v,f);
+vertex_position_3d(v,x,_y,z);
+vertex_color(v,c,1);
+vertex_texcoord(v,uv.x2,uv.y2);
+vertex_position_3d(v,x,_y,z2);
+vertex_color(v,c,1);
+vertex_texcoord(v,uv.x2,uv.y1);
+vertex_position_3d(v,rightx,_y,z2);
+vertex_color(v,c,1);
+vertex_texcoord(v,uv.x1,uv.y1);
+vertex_position_3d(v,x,_y,z);
+vertex_color(v,c,1);
+vertex_texcoord(v,uv.x2,uv.y2);
+vertex_position_3d(v,rightx,_y,z);
+vertex_color(v,c,1);
+vertex_texcoord(v,uv.x1,uv.y2);
+vertex_position_3d(v,rightx,_y,z2);
+vertex_color(v,c,1);
+vertex_texcoord(v,uv.x1,uv.y1);
+
+var z = -16;
+var z2 = -32;
+
+vertex_position_3d(v,x,_y,z);
+vertex_color(v,c,1);
+vertex_texcoord(v,uv.x2,uv.y2);
+vertex_position_3d(v,x,_y,z2);
+vertex_color(v,c,1);
+vertex_texcoord(v,uv.x2,uv.y1);
+vertex_position_3d(v,rightx,_y,z2);
+vertex_color(v,c,1);
+vertex_texcoord(v,uv.x1,uv.y1);
+vertex_position_3d(v,x,_y,z);
+vertex_color(v,c,1);
+vertex_texcoord(v,uv.x2,uv.y2);
+vertex_position_3d(v,rightx,_y,z);
+vertex_color(v,c,1);
+vertex_texcoord(v,uv.x1,uv.y2);
+vertex_position_3d(v,rightx,_y,z2);
+vertex_color(v,c,1);
+vertex_texcoord(v,uv.x1,uv.y1);
+
+var z = -32;
+var z2 = -48;
+
+vertex_position_3d(v,x,_y,z);
+vertex_color(v,c,1);
+vertex_texcoord(v,uv.x2,uv.y2);
+vertex_position_3d(v,x,_y,z2);
+vertex_color(v,c,1);
+vertex_texcoord(v,uv.x2,uv.y1);
+vertex_position_3d(v,rightx,_y,z2);
+vertex_color(v,c,1);
+vertex_texcoord(v,uv.x1,uv.y1);
+vertex_position_3d(v,x,_y,z);
+vertex_color(v,c,1);
+vertex_texcoord(v,uv.x2,uv.y2);
+vertex_position_3d(v,rightx,_y,z);
+vertex_color(v,c,1);
+vertex_texcoord(v,uv.x1,uv.y2);
+vertex_position_3d(v,rightx,_y,z2);
+vertex_color(v,c,1);
+vertex_texcoord(v,uv.x1,uv.y1);
+vertex_end(v);
