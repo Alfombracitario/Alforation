@@ -7,7 +7,8 @@ function get_craftable_items(input_array) {
     var input_counts = ds_map_create();
     var total_materiales = 0; // Para evitar recetas con solo 1 ítem
 
-    for (var i = 0; i < 3; i++) {
+    var input_len = array_length(input_array);
+    for (var i = 0; i < input_len; i++) {
         var _id = input_array[i][0];
         var _qty = input_array[i][1];
 
@@ -39,10 +40,12 @@ function get_craftable_items(input_array) {
         var ingredientes = recipe.ingredients;
         var puede_craftear = true;
 
-        // Requiere al menos dos tipos de ingredientes (a menos que la receta tenga solo uno)
+        // Requiere al menos tantos materiales como ingredientes
         if (array_length(ingredientes) > total_materiales) {
             continue;
         }
+
+        var posible = -1;
 
         for (var i = 0; i < array_length(ingredientes); i++) {
             var ing_id = ingredientes[i][0];
@@ -55,15 +58,20 @@ function get_craftable_items(input_array) {
 
             var tengo = input_counts[? ing_id];
 
-            if (tengo < ing_qty) {
+            var max_crafts = floor(tengo / ing_qty);
+
+            if (posible == -1 || max_crafts < posible) {
+                posible = max_crafts;
+            }
+
+            if (max_crafts <= 0) {
                 puede_craftear = false;
                 break;
             }
-
-            var posible = floor(tengo / ing_qty);
         }
+
         if (puede_craftear && posible > 0) {
-            array_push(result, [recipe.output_id,posible,recipe.output_qty,r]);
+            array_push(result, [recipe.output_id, posible, recipe.output_qty, r]);
         }
     }
 

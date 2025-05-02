@@ -39,5 +39,5 @@
     "path":"sprites/sprGrasstop/sprGrasstop.yy",
   },
   "spriteMaskId":null,
-  "visible":true,
+  "visible":false,
 }

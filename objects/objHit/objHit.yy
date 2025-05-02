@@ -34,8 +34,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sprBlank",
-    "path":"sprites/sprBlank/sprBlank.yy",
+    "name":"sprHit",
+    "path":"sprites/sprHit/sprHit.yy",
   },
   "spriteMaskId":null,
   "visible":true,

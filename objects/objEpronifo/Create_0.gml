@@ -13,3 +13,4 @@ alarm_set(0,2);
 texture = sprite_get_texture(sprEpronifo,0);
 frame_index = 0;
 uv = get_texture_coords_sprite(sprEpronifo,frame_index)
+image_alpha = 0.5;

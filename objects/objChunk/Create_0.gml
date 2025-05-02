@@ -6,10 +6,8 @@ vertex_format_add_texcoord();
 f = vertex_format_end();
 v = vertex_create_buffer();
 
+tw = 1;
 draw = false;
-image_xscale = 16;
-image_yscale = 16;
-u_s_tw  = shader_get_uniform(sBillboard, "_s_tw");
-u_c_tw  = shader_get_uniform(sBillboard, "_c_tw");
-u_s_8  = shader_get_uniform(sBillboard, "_s_8");
-u_c_8  = shader_get_uniform(sBillboard, "_c_8");
+image_xscale = 2;
+image_yscale = 2;
+image_alpha = 0.5;

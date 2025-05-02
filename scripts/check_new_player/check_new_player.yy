@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"check_new_player",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"check_new_player",
+  "parent":{
+    "name":"multiplayer",
+    "path":"folders/Scripts/multiplayer.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

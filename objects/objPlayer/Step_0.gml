@@ -6,10 +6,13 @@ if(invopen == true)
 {
 	if(gamepad_is_connected(0))
 	{
-		if gamepad_button_check_pressed(0,gp_shoulderr) && hotbarsel < hotbarsize { hotbarsel++; audio_play_sound(sndSelect,0,0,global.sndvol); }
+		if Pface_x || Pface_b { 
+			close_inv();
+        }
+		if Pshoulder_r && hotbarsel < hotbarsize { hotbarsel++; audio_play_sound(sndSelect,0,0,global.sndvol); }
 		hotbarsel = hotbarsel mod hotbarsize;
 		//selecteditem = selecteditem mod invsize;
-		if(gamepad_button_check_pressed(0,gp_shoulderl))
+		if(Pshoulder_l)
 		{
 			audio_play_sound(sndSelect,0,0,global.sndvol);
 			if(hotbarsel > 0)
@@ -22,17 +25,11 @@ if(invopen == true)
 			}
 		}
 		
-		if gamepad_button_check_pressed(0,gp_padu) && selecteditem >= 10 { selecteditem -= 10; audio_play_sound(sndSelect,0,0,global.sndvol);}
-		if gamepad_button_check_pressed(0,gp_padd) && selecteditem < invsize-10 { selecteditem += 10; audio_play_sound(sndSelect,0,0,global.sndvol);}
-		if gamepad_button_check_pressed(0,gp_padr) && selecteditem < invsize-1 { selecteditem++; audio_play_sound(sndSelect,0,0,global.sndvol);}
-		if gamepad_button_check_pressed(0,gp_padl) && selecteditem > 0 { selecteditem--; audio_play_sound(sndSelect,0,0,global.sndvol); }
-		if gamepad_button_check_pressed(0, gp_face3) || gamepad_button_check_pressed(0, gp_face2) { 
-            invopen = false;
-            audio_play_sound(sndCancel,0,0,global.sndvol);
-            if selector[0] != 0 add_item(selector[0],selector[1],selector[2]);
-			selector = [0,0,0];
-        }
-		if gamepad_button_check_pressed(0, gp_face4) hotbar[hotbarsel] = selecteditem;
+		if Pdpad_u && selecteditem >= 10 { selecteditem -= 10; audio_play_sound(sndSelect,0,0,global.sndvol);}
+		if Pdpad_d && selecteditem < invsize-10 { selecteditem += 10; audio_play_sound(sndSelect,0,0,global.sndvol);}
+		if Pdpad_r && selecteditem < invsize-1 { selecteditem++; audio_play_sound(sndSelect,0,0,global.sndvol);}
+		if Pdpad_l && selecteditem > 0 { selecteditem--; audio_play_sound(sndSelect,0,0,global.sndvol); }
+		if Pface_y hotbar[hotbarsel] = selecteditem;
 		invmousex += gamepad_axis_value(0, gp_axislh)*4*global.fpsmode;
 		invmousey += gamepad_axis_value(0, gp_axislv)*4*global.fpsmode;
 	}
@@ -42,11 +39,7 @@ if(invopen == true)
 		{
 			if(keyboard_check_pressed(ord("E")) || keyboard_check_pressed(vk_escape))
 			{ 
-				invopen = false;
-				window_mouse_set_locked(true);
-				audio_play_sound(sndCancel,0,0,global.sndvol); 
-				if selector[0] != 0 add_item(selector[0],selector[1],selector[2]);
-				selector = [0,0,0];
+				close_inv();
 			}
 			if mouse_wheel_down() && hotbarsel < invsize { hotbarsel++; audio_play_sound(sndSelect,0,0,global.sndvol);}
 			selecteditem = selecteditem mod invsize
@@ -81,13 +74,7 @@ if(invopen == true)
 		}
         if(os_type == os_android || os_type == os_ios)
         {
-            if(keyboard_check_pressed(vk_backspace))
-            {
-                invopen = false;
-                audio_play_sound(sndCancel,0,0,global.sndvol);
-                if selector[0] != 0 add_item(selector[0],selector[1],selector[2]);
-			    selector = [0,0,0];
-            }
+            if(keyboard_check_pressed(vk_backspace)) close_inv();
             
             //creo que esto también es útil aquí idk
             if(prevmousex != device_mouse_x_to_gui(0) && prevmousex != device_mouse_y_to_gui(0))
@@ -99,7 +86,7 @@ if(invopen == true)
 	}
 	
 	//global on inventory
-	if (mouse_check_button_pressed(mb_left) || gamepad_button_check_pressed(0,gp_face1))
+	if (mouse_check_button_pressed(mb_left) || Pface_a)
 	{
 		//crafteo
 		if(invmousex > craftx-4 && invmousex < craftx+104 && invmousey > crafty-16 && invmousey < crafty)
@@ -107,6 +94,7 @@ if(invopen == true)
 			craftmove = true;
 			audio_play_sound(sndAccept,0,0,global.sndvol);
 		}
+		/*
 		if(invmousex > craftx && invmousex < craftx+48 && invmousey > crafty && invmousey < crafty+16)//crafting grid
 		{
 			var _sx = (invmousex-craftx)>>4;
@@ -117,10 +105,10 @@ if(invopen == true)
 			crafting_grid[_sx] = selector;
 			selector = preinv;
 			craftresult = [0,0,0,0,0];
-			craftable = get_craftable_items(crafting_grid);
+			craftable = get_craftable_items(inventory);
             
 		}
-		
+		*/
 		var craftableresults = array_length(craftable);//craftable results
 		
 		if(craftableresults >= 1)
@@ -128,20 +116,26 @@ if(invopen == true)
 			if(invmousex > craftx && invmousex < craftx+(craftableresults<<4) && invmousey > crafty+24 && invmousey < crafty+40)
 			{
                 
-				var _i = (invmousex-craftx)>>4;
-                show_debug_message(craftable[_i])
-                if(craftable[_i][1] > craftresult[4] && craftable[_i][0] == craftresult[0] || craftresult[0] == 0)
-                {
-    				craftresult[0] = craftable[_i][0];
-                    craftresult[1] = craftable[_i][1];
-                    craftresult[2] = craftable[_i][2];
-                    craftresult[3] = craftable[_i][3];
-                    craftresult[4]++;
-    				audio_play_sound(sndSelect,0,0,global.sndvol);
-                }
-                else {
-                	audio_play_sound(sndInvalid,0,0,global.sndvol);
-                }
+				var _i = (invmousex-craftx)>>4;//qué slot del craftable?
+				if(keyboard_check(vk_shift))
+				{
+					while(craftable[_i][0] == craftresult[0] || craftresult[0] == 0)
+	                {
+						set_craft_target(_i);
+	                }
+					audio_play_sound(sndSelect,0,0,global.sndvol);	
+				}
+				else
+				{
+	                if(craftable[_i][0] == craftresult[0] || craftresult[0] == 0)
+	                {
+						set_craft_target(_i);
+						audio_play_sound(sndSelect,0,0,global.sndvol);	
+	                }
+	                else {
+	                	audio_play_sound(sndInvalid,0,0,global.sndvol);
+	                }
+				}
 			}
 		}
 		if(invmousex > craftx+80 && invmousex < craftx+96 && invmousey > crafty && invmousey < crafty+16)//craftear algo
@@ -162,7 +156,6 @@ if(invopen == true)
 			var _sy = (invmousey-invy)>>4
 			selecteditem = _sx+(10*_sy);
 			audio_play_sound(sndAccept,0,0,global.sndvol);
-			
 			
 			// Drag!!1
 			if(inventory[selecteditem][0] == selector[0] && selector[0] > 99)
@@ -197,11 +190,14 @@ else//fuera del inventario
 #region pc input
 if(os_type == os_windows || os_type == os_macosx || os_type == os_operagx)
 {
-	if keyboard_check_pressed(vk_escape) instance_create_layer(x,y,"instances",objPause);
+	if keyboard_check_pressed(vk_escape) instance_create_depth(x,y,0,objPause);
 	if keyboard_check_pressed(vk_shift) running = !running;
     _move = keyboard_check(ord("W")) - keyboard_check(ord("S"));
 	_smove = keyboard_check(ord("A")) - keyboard_check(ord("D"));
-	if keyboard_check_pressed(ord("E")) { invopen = true; invmousex = gw>>1; invmousey = gh>>1; audio_play_sound(sndAccept,0,0,global.sndvol); window_mouse_set_locked(false);}
+	if keyboard_check_pressed(ord("E"))
+	{ 
+		open_inv();
+	}
 	
 	if mouse_wheel_down() && hotbarsel < hotbarsize hotbarsel++;
 	hotbarsel = hotbarsel mod hotbarsize;
@@ -244,13 +240,15 @@ if(os_type == os_windows || os_type == os_macosx || os_type == os_operagx)
 #region gamepad input
 if(gamepad_is_connected(0))
 {
+	//revisar si más jugadores se unen
+	check_new_player(1);
 	//pausar
-	if gamepad_button_check_pressed(0,gp_start) {instance_create_layer(0,0,"instances",objPause);}
-	if gamepad_button_check_pressed(0,gp_face2) running = !running;
+	if gamepad_button_check_pressed(0,gp_start) {instance_create_depth(0,0,0,objPause);}
+	if Pface_b running = !running;
     if (gamepad_button_check_pressed(0, gp_stickl)) {
         running = !running;
     }
-    if(gamepad_button_check(0,gp_face1))
+    if(Dface_a)
     {
         if(z == 0)
         {
@@ -265,9 +263,9 @@ if(gamepad_is_connected(0))
 	_smove = -round(gamepad_axis_value(0, gp_axislh))
 	camz = clamp(camz + (clamp(gamepad_axis_value(0, gp_axisrv)*global.fpsmode*0.08,-0.15*global.fpsmode,0.15*global.fpsmode) * (abs(camz) + 1)),-4,4);
 	cam_yaw += gamepad_axis_value(0, gp_axisrh)*4*global.fpsmode;
-	if gamepad_button_check_pressed(0,gp_shoulderr) && hotbarsel < hotbarsize hotbarsel++;
+	if Pshoulder_r && hotbarsel < hotbarsize hotbarsel++;
 	hotbarsel = hotbarsel mod hotbarsize;
-	if(gamepad_button_check_pressed(0,gp_shoulderl))
+	if(Pshoulder_l)
 	{
 		if(hotbarsel > 0)
 		{
@@ -282,9 +280,9 @@ if(gamepad_is_connected(0))
 	
 	gamepad_set_vibration(0,hurt_tic,hurt_tic);
 	if gamepad_button_check_pressed(0, gp_select) display_info = !display_info;
-	if gamepad_button_check_pressed(0, gp_face3) invopen = true; invmousex = gw>>1; invmousey = gh>>1;
-	if gamepad_button_check_pressed(0, gp_shoulderrb) event_user(15);
-	if gamepad_button_check_pressed(0, gp_shoulderlb) event_user(14);
+	if Pface_x invopen = true; invmousex = gw>>1; invmousey = gh>>1;
+	if Pshoulder_rb event_user(15);
+	if Pshoulder_lb event_user(14);
 }
 #endregion
 #region phones input
@@ -475,7 +473,19 @@ sin_tic += sway_amount*swayspeed;
 
 sway_x += sway_amount *0.7*swayspeed;
 sway_y += sway_amount *1.3*swayspeed;
+
 //Update the camera
+if(global.shadows)
+{
+	//from the sun!?
+	xfrom = objSun.x;
+	yfrom = objSun.y;
+	_z = objSun.z;
+	xto = x;
+	yto = y;
+	zto = z;
+	var mat = matrix_build_lookat(xfrom, yfrom, _z, xto, yto, zto, 0, 0, 1);
+}
 var mat = matrix_build_lookat(xfrom, yfrom, z+_z, xto, yto, z+_z + zto, 0, 0, 1);
 camera_set_view_mat(view_camera[0], mat);
 #endregion

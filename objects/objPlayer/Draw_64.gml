@@ -1,5 +1,9 @@
+//preparamos para dibujo 2D
+shader_reset();
 gpu_set_ztestenable(false);
-gpu_set_fog(false,0,0,0);
+
+
+//gpu_set_fog(false,0,0,0);
 
 //dibujar la pantalla
 if(global.hd)
@@ -48,7 +52,7 @@ if(hand_text_tic > 0)
     draw_set_alpha(hand_text_tic);
     draw_set_halign(fa_center);//oh no! el rendimiento se muere
     draw_set_font(global.font);
-    draw_text(gw>>1,gh*0.85,hand_text);
+    draw_text(gw>>1,gh-32,hand_text);
     draw_set_font(global.font2);
     draw_set_halign(fa_left);
     hand_text_tic-=0.005*global.fpsmode
@@ -151,20 +155,29 @@ if(invopen)
 	{
         draw_item_sprite(craftx+(i<<4),crafty,crafting_grid[i][0],crafting_grid[i][1]);
 	}
+	//Cuantos items se están crafteando
 	var craftp80 = craftx+80
-	draw_sprite(sprArrowright,0,craftx+52,crafty);
 	draw_sprite(sprSlot,0,craftp80,crafty);
-	draw_sprite(sprItems,craftresult[0],craftp80,crafty);
-	draw_text(craftp80,crafty,craftresult[2]*craftresult[4]);
+	if(craftresult[4] > 0)
+	{
+		draw_sprite(sprArrowright,1,craftx+52,crafty);
+		draw_sprite(sprItems,craftresult[0],craftp80,crafty);
+		draw_text_shadow(craftp80,crafty+8,craftresult[2]*craftresult[4]);
+	}
+	else
+	{
+		draw_sprite(sprArrowright,0,craftx+52,crafty);
+	}
 	
-	var _crftc = array_length(craftable)
+	var _crftc = array_length(craftable)//dibujar las cosas que se pueden craftear
 	for(var i = 0; i<_crftc; i++)
 	{
 		var _x = craftx+(i<<4);
 		var _y = crafty+24;
 		
         draw_sprite(sprSlot,0,_x,_y);
-        draw_item_sprite(_x,_y,craftable[i][0],craftable[i][1]);
+		draw_sprite(sprItems,craftable[i][0],_x,_y);
+        draw_text_shadow(_x,_y+8,craftable[i][1]);
 	}
 	draw_text_shadow(craftx,crafty-10,"Crafting");
 	
@@ -246,4 +259,5 @@ if(display_info == true)
 	draw_text(0,0,"X: "+string(x)+"\nY: "+string(y)+"\nCx: "+string(pcx)+"\nCy: "+string(pcy)+"\nFPS "+string(fps)+"\nFPSr "+string(fps_real));
 	draw_text(0,64,instance_count);
 }
-gpu_set_ztestenable(true);
+draw_text(gw>>1,0,fps_real);
+draw_text(gw>>1,16,fps);

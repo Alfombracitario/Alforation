@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"normalize_value",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"normalize_value",
+  "parent":{
+    "name":"3D",
+    "path":"folders/Scripts/3D.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

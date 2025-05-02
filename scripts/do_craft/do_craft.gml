@@ -1,5 +1,6 @@
 function do_craft()
 {
+	if craftresult[0] == 0 exit;
     repeat(craftresult[4])
     {
     	var _id = craftresult[0];
@@ -30,6 +31,6 @@ function do_craft()
     add_item(_id,_count*craftresult[4],0);//añadir el item
     //terminar
     craftresult = [0,0,0,0,0];//limpiar la cuadrícula
-    craftable = get_craftable_items(crafting_grid);
+    craftable = get_craftable_items(inventory);
     
 }

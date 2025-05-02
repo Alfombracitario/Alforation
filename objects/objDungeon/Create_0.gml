@@ -100,8 +100,6 @@ while (array_length(room_list) < _rooms && attempts < 10000) {
 }
 #endregion
 
-
-
 #region 3D
 vertex_format_begin();
 vertex_format_add_position_3d();
@@ -166,12 +164,13 @@ for(_x = 0; _x < _xlimit; _x++)
 		vertex_position_3d(v,x,y,z); 
 		vertex_color(v,_c[2],1);
 		vertex_texcoord(v,tex.x2,tex.y2);
-		vertex_position_3d(v,x,y,zv);
-		vertex_color(v,_c[0],1);
-		vertex_texcoord(v,tex.x2,tex.y1);
 		vertex_position_3d(v,sx,y,zv);
 		vertex_color(v,_c[1],1);
 		vertex_texcoord(v,tex.x1,tex.y1);
+		vertex_position_3d(v,x,y,zv);
+		vertex_color(v,_c[0],1);
+		vertex_texcoord(v,tex.x2,tex.y1);
+		
 		vertex_position_3d(v,x,y,z);
 		vertex_color(v,_c[2],1);
 		vertex_texcoord(v,tex.x2,tex.y2);
@@ -186,12 +185,13 @@ for(_x = 0; _x < _xlimit; _x++)
 		vertex_position_3d(v,x,y,z); 
 		vertex_color(v,_c[0],1);
 		vertex_texcoord(v,tex.x2,tex.y2);
-		vertex_position_3d(v,x,y,zv);
-		vertex_color(v,_c[0],1);
-		vertex_texcoord(v,tex.x2,tex.y1);
 		vertex_position_3d(v,sx,y,zv);
 		vertex_color(v,_c[1],1);
 		vertex_texcoord(v,tex.x1,tex.y1);
+		vertex_position_3d(v,x,y,zv);
+		vertex_color(v,_c[0],1);
+		vertex_texcoord(v,tex.x2,tex.y1);
+
 		vertex_position_3d(v,x,y,z);
 		vertex_color(v,_c[0],1);
 		vertex_texcoord(v,tex.x2,tex.y2);
@@ -206,12 +206,13 @@ for(_x = 0; _x < _xlimit; _x++)
 		vertex_position_3d(v,x,y,z); 
 		vertex_color(v,_c[0],1);
 		vertex_texcoord(v,tex.x2,tex.y2);
-		vertex_position_3d(v,x,y,zv);
-		vertex_color(v,_c[2],1);
-		vertex_texcoord(v,tex.x2,tex.y1);
 		vertex_position_3d(v,sx,y,zv);
 		vertex_color(v,_c[3],1);
 		vertex_texcoord(v,tex.x1,tex.y1);
+		vertex_position_3d(v,x,y,zv);
+		vertex_color(v,_c[2],1);
+		vertex_texcoord(v,tex.x2,tex.y1);
+
 		vertex_position_3d(v,x,y,z);
 		vertex_color(v,_c[0],1);
 		vertex_texcoord(v,tex.x2,tex.y2);
@@ -243,15 +244,17 @@ for(_x = 0; _x < _xlimit; _x++)
 		vertex_position_3d(v,sx,y,zv);
 		vertex_color(v,_c[1],1);
 		vertex_texcoord(v,tex.x2,tex.y1);
+		
 		vertex_position_3d(v,sx,sy,z);
 		vertex_color(v,_c[2],1);
 		vertex_texcoord(v,tex.x1,tex.y2);
-		vertex_position_3d(v,sx,y,z);
-		vertex_color(v,_c[3],1);
-		vertex_texcoord(v,tex.x2,tex.y2);
 		vertex_position_3d(v,sx,y,zv);
 		vertex_color(v,_c[1],1);
 		vertex_texcoord(v,tex.x2,tex.y1);
+		vertex_position_3d(v,sx,y,z);
+		vertex_color(v,_c[3],1);
+		vertex_texcoord(v,tex.x2,tex.y2);
+
 		z-=16;
 		zv-=16;
 		vertex_position_3d(v,sx,sy,z); //right
@@ -263,15 +266,16 @@ for(_x = 0; _x < _xlimit; _x++)
 		vertex_position_3d(v,sx,y,zv);
 		vertex_color(v,_c[1],1);
 		vertex_texcoord(v,tex.x2,tex.y1);
+		
 		vertex_position_3d(v,sx,sy,z);
 		vertex_color(v,_c[0],1);
 		vertex_texcoord(v,tex.x1,tex.y2);
-		vertex_position_3d(v,sx,y,z);
-		vertex_color(v,_c[1],1);
-		vertex_texcoord(v,tex.x2,tex.y2);
 		vertex_position_3d(v,sx,y,zv);
 		vertex_color(v,_c[1],1);
 		vertex_texcoord(v,tex.x2,tex.y1);
+		vertex_position_3d(v,sx,y,z);
+		vertex_color(v,_c[1],1);
+		vertex_texcoord(v,tex.x2,tex.y2);
 		z-=16;
 		zv-=16;
 		vertex_position_3d(v,sx,sy,z); //right
@@ -286,12 +290,13 @@ for(_x = 0; _x < _xlimit; _x++)
 		vertex_position_3d(v,sx,sy,z);
 		vertex_color(v,_c[0],1);
 		vertex_texcoord(v,tex.x1,tex.y2);
-		vertex_position_3d(v,sx,y,z);
-		vertex_color(v,_c[1],1);
-		vertex_texcoord(v,tex.x2,tex.y2);
 		vertex_position_3d(v,sx,y,zv);
 		vertex_color(v,_c[3],1);
 		vertex_texcoord(v,tex.x2,tex.y1);
+		vertex_position_3d(v,sx,y,z);
+		vertex_color(v,_c[1],1);
+		vertex_texcoord(v,tex.x2,tex.y2);
+
 	}
 	_c[0] = $ffffff;
 	_c[1] = $ffffff;
@@ -315,12 +320,12 @@ for(_x = 0; _x < _xlimit; _x++)
 		vertex_position_3d(v,x,sy,z);
 		vertex_color(v,_c[2],1);
 		vertex_texcoord(v,tex.x1,tex.y2);
-		vertex_position_3d(v,sx,sy,z);
-		vertex_color(v,_c[3],1);
-		vertex_texcoord(v,tex.x2,tex.y2);
 		vertex_position_3d(v,sx,sy,zv);
 		vertex_color(v,_c[1],1);
 		vertex_texcoord(v,tex.x2,tex.y1);
+		vertex_position_3d(v,sx,sy,z);
+		vertex_color(v,_c[3],1);
+		vertex_texcoord(v,tex.x2,tex.y2);
 		z-=16;
 		zv-=16;
 		vertex_position_3d(v,x,sy,z); //back
@@ -335,12 +340,12 @@ for(_x = 0; _x < _xlimit; _x++)
 		vertex_position_3d(v,x,sy,z);
 		vertex_color(v,_c[0],1);
 		vertex_texcoord(v,tex.x1,tex.y2);
-		vertex_position_3d(v,sx,sy,z);
-		vertex_color(v,_c[1],1);
-		vertex_texcoord(v,tex.x2,tex.y2);
 		vertex_position_3d(v,sx,sy,zv);
 		vertex_color(v,_c[1],1);
 		vertex_texcoord(v,tex.x2,tex.y1);
+		vertex_position_3d(v,sx,sy,z);
+		vertex_color(v,_c[1],1);
+		vertex_texcoord(v,tex.x2,tex.y2);
 		z-=16;
 		zv-=16;
 		vertex_position_3d(v,x,sy,z); //back
@@ -355,12 +360,12 @@ for(_x = 0; _x < _xlimit; _x++)
 		vertex_position_3d(v,x,sy,z);
 		vertex_color(v,_c[0],1);
 		vertex_texcoord(v,tex.x1,tex.y2);
-		vertex_position_3d(v,sx,sy,z);
-		vertex_color(v,_c[1],1);
-		vertex_texcoord(v,tex.x2,tex.y2);
 		vertex_position_3d(v,sx,sy,zv);
 		vertex_color(v,_c[3],1);
 		vertex_texcoord(v,tex.x2,tex.y1);
+		vertex_position_3d(v,sx,sy,z);
+		vertex_color(v,_c[1],1);
+		vertex_texcoord(v,tex.x2,tex.y2);
 	}
 	_c[0] = $ffffff;
 	_c[1] = $ffffff;
@@ -375,12 +380,12 @@ for(_x = 0; _x < _xlimit; _x++)
 		vertex_position_3d(v,x,sy,z); //left
 		vertex_color(v,_c[2],1);
 		vertex_texcoord(v,tex.x2,tex.y2);
-		vertex_position_3d(v,x,sy,zv);
-		vertex_color(v,_c[0],1);
-		vertex_texcoord(v,tex.x2,tex.y1);
 		vertex_position_3d(v,x,y,zv);
 		vertex_color(v,_c[1],1);
 		vertex_texcoord(v,tex.x1,tex.y1);
+		vertex_position_3d(v,x,sy,zv);
+		vertex_color(v,_c[0],1);
+		vertex_texcoord(v,tex.x2,tex.y1);
 		vertex_position_3d(v,x,sy,z);
 		vertex_color(v,_c[2],1);
 		vertex_texcoord(v,tex.x2,tex.y2);
@@ -395,12 +400,12 @@ for(_x = 0; _x < _xlimit; _x++)
 		vertex_position_3d(v,x,sy,z); //left
 		vertex_color(v,_c[0],1);
 		vertex_texcoord(v,tex.x2,tex.y2);
-		vertex_position_3d(v,x,sy,zv);
-		vertex_color(v,_c[0],1);
-		vertex_texcoord(v,tex.x2,tex.y1);
 		vertex_position_3d(v,x,y,zv);
 		vertex_color(v,_c[1],1);
 		vertex_texcoord(v,tex.x1,tex.y1);
+		vertex_position_3d(v,x,sy,zv);
+		vertex_color(v,_c[0],1);
+		vertex_texcoord(v,tex.x2,tex.y1);
 		vertex_position_3d(v,x,sy,z);
 		vertex_color(v,_c[0],1);
 		vertex_texcoord(v,tex.x2,tex.y2);
@@ -415,12 +420,12 @@ for(_x = 0; _x < _xlimit; _x++)
 		vertex_position_3d(v,x,sy,z); //left
 		vertex_color(v,_c[0],1);
 		vertex_texcoord(v,tex.x2,tex.y2);
-		vertex_position_3d(v,x,sy,zv);
-		vertex_color(v,_c[2],1);
-		vertex_texcoord(v,tex.x2,tex.y1);
 		vertex_position_3d(v,x,y,zv);
 		vertex_color(v,_c[3],1);
 		vertex_texcoord(v,tex.x1,tex.y1);
+		vertex_position_3d(v,x,sy,zv);
+		vertex_color(v,_c[2],1);
+		vertex_texcoord(v,tex.x2,tex.y1);
 		vertex_position_3d(v,x,sy,z);
 		vertex_color(v,_c[0],1);
 		vertex_texcoord(v,tex.x2,tex.y2);
@@ -434,6 +439,7 @@ for(_x = 0; _x < _xlimit; _x++)
 	}
 }
 vertex_end(v);
+vertex_freeze(v);
 #endregion
 x = 0;
 y = 0;
@@ -446,4 +452,4 @@ while(tiles[_px][_py] == 1)
 	_px = irandom(_xlimit-2)+1;
     _py = irandom(_ylimit-2)+1;
 }
-instance_create_layer(_px<<4,_py<<4,"instances",objPlayer);
+instance_create_depth(_px<<4,_py<<4,0,objPlayer);

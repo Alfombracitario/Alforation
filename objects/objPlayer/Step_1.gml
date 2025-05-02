@@ -3,6 +3,66 @@ w_height = window_get_height();
 gw = display_get_gui_width();
 gh = display_get_gui_height();
 
+//input
+//reset
+Pdpad_u = 0;
+Pdpad_d = 0;
+Pdpad_l = 0;
+Pdpad_r = 0;
+Pface_a = 0;
+Pface_b = 0;
+Pface_x = 0;
+Pface_y = 0;
+Pshoulder_l = 0;
+Pshoulder_r = 0;
+Pshoulder_lb = 0;
+Pshoulder_rb = 0;
+Pselect = 0;
+Pstart = 0;
+Dface_a = 0;
+
+Pkey_w = 0;
+Pkey_a = 0;
+Pkey_s = 0;
+Pkey_d = 0;
+Pclick_r = 0;
+Pclick_l = 0;
+
+//define
+if(gamepad_is_connected(0))
+{
+Pdpad_u = gamepad_button_check_pressed(0, gp_padu);
+Pdpad_d = gamepad_button_check_pressed(0, gp_padd);
+Pdpad_l = gamepad_button_check_pressed(0, gp_padl);
+Pdpad_r = gamepad_button_check_pressed(0, gp_padr);
+Pface_a = gamepad_button_check_pressed(0, gp_face1);
+Pface_b = gamepad_button_check_pressed(0, gp_face2);
+Pface_x = gamepad_button_check_pressed(0, gp_face3);
+Pface_y = gamepad_button_check_pressed(0, gp_face4);
+Pshoulder_l = gamepad_button_check_pressed(0,gp_shoulderl);
+Pshoulder_r = gamepad_button_check_pressed(0,gp_shoulderr);
+Pshoulder_lb = gamepad_button_check_pressed(0,gp_shoulderlb);
+Pshoulder_rb = gamepad_button_check_pressed(0,gp_shoulderrb);
+Pselect = gamepad_button_check_pressed(0,gp_select);
+Pstart = gamepad_button_check_pressed(0,gp_start);
+Dface_a = gamepad_button_check(0,gp_face1);
+}
+if(os_type == os_windows || os_type = os_android)
+{
+Pkey_w = 0;
+Pkey_a = 0;
+Pkey_s = 0;
+Pkey_d = 0;
+}
+Pclick_r = 0;
+Pclick_l = 0;
+
+if(global.players > 1)//ajustar dependiendo de la cantidad de jugadores
+{
+	factordiv = 0.5;
+	gw*=0.5;
+	if global.players > 2 gh*=0.5;
+}
 previnvmousex = invmousex;
 previnvmousey = invmousey;
 
@@ -128,7 +188,7 @@ if (room == game)
             var _x = x + lengthdir_x(distance, angle);
             var _y = y + lengthdir_y(distance, angle);
 
-            instance_create_layer(_x, _y, "instances", objEpronifo);
+            instance_create_depth(_x, _y, 0, objEpronifo);
         }
     }
     else // Mañana

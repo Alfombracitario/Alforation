@@ -1,7 +1,19 @@
 draw_set_halign(fa_left);
+_t  = shader_get_uniform(sBillboard, "_t");
+fog_settings  = shader_get_uniform(sBillboard, "fog_settings");
+factordiv = 1;
+global.players = 1;
+
+global.shadows = false;
+if(global.shadows)
+{
+	_ts  = shader_get_uniform(sBillboard_shadows, "_ts");
+	shadows_surface = surface_create(1024,1024);
+}
+
 w_width = window_get_width();
 w_height = window_get_height();
-image_alpha = 0;
+image_alpha = 0.5;
 view_enabled = true;
 view_visible[0] = true;
 camera_set_view_size(view_camera[0],w_width,w_height);
@@ -20,9 +32,12 @@ else
 surface_resize(application_surface,w_width>>global.screendiv,w_height>>global.screendiv);
 application_surface_draw_enable(false);
 
+//Herramientas para que el 3D funcione
 gpu_set_alphatestenable(true);
 gpu_set_ztestenable(true);
 gpu_set_zwriteenable(true);
+gpu_set_cullmode(cull_counterclockwise);
+
 
 if(os_type == os_windows || os_type == os_macosx || os_type == os_operagx)
 {
@@ -125,16 +140,10 @@ audio_stop_all();
 #region load data
 
 ini_open(WORLDIR+global.worldname+"/inv.ini");
-if(room == game)
-{
-	x = ini_read_real("p","x",0);
-	y = ini_read_real("p","y",0);
-    z = ini_read_real("p","z",0);
-}
-else {
+
 if room == dungeon tiles = objDungeon.tiles;
 if room == cave tiles = objCave.tiles;
-}
+
 _health = ini_read_real("p","health",100);
 _hunger = ini_read_real("p","hunger",100);
 _temperature = ini_read_real("p","temp",128);
@@ -203,13 +212,6 @@ hotbarsel = 0;
 for(var i = 0; i < hotbarsize; i++)
 {
 	hotbar[i] = i;
-}
-
-//más optimizaciones:
-if room == game 
-{
-	instance_create_depth(x,y,1,objVisioncol);
-	instance_create_depth(x,y,0,objImposter);
 }
 	//datos de los items
 
